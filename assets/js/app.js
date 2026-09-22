@@ -15,7 +15,6 @@ const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 document.addEventListener("DOMContentLoaded", () => {
-  initTheme();
   initHeader();
   initMegaMenu();
   initMobileNavigation();
@@ -25,62 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initQuotes();
   initCounters();
   initRevealAnimations();
-  initScrollChapters();
+  initServiceStage();
+  initOnView();
+  initTilt();
   initForms();
 });
-
-
-/* Theme toggle.
-   The active theme is already on <html> by the time this runs — the inline script
-   in the document head sets it before first paint. This only wires the switch,
-   remembers the choice, and keeps following the OS for anyone who has not chosen.
-   Every toggle on the page stays in sync, since the header and the drawer each
-   have one. */
-const THEME_KEY = "whizzit-theme";
-
-function initTheme() {
-  const toggles = [...document.querySelectorAll("[data-theme-toggle]")];
-  if (!toggles.length) return;
-
-  const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
-
-  const read = () => {
-    try {
-      const stored = localStorage.getItem(THEME_KEY);
-      return stored === "light" || stored === "dark" ? stored : null;
-    } catch {
-      return null;
-    }
-  };
-
-  const apply = (theme) => {
-    document.documentElement.setAttribute("data-theme", theme);
-    const dark = theme === "dark";
-    toggles.forEach((t) => {
-      t.setAttribute("aria-pressed", String(dark));
-      t.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
-    });
-  };
-
-  apply(read() || (systemDark.matches ? "dark" : "light"));
-
-  toggles.forEach((toggle) =>
-    toggle.addEventListener("click", () => {
-      const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      apply(next);
-      try {
-        localStorage.setItem(THEME_KEY, next);
-      } catch {
-        /* Private mode: the switch still works, it just will not be remembered. */
-      }
-    })
-  );
-
-  // Keep following the OS until the visitor picks a side.
-  systemDark.addEventListener("change", (event) => {
-    if (!read()) apply(event.matches ? "dark" : "light");
-  });
-}
 
 
 /* Sticky header: observe a 1px sentinel instead of listening to scroll */
@@ -401,7 +349,7 @@ function initCounters() {
 
 // Blocks whose children should cascade rather than arrive together.
 const REVEAL_GROUPS = [
-  ".svc-grid", ".project-grid", ".sector-cards", ".sector-directory", ".value-grid",
+  ".svc-list", ".case-grid", ".project-grid", ".sector-cards", ".sector-directory", ".value-grid",
   ".people-grid", ".cred-grid", ".review-wall", ".review-grid", ".insight-grid",
   ".detail-grid", ".sub-grid", ".story-list", ".post-grid", ".stat-band__grid",
   ".card-grid", ".check-grid", ".step-list", ".location-grid", ".logo-row",
@@ -600,48 +548,118 @@ function initForms() {
 }
 
 
-/* Scroll chapters.
-   The dark page runs in chapters: a run of sections in the dark palette, then a
-   run in the light one. Whichever chapter holds the middle of the viewport puts
-   its band on <html>, and section 29 of the stylesheet cross-fades the whole
-   palette to match — page, text, cards and borders together.
+/* Homepage services stage.
+   Follows the reader down the services list: the row crossing the middle of the
+   viewport becomes active, its slide takes the stage, and --svc-progress (0 at
+   the top of the list, 1 at the bottom) drives the rail and the parallax drift in
+   CSS. The scroll listener only exists while the band is on screen, and does its
+   work once per frame. Desktop only — below 1024px the stage is hidden and the
+   rows simply read as a list. */
+function initServiceStage() {
+  const band = document.querySelector("[data-service-stage]");
+  const list = band?.querySelector(".svc-list");
+  if (!band || !list || !("IntersectionObserver" in window)) return;
 
-   Where the chapters turn is an editorial call, so a page makes it by putting
-   data-band="light" or "dark" on the section that opens each one — the sections
-   after it follow until the next marker. Pages that mark nothing fall back to a
-   turn every CHAPTER_LENGTH sections, which keeps the rhythm sane without
-   needing a decision on every page.
+  const rows = [...list.querySelectorAll(".svc-row")];
+  const slides = [...band.querySelectorAll(".svc-stage__slide")];
+  const now = band.querySelector(".svc-stage__now");
+  const wide = window.matchMedia("(min-width: 1024px)");
+  let active = -1;
+  let queued = false;
 
-   Runs on every theme — the band only means anything under [data-theme="dark"],
-   so light mode is untouched and switching themes needs no extra wiring. */
-const CHAPTER_LENGTH = 3;
+  const update = () => {
+    queued = false;
+    const mid = window.innerHeight / 2;
+    const box = list.getBoundingClientRect();
+    const progress = Math.min(1, Math.max(0, (mid - box.top) / box.height));
+    band.style.setProperty("--svc-progress", progress.toFixed(4));
 
-function initScrollChapters() {
-  const sections = [...document.querySelectorAll("main .section")];
-  if (sections.length < 2 || !("IntersectionObserver" in window)) return;
+    let index = rows.findIndex((row) => row.getBoundingClientRect().bottom > mid);
+    if (index < 0) index = rows.length - 1;
+    if (index === active) return;
+    active = index;
+    rows.forEach((row, i) => row.classList.toggle("is-active", i === index));
+    slides.forEach((slide, i) => slide.classList.toggle("is-active", i === index));
+    if (now) now.textContent = String(index + 1).padStart(2, "0");
+  };
 
-  const authored = sections.some((section) => section.dataset.band);
-  let band = "dark";
-  sections.forEach((section, index) => {
-    if (section.dataset.band) band = section.dataset.band;
-    else if (!authored && index && index % CHAPTER_LENGTH === 0) band = band === "dark" ? "light" : "dark";
-    section.dataset.band = band;
-  });
+  const onScroll = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(update);
+  };
 
-  // A page that never leaves the opening chapter has nothing to swap.
-  if (sections.every((section) => section.dataset.band === sections[0].dataset.band)) return;
+  const listen = (on) => {
+    const method = on ? "addEventListener" : "removeEventListener";
+    window[method]("scroll", onScroll, { passive: true });
+    window[method]("resize", onScroll);
+  };
 
-  const root = document.documentElement;
+  let inView = false;
+  const sync = () => {
+    const live = inView && wide.matches;
+    band.classList.toggle("is-staged", wide.matches);
+    listen(live);
+    if (live) update();
+  };
+
+  new IntersectionObserver(([entry]) => {
+    inView = entry.isIntersecting;
+    sync();
+  }).observe(band);
+  wide.addEventListener("change", sync);
+}
+
+/* One-off sequences that play the first time their element scrolls into view
+   (the About page's value keys). The class only starts the animation: the
+   resting state is complete without it, so no-JS and reduced motion lose
+   nothing. */
+function initOnView() {
+  const items = document.querySelectorAll("[data-on-view]");
+  if (!items.length) return;
+
+  if (prefersReducedMotion.matches || !("IntersectionObserver" in window)) {
+    items.forEach((el) => el.classList.add("is-on"));
+    return;
+  }
+
   const observer = new IntersectionObserver(
-    (entries) => {
-      const entered = entries.find((entry) => entry.isIntersecting);
-      if (!entered) return;
-      root.dataset.band = entered.target.dataset.band;
-    },
-    // A zero-height line across the middle of the viewport: exactly one section
-    // sits on it at a time, so the chapter turns on the boundary and not before.
-    { rootMargin: "-50% 0px -50% 0px" },
+    (entries) =>
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-on");
+        observer.unobserve(entry.target);
+      }),
+    { rootMargin: "0px 0px -25% 0px", threshold: 0 }
   );
+  items.forEach((el) => observer.observe(el));
+}
 
-  sections.forEach((section) => observer.observe(section));
+/* Pointer tilt for the About page's photo stage. Writes three custom
+   properties; the CSS turns them into a rotation and a moving sheen. Mouse and
+   trackpad only, and never under reduced motion. */
+function initTilt() {
+  const areas = document.querySelectorAll("[data-tilt]");
+  if (!areas.length || !finePointer.matches || prefersReducedMotion.matches) return;
+
+  areas.forEach((area) => {
+    let frame = 0;
+    const set = (x, y) => {
+      area.style.setProperty("--rx", `${(x * 6).toFixed(2)}deg`);
+      area.style.setProperty("--ry", `${(y * -5).toFixed(2)}deg`);
+      area.style.setProperty("--sheen", `${(x * -40).toFixed(1)}%`);
+    };
+
+    area.addEventListener("pointermove", (event) => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const box = area.getBoundingClientRect();
+        set((event.clientX - box.left) / box.width - 0.5, (event.clientY - box.top) / box.height - 0.5);
+      });
+    });
+    area.addEventListener("pointerleave", () => {
+      cancelAnimationFrame(frame);
+      set(0, 0);
+    });
+  });
 }

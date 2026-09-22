@@ -136,7 +136,7 @@ ${pageHero({
     title: m.title,
     lead: m.lead,
     crumbs: breadcrumbs(crumbs),
-    aside: `<div class="hero-photo">${stockPhoto(sectorPhoto, { ratio: "3-2", sizes: "(min-width: 1024px) 45vw, 100vw", loading: "eager" })}</div>`,
+    feature: stockPhoto(sectorPhoto, { ratio: "16-9", sizes: "(min-width: 1280px) 1240px, 100vw", loading: "eager" }),
   })}
 ${renderBlocks(m.blocks, { key: sector.key })}
 
@@ -207,8 +207,8 @@ ${pageHero({
     lead: m.lead,
     crumbs: breadcrumbs(crumbs),
     cls: "hero--location",
-    aside: `<div class="hero-photo">${stockPhoto(loc.title === "London" ? STOCK.london : STOCK.office, { ratio: "3-2", sizes: "(min-width: 1024px) 45vw, 100vw", loading: "eager" })}</div>
-      ${heroProof([
+    feature: stockPhoto(loc.title === "London" ? STOCK.london : STOCK.office, { ratio: "16-9", sizes: "(min-width: 1280px) 1240px, 100vw", loading: "eager" }),
+    aside: `${heroProof([
         { icon: "clock", value: "9 min", label: "Average first response" },
         { icon: "mapPin", value: loc.title, label: "Remote first, on-site when needed" },
       ])}`,
@@ -336,7 +336,7 @@ ${pageHero({
     crumbs: breadcrumbs(crumbs),
     cls: "hero--case",
     actions: `${btn("Book a consultation", "contact.html", { arrow: false, track: `case-${study.slug}-cta` })}${btn("More customer stories", "our-customers.html#stories", { variant: "secondary", arrow: false, track: `case-${study.slug}-more` })}`,
-    aside: `<div class="hero-photo">${photo(studyPhoto, { ratio: "4-3", sizes: "(min-width: 1024px) 45vw, 100vw", loading: "eager" })}</div>`,
+    feature: photo(studyPhoto, { ratio: "16-9", sizes: "(min-width: 1280px) 1240px, 100vw", loading: "eager" }),
   })}
 
 <section class="section section--tight" aria-label="Customer summary">

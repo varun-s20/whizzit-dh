@@ -56,15 +56,22 @@ const PARA = /<p(?=[\s>])[^>]*>([\s\S]*?)<\/p>/g;
 const paragraphs = (chunk) => all(PARA, chunk);
 
 /* ---------- Block parsers ---------- */
-const checklist = (chunk) =>
-  all(/<li[^>]*>([\s\S]*?)<\/li>/g, one(/<ul class="checklist"[^>]*>([\s\S]*?)<\/ul>/, chunk)).map((m) => text(m[1])).filter(Boolean);
-
-// The heading that sits directly above the checklist, e.g. "What's included" or
-// "Without a plan" — used as the card title instead of a hard-coded label.
-const checklistTitle = (chunk) => {
-  const before = chunk.split(/<ul class="checklist"/)[0];
-  const heads = [...before.matchAll(/<h3[^>]*>([\s\S]*?)<\/h3>/g)];
-  return heads.length ? text(heads[heads.length - 1][1]) : "";
+// Every checklist in the section, titled by the h3 or mono label sitting directly
+// above it ("Without a plan" / "With WhizzIT"). An untitled list is one list split
+// into two columns, so it merges into the untitled list before it.
+const checklists = (chunk) => {
+  const segs = chunk.split(/(?=<ul class="checklist)/);
+  const lists = [];
+  segs.slice(1).forEach((seg, i) => {
+    const labels = [...segs[i].matchAll(/<(h3|p class="mono")[^>]*>([\s\S]*?)<\/(?:h3|p)>/g)];
+    const title = labels.length ? text(labels[labels.length - 1][2]) : "";
+    const items = all(/<li[^>]*>([\s\S]*?)<\/li>/g, one(/<ul class="checklist[^>]*>([\s\S]*?)<\/ul>/, seg)).map((m) => text(m[1])).filter(Boolean);
+    if (!items.length) return;
+    const last = lists[lists.length - 1];
+    if (!title && last && !last.title) last.items.push(...items);
+    else lists.push({ title, items });
+  });
+  return lists;
 };
 
 const cards = (chunk) =>
@@ -133,7 +140,8 @@ export function parsePage(html) {
     if (/Request a callback|Send us a message/.test(chunk) && !/<h2/.test(chunk)) continue;
     const faq = faqItems(chunk);
     const grid = cards(chunk);
-    const list = checklist(chunk);
+    const lists = checklists(chunk);
+    const list = lists[0]?.items || [];
     const tabSet = tabs(chunk);
     const head = prosePart(chunk);
     const centreTitle = text(one(/<div class="section-head center">[\s\S]*?<h2[^>]*>([\s\S]*?)<\/h2>/, chunk));
@@ -145,13 +153,18 @@ export function parsePage(html) {
     const hasBody = head.html || list.length || grid.length || tabSet.length || faq.length;
     if (!title || !hasBody) continue;
 
+    // List labels are printed on their cards, so drop them from the prose.
+    const labels = new Set(lists.map((l) => l.title).filter(Boolean));
+    const html = head.html.replace(/<p>([\s\S]*?)<\/p>/g, (p, inner) => (labels.has(text(inner)) ? "" : p));
+
     blocks.push({
-      listTitle: checklistTitle(chunk),
+      listTitle: lists[0]?.title || "",
       eyebrow: head.eyebrow,
       title,
-      lead: centreLead || splitAside || "",
-      html: head.html,
+      lead: (labels.has(centreLead) ? "" : centreLead) || splitAside || "",
+      html,
       list,
+      lists,
       cards: grid,
       tabs: tabSet,
       faq,

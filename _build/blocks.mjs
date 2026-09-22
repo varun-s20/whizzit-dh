@@ -1,7 +1,7 @@
 // Renders the parsed staging blocks with the new design system. Each block kind
-// gets its own component, and prose/list blocks alternate sides so a long page
-// never reads as one repeated pattern.
-import { icon, btn, reviewAvatar, SITE } from "./lib.mjs";
+// gets its own component. Blocks with a card, tabs or accordion stack: heading and
+// prose across the row, the component below (see .block-split:has in styles.css).
+import { icon, btn, reviewAvatar, stockPhoto, SITE, STOCK } from "./lib.mjs";
 
 // Blocks we render ourselves from site data rather than from page content.
 const SKIP = /^(Credentials you can check|Brands we partner with|Frequently asked questions|The businesses we look after|Proof, not promises)$/i;
@@ -23,9 +23,13 @@ const checkCard = (items, title = "What's included") => `
     <ul role="list">${items.map((i) => `<li>${i}</li>`).join("")}</ul>
   </aside>`;
 
-function proseBlock(b, i, id) {
-  // Prose + checklist alternate left/right down the page.
-  const flip = i % 2 === 1;
+// Before/after pairs ("Without a plan" / "With WhizzIT") sit side by side so they
+// read as a comparison; a single list is one card.
+const checkCards = (b) => b.lists.length > 1
+  ? `<div class="check-grid">${b.lists.map((l) => checkCard(l.items, l.title || "What's included")).join("")}</div>`
+  : checkCard(b.list, b.listTitle || "What's included");
+
+function proseBlock(b, id) {
   if (!b.list.length) {
     // Centred head: the prose below it is centred too, so a left-aligned heading
     // sat out of line with its own body and left the right half of the row empty.
@@ -41,12 +45,12 @@ function proseBlock(b, i, id) {
   const repeated = b.listTitle && b.listTitle.trim().toLowerCase() === b.title.trim().toLowerCase();
   return `
   <section class="section block" aria-labelledby="${id}">
-    <div class="container block-split${flip ? " block-split--flip" : ""}">
+    <div class="container block-split">
       <div>
         ${repeated ? `<p class="eyebrow">${b.eyebrow || "What we cover"}</p><h2 class="grad-head" id="${id}">${b.title}</h2>` : head(b, { id })}
         ${b.html ? `<div class="block-prose">${b.html}</div>` : ""}
       </div>
-      ${checkCard(b.list, b.listTitle || "What's included")}
+      ${checkCards(b)}
     </div>
   </section>`;
 }
@@ -78,7 +82,7 @@ function tabsBlock(b, id, key) {
       <div>
         ${head(b, { id })}
         ${b.html ? `<div class="block-prose">${b.html}</div>` : ""}
-        ${b.list.length ? checkCard(b.list, b.listTitle || "What's included") : ""}
+        ${b.list.length ? checkCards(b) : ""}
       </div>
       <div class="tabs tabs--panel" data-tabs>
         <div class="tabs__list pill-tabs" role="tablist" aria-label="${b.title}">
@@ -143,7 +147,7 @@ export function renderBlocks(blocks, { key = "b" } = {}) {
           ? tabsBlock(b, id, `${key}-${n}`)
           : b.cards.length
             ? cardsBlock(b, id)
-            : proseBlock(b, n, id);
+            : proseBlock(b, id);
       n += 1;
       return out;
     })
@@ -151,30 +155,39 @@ export function renderBlocks(blocks, { key = "b" } = {}) {
 }
 
 /* ---------- Shared page furniture ---------- */
-export function pageHero({ eyebrow, title, lead, crumbs = "", actions = "", aside = "", cls = "" }) {
+// The wide photo that sits across the hero's foot. Pages pass their own
+// (industry, location, case study); service pages get their service's photo.
+const TONE_PHOTO = { support: "supportDesk", cloud: "cloudRacks", cyber: "cyber", network: "serverRoom", projects: "meeting" };
+export const heroFeature = (item) => stockPhoto(item, { ratio: "16-9", sizes: "(min-width: 1280px) 1240px, 100vw", loading: "eager" });
+
+export function pageHero({ eyebrow, title, lead, crumbs = "", actions = "", aside = "", cls = "", feature, note = "" }) {
+  const tone = (cls.match(/hero--tone-(w+)/) || [])[1];
+  const fig = feature === false ? "" : feature || heroFeature(STOCK[TONE_PHOTO[tone]] || STOCK.office);
+  // One column, top to bottom: the headline gets the full row instead of sharing
+  // it with a side panel, and whatever used to sit beside it runs full width below.
   return `
-<section class="hero hero--sky hero--page ${cls}" aria-labelledby="page-hero-title">
-  <div class="container hero-page__grid">
-    <div>
-      ${crumbs}
-      ${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ""}
-      <h1 class="hero-sky__title" id="page-hero-title">${title}</h1>
-      ${lead ? `<p class="hero-sky__lead">${lead}</p>` : ""}
-      <div class="btn-group">
-        ${actions || `${btn("Book a consultation", "contact.html", { arrow: false, track: "page-hero-cta" })}${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "secondary", iconName: "phone", arrow: false, track: "page-hero-phone" })}`}
-      </div>
-      <p class="hero-sky__note">${icon("checkCircle")}${SITE.responseLine} · ${SITE.google.label} · UK-wide coverage</p>
+<section class="hero hero--sky hero--page hero-stack${fig ? " has-feature" : ""} ${cls}" aria-labelledby="page-hero-title">
+  <div class="container">
+    ${crumbs}
+    ${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ""}
+    <h1 class="hero-sky__title hero-stack__title" id="page-hero-title">${title}</h1>
+    ${lead ? `<p class="hero-sky__lead">${lead}</p>` : ""}
+    <div class="btn-group">
+      ${actions || `${btn("Book a consultation", "contact.html", { arrow: false, track: "page-hero-cta" })}${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "secondary", iconName: "phone", arrow: false, track: "page-hero-phone" })}`}
     </div>
-    ${aside}
+    <p class="hero-sky__note">${icon("checkCircle")}${note || `${SITE.responseLine} · ${SITE.google.label} · UK-wide coverage`}</p>
+    ${aside ? `<div class="hero-stack__aside">${aside}</div>` : ""}
   </div>
-</section>`;
+</section>${fig ? `
+<div class="hero-feature"><div class="container">${fig}</div></div>` : ""}`;
 }
 
-// Small proof panel used in the hero of the inner pages.
+// Proof figures as one raised faceplate, like a rack unit: a status light per
+// figure that switches on in turn when the page loads.
 export const heroProof = (items) => `
-<aside class="hero-proof">
-  ${items.map((i) => `<div class="hero-proof__item"><span class="hero-proof__icon">${icon(i.icon)}</span><strong>${i.value}</strong><span>${i.label}</span></div>`).join("")}
-</aside>`;
+<ul class="faceplate" role="list">
+  ${items.map((i, n) => `<li class="faceplate__unit" style="--i:${n}"><span class="faceplate__led" aria-hidden="true"></span><span class="faceplate__icon">${icon(i.icon)}</span><strong>${i.value}</strong><span>${i.label}</span></li>`).join("")}
+</ul>`;
 
 /* ---------- Bands shared by the service overview pages ---------- */
 export function subServiceGrid(service, { title = `Specialist ${service.title.toLowerCase()} services`, lead = "" } = {}) {

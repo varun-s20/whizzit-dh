@@ -86,14 +86,33 @@ link cannot be resolved, and `_source/GAPS.md` records the link audit (currently
 
 ## Design system
 
-- **Fonts:** Urbanist (headings and body), Figtree (buttons, navigation, small UI labels), loaded from Google Fonts.
+- **Direction:** bold and photo-led, after the client pointed at boldit.co.uk. Same palette as before; what
+  changed is weight, contrast and layout.
+- **Fonts:** Urbanist 400–800 (headings and body), Figtree 500–700 (buttons, navigation, small UI labels),
+  loaded from Google Fonts.
 - **Colour:** `--color-primary` #1F6BFF (actions) · `--color-navy` #0A2F7A (secondary actions, tabs, ticks) ·
-  `--color-night` #0A0B0D (footer) · sky gradient heroes · near-white surfaces.
-- **Headings** use a dark-to-slate gradient (`.grad-head`) at weight 500.
-- **Buttons** are pills; cards use 14–28px radii and cool low-opacity shadows.
+  `--color-heading` #0A1628 (headings) · `--color-night` #0A0B0D (footer) · near-white surfaces.
+- **Headings** are solid heading-ink at weight 800 with tight tracking. `.grad-head` keeps its name but no
+  longer fades; hero titles put their second half in a cyan-to-blue gradient.
+- **Light only.** There is no dark mode and no theme switch. A few surfaces are dark by design — every
+  `.hero--sky` hero, the header while it floats over one, and any `.section--ink` band — and they get there by
+  re-declaring the colour tokens (section 28 of `styles.css`), so components inside them need no overrides.
+- **Inner-page heroes** (`pageHero()` in `blocks.mjs`) are one column: breadcrumbs, headline across the full
+  row, lead, actions. Whatever used to sit in a side column runs full width beneath as a raised "faceplate":
+  proof figures (`heroProof()`, each with a status light that switches on at load), London's coverage panel,
+  the IT services index as five tiles, or the blog's featured article. The headline gets one light sweep on
+  load. They end in a wide feature photo that overlaps the hero's foot and the section below. Service pages
+  get their service's photo; industry, location and case-study pages pass their own; the blog index opts out
+  with `feature: false`. Inner-page sections use a tighter rhythm than the homepage (40–64px).
+- **Relief** (section 30 of `styles.css`) is the shared surface language for the About page and the inner
+  heroes: pressed metal lit from the top left, raised things highlighted on their top edge, engraved things
+  the reverse. Motion is light and pressure, and every animation is off under reduced motion.
+- **Buttons** are squared (`--radius-sm`): blue primary, heading-ink outline secondary. Cards use 14–28px radii.
+- **Closing CTA** (`ctaBand()` in `lib.mjs`, also used for the footer CTA) is a split card: photo on one side,
+  navy-to-signal gradient on the other.
 - **Header** is two rows. The utility strip (desktop only, ≥1100px, collapses on
   scroll) carries the response line, phone and email. The bar below it holds the
-  logo, five mega triggers plus a direct Contact link, then the theme switch and
+  logo, five mega triggers plus a direct Contact link, then
   the booking CTA. The phone number lives in the strip only, not in both.
   The page links the strip used to hold (Home, About, Our Customers,
   Blog, Locations, Contact) are all reachable from the bar itself. The current
@@ -117,37 +136,27 @@ link cannot be resolved, and `_source/GAPS.md` records the link audit (currently
   without the wall turning into a colour wheel. A Google glyph marks the review as
   verified rather than collected by us.
 
-### Dark theme
-
-`styles.css` ends with one `:root[data-theme="dark"]` block. There is no second
-copy and no `prefers-color-scheme` duplicate: an inline script in `<head>`
-(`lib.mjs`) resolves the theme before first paint from the stored choice, falling
-back to the OS setting, so there is no flash. `app.js` wires the switch in the
-header and the drawer, persists the choice to `localStorage`, and keeps following
-the OS until the visitor picks a side. Without JavaScript the site renders light.
+### Colour tokens
 
 Three tokens exist only because a name cannot mean two things at once:
 
 | Token | Why |
 |---|---|
-| `--color-always-white` | `--color-white` is the *raised card surface* and goes dark in the dark theme. Text sitting on a coloured or dark fill must not follow it — that is how footer headings and button labels went dark-on-dark. |
-| `--color-navy-fill` | `--color-navy` is a *text* colour and lightens in dark. The five places that use navy as a solid fill behind white text need it to stay dark. |
+| `--color-always-white` | `--color-white` is the *raised card surface* and goes dark on the dark surfaces. Text sitting on a coloured or dark fill must not follow it — that is how footer headings and button labels went dark-on-dark. |
+| `--color-navy-fill` | `--color-navy` is a *text* colour and lightens on dark surfaces. The five places that use navy as a solid fill behind white text need it to stay dark. |
 | `--color-primary-ink` | Brand blue `#1f6bff` is only 4.29:1 on white. Fills keep the brand colour; small text uses `#1560eb`. |
 
-Vendor and accreditation logos are dark artwork on transparent backgrounds, so in
-dark mode they sit on a light plate rather than disappearing.
-
-Anything that varies with the theme is a token rather than a
-`[data-theme="dark"] .thing` override, so components follow the palette on their
-own: `--photo-filter`, `--logo-plate`, `--tile-gloss`, `--tile-ring`,
-`--color-primary-fill`, `--icon-tile-neutral`, `--num-stroke`, `--quote-mark`,
-`--bar-track`, `--svc-icon-bg`. Prefer that pattern for anything new.
+Anything that has to differ on a dark surface is a token rather than an override, so
+components follow the palette on their own: `--photo-filter`, `--logo-plate`,
+`--tile-gloss`, `--tile-ring`, `--color-primary-fill`, `--icon-tile-neutral`,
+`--num-stroke`, `--quote-mark`, `--bar-track`, `--svc-icon-bg`. Prefer that pattern
+for anything new.
 
 ### Responsive
 
 Mobile-first, verified at 320 / 360 / 390 / 430 / 540 / 768 / 1024 / 1280 / 1440 /
 1920. Across all 100 pages there is no horizontal page overflow and no element
-breaking out of the viewport at any of those widths, in either theme.
+breaking out of the viewport at any of those widths.
 
 Three fixes worth knowing about, because each was a class of bug rather than a
 one-off:
@@ -156,7 +165,7 @@ one-off:
   nav is `display:none` below 1100px — so the rule still matched and the menu
   button floated mid-bar on every phone and tablet. It now lives inside the
   desktop breakpoint.
-- At 320px the full header (150px wordmark, theme switch, labelled Menu button)
+- At 320px the full header (150px wordmark, labelled Menu button)
   was wider than the viewport and pushed every page 21px sideways. The compact
   header — 26px wordmark, icon-only menu button — is the base; the roomier one
   returns at 400px.
@@ -171,18 +180,19 @@ The pages deliberately do not share a rhythm:
 
 | Page | Signature |
 |---|---|
-| Home | Live monitoring stage in the hero; industries as photo-led cards |
-| About | Photo stack hero; values run down a ruled spine with oversized numerals, not a card grid |
+| Home | Photo hero (headline and actions only) with a proof strip overlapping its foot and the intro paragraph set large beneath it; services as a ruled list on an ink band beside a sticky, scroll-driven stage; case studies as photo tiles. About, reviews slider, industry cards, pricing/FAQ and partners keep their original layouts |
+| About | Centred hero: a two-line headline that comes into focus, its promise ("that puts clients first.") on a raised metal nameplate that a band of light crosses once. Beneath it, three of WhizzIT's own photos dealt out as raised plates with a 5.0 rating medallion (tilt with the pointer). Values are four keycaps in a recessed tray, typed in turn when they scroll into view (`data-on-view` in `app.js`). The mission is one centred steel card: a slim 4:1 team photo in a recessed window, a quote medallion on its edge, then the statement in solid engraved type, with no fade or light sweep over it. Only the photo drifts as the card scrolls |
 | Our Customers | Centred rating statement over a true masonry wall of every review; no boxed aside |
 | Industries | Sector directory with per-sector risk notes |
 
-Three of the thirteen core pages now carry a distinct structural signature. The
-remaining service and location pages still share the two-column `pageHero` and are
-the next candidates.
-- **Client logos** are white artwork, so they always sit on the dark `.client-band`.
+Three of the thirteen core pages carry a distinct structural signature. The service,
+location and other inner pages share the one-column `pageHero`. Contact keeps its
+form beside the copy, because the form is the page's job.
+- **Client logos** are white artwork, so they always sit on a dark surface: the homepage hero, or `.client-band`
+  elsewhere.
 - `styles.css` is ordered: tokens → reset → base → a11y → layout → header → buttons → components → cards →
   forms → sections → page modifiers → footer → animation → responsive → reduced motion → home → about →
-  inner pages → service pages → the remaining core pages.
+  inner pages → service pages → the remaining core pages → relief (About, stacked heroes).
 
 **Open decision:** the palette follows the approved reference direction (blue), while the WhizzIT logo is
 orange/charcoal. Confirm whether orange becomes a secondary accent — it is a token change in one place.
@@ -201,9 +211,10 @@ component is absent. Everything renders without JavaScript.
 | `initMobileNavigation` | Drawer with focus trap, `inert` background, accordion groups |
 | `initTabs` | WAI-ARIA tabs (About, service pages) |
 | `initFilters` | Blog topic filters with `?category=` deep links |
-| `initRails`, `initQuotes` | Review rails and the homepage testimonial slider |
+| `initRails`, `initQuotes` | Review rails, and the homepage testimonial slider |
 | `initCounters` | Stat bands count up once in view. `STATS` carries `count`/`suffix`; the final value is already in the markup |
 | `initRevealAnimations` | Scroll reveal. Tags targets itself so no template repeats the attribute |
+| `initServiceStage` | Homepage services, desktop only: the row crossing mid-viewport becomes active and takes the sticky stage in its service tone; `--svc-progress` drives the rail and the parallax drift. Listens to scroll only while the band is on screen |
 | `initForms` | Accessible validation, error summary, success state |
 
 ### Scroll reveal

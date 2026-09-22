@@ -12,79 +12,94 @@ const values = [
 ];
 
 const crumbs = [{ title: "Home", href: "index.html" }, { title: "About" }];
+
 const review = TESTIMONIALS[0];
 
 const main = `
-<section class="hero hero--sky hero--about" aria-labelledby="about-hero-title">
-  <div class="container hero-sky__grid">
-    <div class="hero-sky__copy">
-      ${breadcrumbs(crumbs)}
-      <p class="eyebrow">About WhizzIT</p>
-      <h1 class="hero-sky__title" id="about-hero-title">An independent IT partner<br><span>that puts clients first.</span></h1>
-      <p class="hero-sky__lead">We saw a gap in the affordable IT support market for a business that genuinely puts clients first. WhizzIT combines best in class technical expertise with the accountability and responsiveness of a senior team that stays close to every account.</p>
-      <div class="btn-group">
-        ${btn("Book a consultation", "contact.html", { arrow: false, track: "about-hero-consultation" })}
-        ${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "secondary", iconName: "phone", arrow: false, track: "about-hero-phone" })}
-      </div>
-    </div>
-    <div class="hero-sky__visual">
-      <div class="photo-stack">
-        ${photo(PHOTOS.office, { cls: "photo-stack__main", ratio: "4-3", sizes: "(min-width: 1024px) 48vw, 100vw", loading: "eager" })}
-        <div class="photo-stack__chip photo-stack__chip--top">
-          <span class="photo-stack__score">${SITE.google.rating}</span>
-          <span class="photo-stack__rating">
-            ${stars(`Rated ${SITE.google.rating} out of 5 on Google`)}
-            <span>${SITE.google.count} Google reviews</span>
-          </span>
-        </div>
-        <div class="photo-stack__chip photo-stack__chip--bottom">
-          <img src="@/assets/images/partners/cyber-essentials.png" alt="Cyber Essentials certified" width="44" height="44" loading="lazy" decoding="async">
-          <span><strong>Cyber Essentials</strong>certified, and we certify clients too</span>
-        </div>
-      </div>
+<section class="hero hero--sky about-hero" aria-labelledby="about-hero-title">
+  <div class="container about-hero__inner">
+    ${breadcrumbs(crumbs)}
+    <p class="eyebrow">About WhizzIT</p>
+    ${/* Two lines. The promise sits on a raised metal nameplate that a band of
+         light crosses once the headline has settled. */""}
+    <h1 class="about-hero__title" id="about-hero-title">
+      <span class="about-hero__line">An independent IT partner</span>
+      <span class="about-hero__line"><span class="about-hero__plate">that puts clients first.</span></span>
+    </h1>
+    <p class="about-hero__lead">We saw a gap in the affordable IT support market for a business that genuinely puts clients first. WhizzIT combines best in class technical expertise with the accountability and responsiveness of a senior team that stays close to every account.</p>
+    <div class="btn-group">
+      ${btn("Book a consultation", "contact.html", { arrow: false, track: "about-hero-consultation" })}
+      ${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "secondary", iconName: "phone", arrow: false, track: "about-hero-phone" })}
     </div>
   </div>
 </section>
 
-<section class="section about-values" aria-labelledby="values-title">
+${/* Three of WhizzIT's own photos, set as raised plates that fan out from one
+     stack on load and tilt with the pointer. Starts inside the dark hero and
+     finishes on the page below. */""}
+<div class="relief" data-tilt>
   <div class="container">
-    <div class="bar-head">
-      <div>
-        <p class="eyebrow">What we stand for</p>
-        <h2 class="grad-head" id="values-title">Four things we refuse to compromise on</h2>
-      </div>
-      <p class="bar-head__aside">Every client gets the same dedication and care, whatever the size of their business.</p>
+    <div class="relief__stage">
+      <div class="relief__plate relief__plate--left">${photo(PHOTOS.office, { ratio: "4-3", sizes: "(min-width: 1024px) 500px, 56vw", loading: "eager" })}</div>
+      <div class="relief__plate relief__plate--right">${photo(PHOTOS.van, { ratio: "4-3", sizes: "(min-width: 1024px) 500px, 56vw", loading: "eager" })}</div>
+      <div class="relief__plate relief__plate--centre">${photo(PHOTOS.serviceDesk, { ratio: "4-5", sizes: "(min-width: 1024px) 400px, 44vw", loading: "eager" })}</div>
+      <p class="relief__seal relief__seal--rating">
+        <strong>${SITE.google.rating}</strong>
+        ${stars(`Rated ${SITE.google.rating} out of 5 on Google`)}
+        <span>${SITE.google.count} Google reviews</span>
+      </p>
+      <p class="relief__seal relief__seal--cert">
+        <img src="@/assets/images/partners/cyber-essentials.png" alt="" width="44" height="44" decoding="async">
+        <span><strong>Cyber Essentials</strong>certified, and we certify clients too</span>
+      </p>
     </div>
-    ${/* This page's signature: the four values run down one ruled spine with
-         oversized numerals, instead of the four-up card grid every other page
-         uses. Same content, a rhythm that belongs only to /about/. */""}
-    <ol class="value-spine" role="list">
+  </div>
+</div>
+
+<section class="section value-keys" aria-labelledby="values-title" data-no-reveal>
+  <div class="container">
+    <div class="value-keys__head">
+      <p class="eyebrow">What we stand for</p>
+      <h2 class="grad-head" id="values-title">Four things we refuse to compromise on</h2>
+      <p>Every client gets the same dedication and care, whatever the size of their business.</p>
+    </div>
+    ${/* This page's signature: the four values are keys on a keyboard tray. When
+         the tray scrolls into view they are pressed in turn, as if typed, and stay
+         backlit. */""}
+    <ol class="value-keys__tray" role="list" data-on-view>
       ${values.map((v, i) => `
-      <li class="value-step">
-        <span class="value-step__num" aria-hidden="true">0${i + 1}</span>
-        <span class="value-step__icon">${icon(v.icon)}</span>
-        <div class="value-step__body">
-          <h3>${v.title}</h3>
-          <p>${v.text}</p>
+      <li class="value-key" style="--i:${i}">
+        <div class="value-key__cap">
+          <span class="value-key__icon">${icon(v.icon)}</span>
+          <h3 class="value-key__legend">${v.title}</h3>
         </div>
+        <p>${v.text}</p>
       </li>`).join("")}
     </ol>
   </div>
 </section>
 
-<section class="section about-mission" aria-labelledby="mission-title">
-  <div class="container split-feature">
-    <div class="split-feature__media">
-      ${photo(PHOTOS.team, { ratio: "4-5", sizes: "(min-width: 1024px) 45vw, 100vw" })}
-      <div class="split-feature__badge">${icon("checkCircle")}<span><strong>${SITE.responseLine}</strong>UK-wide coverage</span></div>
-    </div>
-    <div class="split-feature__body">
+<section class="section mission" aria-labelledby="mission-title" data-no-reveal>
+  <div class="container">
+    <div class="mission__head">
       <p class="eyebrow">Our mission</p>
       <h2 class="grad-head" id="mission-title">IT support built on long-term partnerships</h2>
-      <p class="lead">Our mission is to deliver reliable, top tier IT services while making sure every client feels genuinely valued and properly supported.</p>
-      <p>We believe that optimising the design of your systems, coupled with proactive support, is the key to unlocking your full business potential. We take the time to understand your goals, tailor our services to match, and build trusted partnerships that help your business grow with confidence.</p>
-      <div class="btn-group mt-6">
-        ${btn("Start a conversation", "contact.html", { arrow: false, track: "about-mission-cta" })}
+    </div>
+    ${/* One raised steel card: a slim photo banner, a quote medallion pressed onto
+         its edge, then the mission engraved beneath. */""}
+    <div class="mission-plaque">
+      <div class="mission-plaque__window">
+        ${photo(PHOTOS.team, { ratio: "16-9", sizes: "(min-width: 1100px) 1000px, 92vw" })}
+      </div>
+      <span class="mission-plaque__seal" aria-hidden="true">${icon("quote")}</span>
+      <div class="mission-plaque__content">
+        <blockquote class="mission-plaque__text">
+          <p>Our mission is to deliver reliable, top tier IT services while making sure every client feels genuinely valued and properly supported.</p>
+        </blockquote>
+        <p class="mission-plaque__body">We believe that optimising the design of your systems, coupled with proactive support, is the key to unlocking your full business potential. We take the time to understand your goals, tailor our services to match, and build trusted partnerships that help your business grow with confidence.</p>
+        <div class="btn-group">
+          ${btn("Start a conversation", "contact.html", { arrow: false, track: "about-mission-cta" })}
+        </div>
       </div>
     </div>
   </div>

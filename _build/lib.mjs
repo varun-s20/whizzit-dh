@@ -3,7 +3,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { icon, logo, logoMark } from "./icons.mjs";
-import { SITE, SERVICES, SPECIALIST, INDUSTRIES, LOCATIONS, NAV } from "./site.mjs";
+import { SITE, SERVICES, SPECIALIST, INDUSTRIES, LOCATIONS, NAV, PHOTOS } from "./site.mjs";
 
 export { icon, logo, logoMark, SITE, SERVICES, SPECIALIST, INDUSTRIES, LOCATIONS };
 export { CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, statValue, PHOTOS, BLOG, TEAM, CREDENTIALS, STOCK, SECTOR_PHOTO, CATEGORY_PHOTO } from "./site.mjs";
@@ -212,19 +212,26 @@ export function faq(items, { title = "Questions we hear often", lead = "", id = 
   </section>`;
 }
 
-const ctaArt = `<svg class="cta-band__art" viewBox="0 0 560 360" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="1.2"><path class="route-line" d="M40 300 C160 300 180 180 300 180 S460 60 560 60"/><path class="route-line" d="M120 360 C200 280 300 280 360 240 S480 200 560 200" opacity=".6"/><circle cx="300" cy="180" r="44" opacity=".35"/><circle cx="300" cy="180" r="84" opacity=".18"/></g><g fill="currentColor"><circle cx="300" cy="180" r="6"/><circle cx="460" cy="92" r="4"/><circle cx="360" cy="240" r="4"/></g></svg>`;
+// Closing call to action: a photo of someone on the phone beside the brand
+// gradient. One card for every page — the section band and the footer both use it.
+function ctaCard({ title, text, cta = "Book a consultation", href = "contact.html", track = "cta-band", level = 2 }) {
+  return `<div class="cta-band">
+        ${photo(PHOTOS.headset, { cls: "cta-band__photo", ratio: "4-3", sizes: "(min-width: 1024px) 34vw, 100vw" })}
+        <div class="cta-band__body">
+          <h${level}>${title}</h${level}>
+          <p>${text}</p>
+          <div class="cta-band__actions">
+            ${btn(cta, href, { variant: "light", size: "lg", track })}
+            ${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "outline-light", size: "lg", iconName: "phone", arrow: false, track: `${track}-phone` })}
+          </div>
+        </div>
+      </div>`;
+}
 
-export function ctaBand({ title, text, cta = "Book a consultation", href = "contact.html", track = "cta-band", light = false, phone = true, secondary = "" }) {
+export function ctaBand({ title, text, cta, href, track = "cta-band" }) {
   return `<section class="section section--tight" aria-label="${esc(title)}">
     <div class="container">
-      <div class="cta-band${light ? " cta-band--light" : ""}">
-        ${ctaArt}
-        <div><h2>${title}</h2><p class="mt-5">${text}</p></div>
-        <div class="cta-band__actions">
-          ${btn(cta, href, { variant: light ? "primary" : "light", size: "lg", track })}
-          ${secondary || (phone ? `<a class="cta-band__phone" href="${SITE.phoneHref}" data-track="${track}-phone">${icon("phone")}<span>Call ${SITE.phone}</span></a>` : "")}
-        </div>
-      </div>
+      ${ctaCard({ title, text, cta, href, track })}
     </div>
   </section>`;
 }
@@ -301,8 +308,6 @@ export function relatedServices(keys, { title = "Related services", lead = "", e
 export const trustItems = () =>
   `<span class="hero__trust-item">${icon("checkCircle")} UK-based engineers ${phTag("Confirm")}</span><span class="hero__trust-item">${icon("checkCircle")} Proactive monitoring</span><span class="hero__trust-item">${icon("checkCircle")} No-obligation consultation</span>`;
 
-const themeToggle = (cls = "") =>
-  `<button class="theme-toggle ${cls}" type="button" data-theme-toggle aria-pressed="false" aria-label="Switch to dark theme"><span class="theme-toggle__track"><span class="theme-toggle__knob">${icon("sun", "theme-toggle__sun")}${icon("moon", "theme-toggle__moon")}</span></span></button>`;
 
 /* ---------- Header ---------- */
 function isCurrent(item, file) {
@@ -389,7 +394,6 @@ function header(file) {
       <ul class="primary-nav__list">${items}</ul>
     </nav>
     <div class="site-header__actions">
-      ${themeToggle()}
       ${btn("Book a consultation", "contact.html", { variant: "navy", size: "sm", arrow: false, track: "header-book-consultation", cls: "site-header__cta" })}
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu" data-menu-toggle>${icon("menu")}<span>Menu</span></button>
       <a class="menu-fallback" href="#footer-nav">Menu</a>
@@ -430,7 +434,6 @@ function mobileNav(file) {
     <div class="mobile-nav__head">
       <a class="brand" href="@/index.html" aria-label="WhizzIT home">${brandLogo("dark")}</a>
       <div class="mobile-nav__head-actions">
-        ${themeToggle("theme-toggle--drawer")}
         <button class="mobile-nav__close" type="button" data-menu-close aria-label="Close menu">${icon("close")}</button>
       </div>
     </div>
@@ -452,11 +455,7 @@ function footer(cta) {
     `<div class="footer-col"><h2>${title}</h2><ul>${links.map((l) => `<li><a href="${at(l.href)}">${l.title}</a></li>`).join("")}</ul></div>`;
 
   const ctaBlock = cta
-    ? `<div class="site-footer__cta">
-      <h2 class="grad-head grad-head--dark">${cta.title}</h2>
-      <p>${cta.text}</p>
-      ${btn(cta.cta, cta.href || "contact.html", { iconName: "phone", arrow: false, track: "footer-cta" })}
-    </div>`
+    ? `<div class="site-footer__cta">${ctaCard({ title: cta.title, text: cta.text, cta: cta.cta, href: cta.href, track: "footer-cta" })}</div>`
     : "";
   const quick = [
     { title: "Home", href: "index.html" },
@@ -548,11 +547,8 @@ export function page({ file, title, description, bodyClass, crumbs = null, main,
   <title>${esc(fullTitle)}</title>
   <meta name="description" content="${esc(description)}">
   <link rel="canonical" href="${canonical}">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0d121b" media="(prefers-color-scheme: dark)">
-  <script>/* Sets the theme before first paint so there is no flash of the wrong one. */
-(function(){try{var t=localStorage.getItem("whizzit-theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
 
   <meta property="og:type" content="${ogType}">
   <meta property="og:site_name" content="WhizzIT">
@@ -571,7 +567,7 @@ export function page({ file, title, description, bodyClass, crumbs = null, main,
   <link rel="apple-touch-icon" href="@/assets/images/brand/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600&amp;family=Urbanist:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700&amp;family=Urbanist:wght@400;500;600;700;800&amp;display=swap">
   <link rel="stylesheet" href="@/assets/css/styles.css">
   <script src="@/assets/js/app.js" defer></script>
   ${ld.map((o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join("\n  ")}

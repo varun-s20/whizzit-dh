@@ -6,16 +6,18 @@
 
    DESIGN SYSTEM
    --------------------------------------------------------------------------
-   Colour      Paper #FFFFFF · Mist #F6F8FB · Ink #0E1116
+   Colour      Paper #FFFFFF · Mist #F6F8FB · Ink #0E1116 · Heading #0A1628
                Signal #1F6BFF (primary action) · Navy #0A2F7A (secondary
-               action, active tabs, ticks) · Sky gradient (home hero)
-               Night #0A0B0D (footer). Status: success/warning/error.
-               Rule: ~75% light surfaces. Blue is for action and emphasis,
-               not for every icon and heading.
-   Type        Urbanist 400/500/600 — headings and body.
-               Figtree 500/600 — buttons, nav and small UI labels.
-               Headings use a dark ink → slate gradient (.grad-head).
+               action, active tabs, ticks) · Night #0A0B0D (footer).
+               Heroes and .section--ink bands are dark surfaces inside the
+               page; they re-declare the colour tokens (see section 28).
+               Status: success/warning/error. Blue is for action and
+               emphasis, not for every icon and heading.
+   Type        Urbanist 400–800 — headings (h1/h2 at 800, tight tracking)
+               and body. Figtree 500–700 — buttons, nav and small UI labels.
                Fluid scale via clamp(); see --fs-* tokens.
+   Actions     Squared buttons (--radius-sm): blue primary, heading-ink
+               outline secondary.
    Spacing     4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 / 128 (--space-1…10)
    Containers  wide 1440 · main 1240 · copy 760 · gutter clamp(20px,4vw,64px)
    Radii       sm 8 · md 14 · lg 20 · xl 28 · pill
@@ -34,6 +36,9 @@
     7. Buttons                 15. Responsive
     8. Shared components       16. Reduced motion
                                17. Home (sky design)
+                               …
+                               28. Dark surfaces
+                               30. Bold redesign (home layout, inner-page rhythm)
    ========================================================================== */
 
 
@@ -57,7 +62,7 @@
   --lh-heading: 1.15;
   --lh-snug: 1.35;
   --lh-body: 1.65;
-  --tracking-tight: -0.025em;
+  --tracking-tight: -0.032em;
   --tracking-heading: -0.02em;
   --space-1: 4px;
   --space-2: 8px;
@@ -103,6 +108,7 @@
   --color-text: #0e1116;
   --color-text-soft: #262d38;
   --color-text-muted: #5b6573;
+  --color-heading: #0a1628;
   --color-border: #e1e5eb;
   --color-border-soft: #eceff3;
   --color-primary: #1f6bff;
@@ -275,16 +281,18 @@ h6,
 .h5,
 .display {
   font-family: var(--font-heading);
-  color: var(--color-text);
-  font-weight: 500;
+  color: var(--color-heading);
+  font-weight: 700;
   line-height: var(--lh-heading);
   letter-spacing: var(--tracking-heading);
   text-wrap: balance;
 }
 
+/* Display and section headings are set heavy and tight: the weight carries the
+   page, so the copy around them can stay quiet. */
 .display {
   font-size: var(--fs-display);
-  font-weight: 500;
+  font-weight: 800;
   line-height: var(--lh-tight);
   letter-spacing: var(--tracking-tight);
 }
@@ -292,7 +300,7 @@ h6,
 h1,
 .h1 {
   font-size: var(--fs-h1);
-  font-weight: 500;
+  font-weight: 800;
   line-height: var(--lh-tight);
   letter-spacing: var(--tracking-tight);
 }
@@ -300,6 +308,9 @@ h1,
 h2,
 .h2 {
   font-size: var(--fs-h2);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: var(--tracking-tight);
 }
 
 h3,
@@ -1130,13 +1141,13 @@ body.nav-locked {
   gap: var(--space-2);
   min-height: 48px;
   padding: 0 var(--space-5);
-  border: 1px solid var(--btn-border);
-  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--btn-border);
+  border-radius: var(--radius-sm);
   background: var(--btn-bg);
   color: var(--btn-fg);
   font-family: var(--font-ui);
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.2;
   text-decoration: none;
   white-space: nowrap;
@@ -1172,16 +1183,14 @@ body.nav-locked {
   transform: translateX(3px);
 }
 
-.btn--primary {
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18) inset, 0 6px 16px -6px rgba(31, 107, 255, 0.55);
-}
-
+/* Secondary is an outline in the heading ink, filling solid on hover. It reads as
+   a real second action next to the blue one rather than a faint white pill. */
 .btn--secondary {
-  --btn-bg: var(--color-white);
-  --btn-fg: var(--color-navy);
-  --btn-border: var(--color-border);
-  --btn-bg-hover: var(--color-surface);
-  box-shadow: var(--shadow-xs);
+  --btn-bg: transparent;
+  --btn-fg: var(--color-heading);
+  --btn-border: var(--color-heading);
+  --btn-bg-hover: var(--color-heading);
+  --btn-fg-hover: var(--color-page);
 }
 
 .btn--ghost {
@@ -1375,7 +1384,7 @@ body.nav-locked {
   gap: 6px;
   min-height: 28px;
   padding: 0 var(--space-3);
-  border-radius: var(--radius-pill);
+  border-radius: 6px;
   background: var(--color-surface);
   border: 1px solid var(--color-border-soft);
   font-size: var(--fs-xs);
@@ -3266,39 +3275,28 @@ select.field__input {
 }
 
 /* CTA band */
+/* Closing CTA: photo on one side, the brand gradient on the other. */
 .cta-band {
-  position: relative;
   display: grid;
-  gap: var(--space-6);
-  padding: clamp(32px, 6vw, 80px);
-  border-radius: var(--radius-xl);
-  background: var(--gradient-deep);
-  color: var(--color-on-dark-muted);
   overflow: hidden;
-  isolation: isolate;
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(70% 90% at 100% 0%, rgba(53, 205, 228, 0.38), transparent 62%),
+    linear-gradient(135deg, #0a2f7a 0%, #1f6bff 100%);
+  color: rgba(255, 255, 255, 0.86);
 }
 
-.cta-band::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  right: -10%;
-  top: -40%;
-  width: 70%;
-  aspect-ratio: 1;
-  background: radial-gradient(closest-side, rgba(31, 107, 255, 0.55), transparent);
+.cta-band__photo {
+  aspect-ratio: 16 / 9;
+  border-radius: 0;
 }
 
-.cta-band__art {
-  position: absolute;
-  z-index: -1;
-  right: 0;
-  bottom: 0;
-  width: min(560px, 60%);
-  height: 100%;
-  color: var(--color-accent-on-dark);
-  opacity: 0.55;
-  pointer-events: none;
+.cta-band__body {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: var(--space-5);
+  padding: clamp(28px, 5vw, 72px);
 }
 
 .cta-band h2 {
@@ -3307,60 +3305,16 @@ select.field__input {
 }
 
 .cta-band p {
-  max-width: 52ch;
+  max-width: 48ch;
   font-size: var(--fs-lead);
+  line-height: 1.5;
 }
 
 .cta-band__actions {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-5);
-}
-
-.cta-band__phone {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  color: var(--color-on-dark);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.cta-band__phone:hover {
-  color: var(--color-always-white);
-}
-
-.cta-band__phone svg {
-  width: 18px;
-  height: 18px;
-  color: var(--color-accent-on-dark);
-}
-
-.cta-band--light {
-  background: var(--color-surface-blue);
-  color: var(--color-text-muted);
-}
-
-.cta-band--light::before {
-  background: radial-gradient(closest-side, rgba(15, 181, 207, 0.25), transparent);
-}
-
-.cta-band--light h2 {
-  color: var(--color-text);
-}
-
-.cta-band--light .cta-band__art {
-  color: var(--color-primary-ink);
-  opacity: 0.35;
-}
-
-.cta-band--light .cta-band__phone {
-  color: var(--color-text);
-}
-
-.cta-band--light .cta-band__phone svg {
-  color: var(--color-primary-ink);
+  gap: var(--space-3);
+  margin-top: var(--space-3);
 }
 
 /* Support split: existing customer vs new enquiry */
@@ -3532,23 +3486,6 @@ select.field__input {
 .estate__panel .bar-chart {
   flex: 1;
   height: 44px;
-}
-
-/* About hero — editorial statement */
-.hero--about {
-  padding-block: var(--space-8) var(--space-7);
-}
-
-.hero--about .hero__title {
-  max-width: 20ch;
-  font-size: var(--fs-display);
-}
-
-.hero--about .hero__foot {
-  display: grid;
-  gap: var(--space-6);
-  margin-top: var(--space-7);
-  align-items: end;
 }
 
 .hero-collage {
@@ -4279,25 +4216,6 @@ select.field__input {
   color: var(--color-primary-ink);
 }
 
-/* Draw-on-view route lines (hero visuals) */
-.route-line {
-  stroke-dasharray: 6 8;
-}
-
-.js .route-line--flow {
-  animation: flow 1.6s linear infinite;
-}
-
-.pulse-node {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-.js .pulse-node--live {
-  animation: pulse 2.8s var(--ease-in-out) infinite;
-}
-
-
 /* ---- Home ---- */
 .services-grid {
   display: grid;
@@ -4856,21 +4774,7 @@ select.field__input {
 }
 
 .site-footer__cta {
-  display: grid;
-  justify-items: center;
-  gap: var(--space-4);
   padding-top: var(--space-9);
-  text-align: center;
-}
-
-.site-footer__cta p {
-  max-width: 48ch;
-  color: var(--color-on-dark);
-  font-size: 1rem;
-}
-
-.site-footer__cta .btn {
-  margin-top: var(--space-4);
 }
 
 .site-footer__bar {
@@ -5128,15 +5032,6 @@ select.field__input {
   to { stroke-dashoffset: 0; }
 }
 
-@keyframes flow {
-  to { stroke-dashoffset: -28; }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.55; transform: scale(1.35); }
-}
-
 @keyframes spin-slow {
   to { transform: rotate(360deg); }
 }
@@ -5251,11 +5146,6 @@ select.field__input {
 
   .rail {
     grid-auto-columns: minmax(320px, 44%);
-  }
-
-
-  .hero--about .hero__foot {
-    grid-template-columns: 1.2fr 1fr;
   }
 
   .article-nav {
@@ -5441,12 +5331,12 @@ select.field__input {
   }
 
   .cta-band {
-    grid-template-columns: 1.3fr 1fr;
-    align-items: end;
+    grid-template-columns: 0.85fr 1.15fr;
   }
 
-  .cta-band__actions {
-    justify-content: flex-end;
+  .cta-band__photo {
+    height: 100%;
+    aspect-ratio: auto;
   }
 
   .route-card {
@@ -5561,8 +5451,6 @@ select.field__input {
     transform: none;
   }
 
-  .js .route-line--flow,
-  .js .pulse-node--live,
   .js .orbit {
     animation: none;
   }
@@ -5588,18 +5476,17 @@ select.field__input {
 /* 17. HOME (SKY DESIGN)
    ========================================================================== */
 
-/* Gradient headings: ink → slate, shared by the new section heads */
+/* Section heads. The class name predates the redesign: these used to fade ink
+   into slate across the line, which washed out the back half of every heading.
+   They are solid now and carry their weight instead. */
 .grad-head {
-  font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.6rem);
-  font-weight: 500;
-  background: linear-gradient(90deg, var(--color-text) 20%, var(--color-slate) 80%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: clamp(2rem, 1.35rem + 2vw, 3rem);
+  font-weight: 800;
+  color: var(--color-heading);
 }
 
 .grad-head--dark {
-  background-image: linear-gradient(90deg, #ffffff 30%, #7c838d 90%);
+  color: var(--color-always-white);
 }
 
 /* Site-wide heading rule: a heading gets the width it needs, its body gets the
@@ -5656,12 +5543,6 @@ select.field__input {
   max-width: 68ch;
 }
 
-.center-cta {
-  display: flex;
-  justify-content: center;
-  margin-top: var(--space-6);
-}
-
 .page--sky .section {
   padding-block: clamp(56px, 6vw, 96px);
 }
@@ -5692,22 +5573,20 @@ select.field__input {
     linear-gradient(180deg, #a9cde8 0%, #c4ddef 22%, #e2eef8 48%, #f4f8fc 72%, #ffffff 100%);
 }
 
-.hero-sky__grid {
-  display: grid;
-  gap: var(--space-7);
-  align-items: center;
-}
-
 .hero-sky__title {
-  font-size: clamp(2.6rem, 1.6rem + 3.6vw, 4.1rem);
-  font-weight: 500;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  color: var(--color-text);
+  font-size: clamp(2.6rem, 1.5rem + 4vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-heading);
 }
 
+/* The second half of a hero title carries the brand: cyan into signal blue.
+   background-clip: text only paints inside the line box, so the tight line-height
+   sliced the tails off g, y and p; the padding gives them room back. */
 .hero-sky__title span {
-  background: linear-gradient(90deg, var(--color-text) 30%, var(--color-slate) 95%);
+  padding-bottom: 0.12em;
+  background: linear-gradient(90deg, var(--color-accent-on-dark) 0%, var(--color-primary) 85%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -6003,11 +5882,45 @@ select.field__input {
   box-shadow: none;
 }
 
+/* The homepage About tabs sit beside a large photo and larger body copy, so they
+   step up a size to match. */
+.home-about__body .pill-tabs {
+  gap: 4px;
+  padding: 6px;
+}
+
+.home-about__body .pill-tabs .tabs__tab {
+  min-height: 46px;
+  padding-inline: clamp(16px, 1.6vw, 24px);
+  font-size: clamp(0.875rem, 0.8rem + 0.25vw, 1rem);
+  font-weight: 600;
+}
+
+/* Small phones: the three pills share the row evenly instead of running off it. */
+@media (max-width: 479px) {
+  .home-about__body .pill-tabs {
+    display: flex;
+    width: 100%;
+  }
+
+  .home-about__body .pill-tabs .tabs__tab {
+    flex: 1 1 auto;
+    min-height: 44px;
+    padding-inline: 8px;
+    white-space: nowrap;
+    font-size: 0.8125rem;
+  }
+}
+
 .home-about__body .tabs__panel p {
   max-width: 56ch;
   color: var(--color-text);
-  font-size: 0.9375rem;
-  line-height: 1.65;
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  line-height: 1.6;
+}
+
+.home-about__body .tabs__panel .text-link {
+  margin-top: var(--space-5);
 }
 
 .more-link {
@@ -6016,94 +5929,11 @@ select.field__input {
   text-decoration: none;
 }
 
-.mini-stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-5);
-  margin-block: var(--space-7) var(--space-3);
-}
-
-.mini-stats div {
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 4px;
-}
-
-.mini-stats dd {
-  color: var(--color-text);
-  font-family: var(--font-heading);
-  font-size: clamp(1.9rem, 1.5rem + 1vw, 2.4rem);
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-
-.mini-stats dt {
-  color: var(--color-text-soft);
-  font-size: 0.8125rem;
-}
-
 /* ---- Services ---- */
-.svc-grid {
-  display: grid;
-  gap: var(--space-5);
-}
-
-.svc-card {
-  position: relative;
-  padding: var(--space-5) var(--space-5) var(--space-6);
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
-  background: var(--surface-card);
-  box-shadow: 0 10px 24px -20px rgba(15, 27, 45, 0.35);
-  transition: border-color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
-}
-
-.svc-card.is-featured,
-.svc-card:hover {
-  border-color: var(--color-border-hover);
-  background: var(--color-surface-2);
-  box-shadow: 0 24px 50px -24px rgba(31, 107, 255, 0.28);
-}
-
-.svc-card__icon {
-  display: grid;
-  place-items: center;
-  width: 80px;
-  height: 80px;
-  margin-bottom: var(--space-5);
-  border: 1.5px solid var(--svc-icon-border);
-  border-radius: 50%;
-  background: var(--svc-icon-bg);
-  color: var(--color-primary-ink);
-}
-
-.svc-card.is-featured .svc-card__icon {
-  border-color: #3d7bf0;
-}
-
-.svc-card__icon svg {
-  width: 36px;
-  height: 36px;
-}
-
-.svc-card__title {
-  margin-bottom: var(--space-3);
-  font-size: 1.25rem;
-  font-weight: 500;
-}
-
-.svc-card__title a,
 .project-card__title a,
 .insight__title a {
   color: inherit;
   text-decoration: none;
-}
-
-.svc-card p {
-  color: var(--color-text-soft);
-  font-size: 0.875rem;
-  line-height: 1.55;
 }
 
 /* ---- Results ---- */
@@ -6171,8 +6001,8 @@ select.field__input {
   background: var(--surface-card);
 }
 
-/* Dot picker. Eleven initial-circles read as blobs when there are no reviewer
-   photos on file; the avatar now lives beside the name inside the quote instead. */
+/* Restored from the original homepage: testimonial slider, industry cards,
+   pricing statement. */
 .quote-slider__dots {
   display: flex;
   flex-wrap: wrap;
@@ -6191,7 +6021,6 @@ select.field__input {
   cursor: pointer;
 }
 
-/* 30px hit area, 8px mark: the target stays thumb-sized without a fat dot. */
 .quote-slider__dot::before {
   content: "";
   display: block;
@@ -6313,7 +6142,6 @@ select.field__input {
   height: 18px;
 }
 
-/* ---- Pricing ---- */
 .pricing {
   display: grid;
   gap: var(--space-6);
@@ -6334,7 +6162,6 @@ select.field__input {
   font-weight: 500;
 }
 
-/* Show the detail card for whichever radio is checked (first by default) */
 .plan-detail--essential,
 .pricing:has(input[value="managed"]:checked) .plan-detail--managed,
 .pricing:has(input[value="complete"]:checked) .plan-detail--complete {
@@ -6344,6 +6171,204 @@ select.field__input {
 .pricing:has(input[value="managed"]:checked) .plan-detail--essential,
 .pricing:has(input[value="complete"]:checked) .plan-detail--essential {
   display: none;
+}
+
+.pricing__options {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+
+
+@media (min-width: 1024px) {
+  .pricing {
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: var(--space-7);
+    }
+
+}
+
+@media (max-width: 767.98px) {
+  .quote-slider__stage {
+      grid-template-columns: 1fr 1fr;
+    }
+
+  .quote-slider__item {
+      grid-column: 1 / -1;
+    }
+
+  .quote-slider__nav--prev,
+    .quote-slider__nav--next {
+      grid-row: 2;
+    }
+
+  .quote-slider__nav--prev {
+      grid-column: 1;
+      justify-self: end;
+    }
+
+  .quote-slider__nav--next {
+      grid-column: 2;
+    }
+
+}
+.sector-cards {
+  display: grid;
+  gap: var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+
+.sector-card {
+  display: grid;
+}
+
+.sector-card > a {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  color: var(--color-text);
+  text-decoration: none;
+  transition:
+    transform var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out);
+}
+
+.sector-card__art {
+  border-radius: 0;
+}
+
+.sector-card__art img {
+  transition: transform 600ms var(--ease-emphasis);
+}
+
+.sector-card__body {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-5) var(--space-5);
+}
+
+.sector-card__icon {
+  position: absolute;
+  top: -22px;
+  left: var(--space-5);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  color: var(--color-navy);
+  box-shadow: 0 10px 24px -12px rgba(15, 27, 45, 0.55);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.sector-card__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sector-card strong {
+  font-size: 1.0625rem;
+  font-weight: 500;
+}
+
+.sector-card__desc {
+  color: var(--color-text-soft);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.sector-card__go {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-top: var(--space-2);
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-navy);
+  transition:
+    transform var(--dur) var(--ease-out),
+    background-color var(--dur) var(--ease-out),
+    color var(--dur) var(--ease-out);
+}
+
+.sector-card__go svg {
+  width: 15px;
+  height: 15px;
+}
+
+
+@media (hover: hover) {
+  .sector-card > a:hover {
+      transform: translateY(-4px);
+      border-color: var(--color-border-hover);
+      box-shadow: 0 28px 56px -30px rgba(31, 107, 255, 0.42);
+    }
+
+  .sector-card > a:hover .sector-card__art img {
+      transform: scale(1.05);
+    }
+
+  .sector-card > a:hover .sector-card__icon {
+      transform: translateY(-3px);
+    }
+
+  .sector-card > a:hover .sector-card__go {
+      background: var(--color-primary);
+      color: var(--color-always-white);
+      transform: translateX(3px);
+    }
+
+}
+.plan-detail--single {
+  display: block;
+}
+
+.plan-detail--single p {
+  max-width: 52ch;
+  color: var(--color-text-soft);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+
+@media (min-width: 640px) {
+  .sector-cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (min-width: 768px) {
+  .plan-detail--single {
+      padding: var(--space-7);
+    }
+
+}
+
+@media (min-width: 1024px) {
+  .sector-grid,
+    .sector-cards {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+  .pricing {
+      grid-template-columns: 1fr 1fr;
+      align-items: stretch;
+    }
+
 }
 
 .tick-list {
@@ -6371,14 +6396,6 @@ select.field__input {
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='m6 10.2 2.6 2.6L14 7.4' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat,
     var(--color-navy);
-}
-
-.pricing__options {
-  display: grid;
-  gap: var(--space-4);
-  min-width: 0;
-  padding: 0;
-  border: 0;
 }
 
 .plan-option {
@@ -6494,7 +6511,8 @@ select.field__input {
 
 .insight__title {
   font-size: clamp(1.2rem, 1.1rem + 0.35vw, 1.4rem);
-  font-weight: 500;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .insight:hover .insight__title {
@@ -6517,13 +6535,6 @@ select.field__input {
     grid-template-columns: repeat(6, 1fr);
   }
 
-  .mini-stats {
-    grid-template-columns: repeat(4, auto);
-    justify-content: start;
-    column-gap: var(--space-7);
-  }
-
-  .svc-grid,
   .project-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -6549,23 +6560,10 @@ select.field__input {
 }
 
 @media (min-width: 1024px) {
-  .hero-sky__grid {
-    grid-template-columns: 1fr 1.05fr;
-    gap: var(--space-8);
-  }
 
   .home-about__grid {
     grid-template-columns: 1fr 1fr;
     gap: var(--space-8);
-  }
-
-  .svc-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .pricing {
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: var(--space-7);
   }
 
   .insight-grid {
@@ -6603,28 +6601,7 @@ select.field__input {
     grid-column: 1 / -1;
   }
 
-  .quote-slider__stage {
-    grid-template-columns: 1fr 1fr;
   }
-
-  .quote-slider__item {
-    grid-column: 1 / -1;
-  }
-
-  .quote-slider__nav--prev,
-  .quote-slider__nav--next {
-    grid-row: 2;
-  }
-
-  .quote-slider__nav--prev {
-    grid-column: 1;
-    justify-self: end;
-  }
-
-  .quote-slider__nav--next {
-    grid-column: 2;
-  }
-}
 
 
 /* 17b. HOME — real-content blocks (logos, proof card, sectors, FAQ, partners)
@@ -6764,14 +6741,6 @@ select.field__input {
 }
 
 /* Service cards: six tiles, the last one routes to contact */
-.svc-card--route {
-  background: var(--panel-tint-soft);
-}
-
-.svc-card .tag {
-  margin-bottom: var(--space-3);
-}
-
 /* Case-study cards use real photography */
 .project-card .media {
   margin-bottom: var(--space-4);
@@ -6785,126 +6754,9 @@ select.field__input {
 /* Industry cards (home). Photo-led: the sector is recognised from the picture
    before the label is read, which the icon-only cards never managed. Distinct
    from .sector-tile on /industries/ so each page keeps its own treatment. */
-.sector-cards {
-  display: grid;
-  gap: var(--space-5);
-  padding: 0;
-  list-style: none;
-}
-
-.sector-card {
-  display: grid;
-}
-
-.sector-card > a {
-  position: relative;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  height: 100%;
-  overflow: hidden;
-  border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-lg);
-  background: var(--color-white);
-  color: var(--color-text);
-  text-decoration: none;
-  transition:
-    transform var(--dur) var(--ease-out),
-    border-color var(--dur) var(--ease-out),
-    box-shadow var(--dur) var(--ease-out);
-}
-
 /* Square off the shared .media radius so the photo meets the card edges. */
-.sector-card__art {
-  border-radius: 0;
-}
-
 /* Only the photograph scales; the card frame stays put so nothing reflows. */
-.sector-card__art img {
-  transition: transform 600ms var(--ease-emphasis);
-}
-
-.sector-card__body {
-  position: relative;
-  display: grid;
-  align-content: start;
-  gap: var(--space-2);
-  padding: var(--space-6) var(--space-5) var(--space-5);
-}
-
 /* Badge straddles the photo edge, which ties the two halves together. */
-.sector-card__icon {
-  position: absolute;
-  top: -22px;
-  left: var(--space-5);
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-md);
-  background: var(--color-white);
-  color: var(--color-navy);
-  box-shadow: 0 10px 24px -12px rgba(15, 27, 45, 0.55);
-  transition: transform var(--dur) var(--ease-out);
-}
-
-.sector-card__icon svg {
-  width: 20px;
-  height: 20px;
-}
-
-.sector-card strong {
-  font-size: 1.0625rem;
-  font-weight: 500;
-}
-
-.sector-card__desc {
-  color: var(--color-text-soft);
-  font-size: 0.8125rem;
-  line-height: 1.55;
-}
-
-.sector-card__go {
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  margin-top: var(--space-2);
-  border-radius: 50%;
-  background: var(--color-surface);
-  color: var(--color-navy);
-  transition:
-    transform var(--dur) var(--ease-out),
-    background-color var(--dur) var(--ease-out),
-    color var(--dur) var(--ease-out);
-}
-
-.sector-card__go svg {
-  width: 15px;
-  height: 15px;
-}
-
-@media (hover: hover) {
-  .sector-card > a:hover {
-    transform: translateY(-4px);
-    border-color: var(--color-border-hover);
-    box-shadow: 0 28px 56px -30px rgba(31, 107, 255, 0.42);
-  }
-
-  .sector-card > a:hover .sector-card__art img {
-    transform: scale(1.05);
-  }
-
-  .sector-card > a:hover .sector-card__icon {
-    transform: translateY(-3px);
-  }
-
-  .sector-card > a:hover .sector-card__go {
-    background: var(--color-primary);
-    color: var(--color-always-white);
-    transform: translateX(3px);
-  }
-}
-
 /* Sectors */
 .sector-grid {
   display: grid;
@@ -6958,18 +6810,7 @@ select.field__input {
   height: 20px;
 }
 
-/* Pricing statement + FAQ */
-.plan-detail--single {
-  display: block;
-}
-
-.plan-detail--single p {
-  max-width: 52ch;
-  color: var(--color-text-soft);
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
+/* FAQ panel */
 .faq-panel {
   display: grid;
   gap: var(--space-3);
@@ -7018,12 +6859,6 @@ select.field__input {
   gap: var(--space-3);
 }
 
-@media (min-width: 640px) {
-  .sector-cards {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (min-width: 768px) {
   .sector-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -7033,14 +6868,10 @@ select.field__input {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  .plan-detail--single {
-    padding: var(--space-7);
   }
-}
 
 @media (min-width: 1024px) {
-  .sector-grid,
-  .sector-cards {
+  .sector-grid {
     grid-template-columns: repeat(4, 1fr);
   }
 
@@ -7048,189 +6879,16 @@ select.field__input {
     grid-template-columns: repeat(7, 1fr);
   }
 
-  .pricing {
-    grid-template-columns: 1fr 1fr;
-    align-items: stretch;
   }
-}
-
 
 /* 18. ABOUT
    ========================================================================== */
-.hero--about .breadcrumbs {
-  margin-bottom: var(--space-5);
-}
 
-/* Photo with floating proof chips */
-.photo-stack {
-  position: relative;
-  padding-bottom: var(--space-6);
-}
-
-.photo-stack__main {
-  border-radius: var(--radius-xl);
-  box-shadow: 0 40px 90px -40px rgba(20, 45, 85, 0.55);
-}
-
-.photo-stack__chip {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-md);
-  background: var(--glass-strong);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 18px 40px -20px rgba(15, 27, 45, 0.45);
-  font-family: var(--font-ui);
-  font-size: 0.6875rem;
-  line-height: 1.45;
-  color: var(--color-text-soft);
-}
-
-.photo-stack__chip--top {
-  top: var(--space-5);
-  right: calc(var(--space-5) * -1);
-}
-
-.photo-stack__chip--bottom {
-  left: calc(var(--space-4) * -1);
-  bottom: 0;
-  max-width: 290px;
-}
-
-.photo-stack__chip strong {
-  display: block;
-  font-size: 0.8125rem;
-}
-
-.photo-stack__chip img {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-}
-
-/* Rating block inside the chip: stars on one row, count under them. The stars
-   used to be bare <svg> in an inline span, which the global `svg { display:
-   block }` reset stacked one per line. .stars is the flex row that fixes it. */
-.photo-stack__rating {
-  display: grid;
-  gap: 4px;
-  justify-items: start;
-}
-
-.photo-stack__rating .stars svg {
-  width: 14px;
-  height: 14px;
-}
-
-.photo-stack__chip img {
-  flex: none;
-}
-
-.photo-stack__score {
-  color: var(--color-text);
-  font-family: var(--font-heading);
-  font-size: 1.75rem;
-  font-weight: 500;
-  line-height: 1;
-}
 
 .bar-head__aside {
   max-width: 34ch;
   color: var(--color-text-soft);
   font-size: 1rem;
-}
-
-/* Values */
-/* About signature: the values run down a single ruled spine with oversized
-   numerals rather than sitting in the four-up card grid the rest of the site
-   uses. Rows, not cards, so the page has a vertical rhythm of its own. */
-.value-spine {
-  display: grid;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid var(--color-border-soft);
-}
-
-.value-step {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: start;
-  gap: var(--space-4) var(--space-5);
-  padding: var(--space-6) 0;
-  border-bottom: 1px solid var(--color-border-soft);
-}
-
-.value-step__num {
-  grid-row: 1 / span 2;
-  font-family: var(--font-heading);
-  font-size: clamp(2.5rem, 1.6rem + 3.4vw, 4.5rem);
-  font-weight: 500;
-  line-height: 0.85;
-  letter-spacing: var(--tracking-tight);
-  color: transparent;
-  -webkit-text-stroke: 1px var(--num-stroke);
-  transition: color var(--dur-slow) var(--ease-out), -webkit-text-stroke-color var(--dur-slow) var(--ease-out);
-}
-
-.value-step__icon {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-md);
-  background: var(--color-primary-light);
-  color: var(--color-navy);
-  transition: transform var(--dur) var(--ease-out);
-}
-
-.value-step__icon svg {
-  width: 21px;
-  height: 21px;
-}
-
-.value-step__body {
-  display: grid;
-  gap: var(--space-2);
-  max-width: 62ch;
-}
-
-.value-step h3 {
-  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.6rem);
-  font-weight: 500;
-}
-
-.value-step p {
-  color: var(--color-text-soft);
-  font-size: 1rem;
-  line-height: 1.65;
-}
-
-@media (hover: hover) {
-  .value-step:hover .value-step__num {
-    color: var(--color-primary-light);
-    -webkit-text-stroke-color: var(--color-primary-ink);
-  }
-
-  .value-step:hover .value-step__icon {
-    transform: translateY(-2px);
-  }
-}
-
-@media (min-width: 768px) {
-  .value-step {
-    grid-template-columns: minmax(96px, auto) 44px 1fr;
-    align-items: center;
-    gap: var(--space-6);
-    padding: var(--space-7) 0;
-  }
-
-  .value-step__num {
-    grid-row: auto;
-  }
 }
 
 .value-grid {
@@ -7310,60 +6968,6 @@ select.field__input {
   color: var(--color-text-soft);
   font-size: 0.875rem;
   line-height: 1.6;
-}
-
-/* Photo + text feature */
-.split-feature {
-  display: grid;
-  gap: var(--space-7);
-  align-items: center;
-}
-
-.split-feature__media {
-  position: relative;
-}
-
-.split-feature__media .media {
-  border-radius: var(--radius-xl);
-  box-shadow: 0 40px 80px -44px rgba(15, 27, 45, 0.55);
-}
-
-.split-feature__badge {
-  position: absolute;
-  right: var(--space-5);
-  bottom: calc(var(--space-5) * -1);
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  border-radius: var(--radius-md);
-  background: var(--color-white);
-  box-shadow: 0 20px 44px -22px rgba(15, 27, 45, 0.4);
-  font-family: var(--font-ui);
-  font-size: 0.75rem;
-  color: var(--color-text-soft);
-}
-
-.split-feature__badge strong {
-  display: block;
-  color: var(--color-text);
-  font-size: 0.875rem;
-}
-
-.split-feature__badge svg {
-  width: 22px;
-  height: 22px;
-  color: var(--color-success);
-}
-
-.split-feature__body .lead {
-  margin-block: var(--space-5) var(--space-4);
-  color: var(--color-text);
-}
-
-.split-feature__body p {
-  color: var(--color-text-soft);
-  line-height: 1.7;
 }
 
 /* Dark stats band */
@@ -7647,15 +7251,6 @@ select.field__input {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  .split-feature {
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: var(--space-8);
-  }
-
-  .split-feature--reverse .split-feature__media {
-    order: 2;
-  }
-
   .stat-band__grid {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -7677,12 +7272,6 @@ select.field__input {
    ========================================================================== */
 .hero--page {
   padding-bottom: var(--space-7);
-}
-
-.hero-page__grid {
-  display: grid;
-  gap: var(--space-7);
-  align-items: center;
 }
 
 .hero--page .breadcrumbs {
@@ -7725,67 +7314,6 @@ select.field__input {
 .hero--case,
 .hero--location {
   padding-bottom: var(--space-6);
-}
-
-.hero-photo .media {
-  border-radius: var(--radius-xl);
-  box-shadow: 0 40px 90px -44px rgba(20, 45, 85, 0.55);
-}
-
-/* Hero proof panel */
-.hero-proof {
-  display: grid;
-  gap: var(--space-4);
-  padding: var(--space-6);
-  border-radius: var(--radius-lg);
-  background: var(--glass);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 30px 70px -36px rgba(20, 45, 85, 0.5);
-}
-
-.hero-proof__item {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: auto auto;
-  column-gap: var(--space-4);
-  align-items: center;
-  padding-bottom: var(--space-4);
-  border-bottom: 1px solid var(--color-border-soft);
-}
-
-.hero-proof__item:last-child {
-  padding-bottom: 0;
-  border-bottom: 0;
-}
-
-.hero-proof__icon {
-  grid-row: span 2;
-  display: grid;
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  background: var(--color-primary-light);
-  color: var(--color-navy);
-}
-
-.hero-proof__icon svg {
-  width: 20px;
-  height: 20px;
-}
-
-.hero-proof__item strong {
-  color: var(--color-text);
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 500;
-  line-height: 1.1;
-}
-
-.hero-proof__item > span:last-child {
-  color: var(--color-text-soft);
-  font-size: 0.8125rem;
 }
 
 /* Content blocks. The 34ch cap is for a head sitting in one column of a split
@@ -8229,10 +7757,6 @@ select.field__input {
 }
 
 @media (min-width: 1024px) {
-  .hero-page__grid {
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: var(--space-8);
-  }
 
   .block-split {
     grid-template-columns: 1.1fr 0.9fr;
@@ -10163,19 +9687,6 @@ select.field__input {
 
 .mt-3 { margin-top: var(--space-3); }
 
-/* The chips hang outside the photo only once the hero splits into two columns.
-   Below that the photo is full-bleed, so an overhang leaves the viewport. */
-@media (max-width: 1023.98px) {
-  .photo-stack__chip--top {
-    right: 0;
-  }
-
-  .photo-stack__chip--bottom {
-    left: 0;
-    max-width: 82%;
-  }
-}
-
 
 /* 26. HEADER TOP ROW + CALL BLOCK
    The utility strip carries the contact details only. The page links it used to
@@ -10246,15 +9757,12 @@ select.field__input {
 }
 
 
-
-/* 27. HERO STAGE
-   Explanatory loop: alerts arrive, get picked up, resolve. Only transform and
-   opacity animate, the loop is pure CSS so it stays off the main thread, and
-   everything settles on the resolved state under prefers-reduced-motion.
+/* 27. HERO ENTRANCE
+   The hero copy arrives in a short stagger. Transform and opacity only, and it
+   is simply visible under prefers-reduced-motion.
    ========================================================================== */
 :root {
   --ease-emphasis: cubic-bezier(0.23, 1, 0.32, 1);
-  --stage-cycle: 9s;
 }
 
 /* Staggered entrance for the hero copy. */
@@ -10270,257 +9778,16 @@ select.field__input {
   }
 }
 
-.stage {
-  position: relative;
-  display: grid;
-  gap: var(--space-4);
-  padding: var(--space-5);
-  border-radius: var(--radius-lg);
-  background: var(--glass-strong);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 40px 90px -46px rgba(20, 45, 85, 0.6);
-  font-family: var(--font-ui);
-  animation: stage-in 620ms var(--ease-emphasis) both;
-  animation-delay: 120ms;
-}
-
-@keyframes stage-in {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.985);
-  }
-}
-
-.stage__bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
-}
-
-.stage__live {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--color-text);
-  font-weight: 600;
-}
-
-.stage__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #24c38a;
-  box-shadow: 0 0 0 0 rgba(36, 195, 138, 0.5);
-  animation: stage-ping 2.4s var(--ease-emphasis) infinite;
-}
-
-@keyframes stage-ping {
-  0% { box-shadow: 0 0 0 0 rgba(36, 195, 138, 0.45); }
-  70% { box-shadow: 0 0 0 9px rgba(36, 195, 138, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(36, 195, 138, 0); }
-}
-
-.stage__pulse {
-  width: 100%;
-  height: 46px;
-  color: var(--color-primary-ink);
-  opacity: 0.55;
-}
-
-.stage__pulse-line {
-  stroke-dasharray: 260 620;
-  animation: stage-trace 6s linear infinite;
-}
-
-@keyframes stage-trace {
-  from { stroke-dashoffset: 880; }
-  to { stroke-dashoffset: 0; }
-}
-
 /* Ticket feed */
-.stage__feed {
-  display: grid;
-  gap: var(--space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.stage__ticket {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  animation: ticket-cycle var(--stage-cycle) var(--ease-emphasis) infinite both;
-}
-
-.stage__ticket--1 { animation-delay: 0.2s; }
-.stage__ticket--2 { animation-delay: 1.1s; }
-.stage__ticket--3 { animation-delay: 2s; }
-
 /* Arrive, sit, then settle as the status flips. */
-@keyframes ticket-cycle {
-  0% { opacity: 0; transform: translateY(12px); }
-  7% { opacity: 1; transform: translateY(0); }
-  88% { opacity: 1; transform: translateY(0); }
-  96%, 100% { opacity: 0; transform: translateY(-8px); }
-}
-
-.stage__icon {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 11px;
-  background: var(--color-white);
-  color: var(--color-navy);
-  box-shadow: 0 2px 6px rgba(15, 27, 45, 0.08);
-}
-
-.stage__icon svg {
-  width: 17px;
-  height: 17px;
-}
-
-.stage__text strong {
-  display: block;
-  color: var(--color-text);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  line-height: 1.3;
-}
-
-.stage__text span {
-  color: var(--color-text-muted);
-  font-size: 0.6875rem;
-}
-
-.stage__status {
-  position: relative;
-  display: grid;
-  min-width: 74px;
-  justify-items: end;
-  font-size: 0.6875rem;
-  font-weight: 600;
-}
-
-.stage__status > span {
-  grid-area: 1 / 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 9px;
-  border-radius: var(--radius-pill);
-  animation: status-flip var(--stage-cycle) steps(1, end) infinite both;
-}
-
-.stage__status-open {
-  background: #fff3dc;
-  color: #8a5500;
-}
-
-.stage__status-done {
-  background: #dcf5ec;
-  color: #0b7a56;
-  opacity: 0;
-  animation-name: status-flip-done;
-}
-
-.stage__status-done svg {
-  width: 12px;
-  height: 12px;
-}
-
-.stage__ticket--1 .stage__status > span { animation-delay: 0.2s; }
-.stage__ticket--2 .stage__status > span { animation-delay: 1.1s; }
-.stage__ticket--3 .stage__status > span { animation-delay: 2s; }
-
-@keyframes status-flip {
-  0%, 38% { opacity: 1; }
-  40%, 100% { opacity: 0; }
-}
-
-@keyframes status-flip-done {
-  0%, 38% { opacity: 0; }
-  40%, 100% { opacity: 1; }
-}
-
 /* Footer metrics */
-.stage__foot {
-  display: grid;
-  grid-template-columns: auto auto 1fr;
-  align-items: center;
-  gap: var(--space-5);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--color-border-soft);
-}
-
-.stage__foot strong {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: var(--color-text);
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 500;
-  line-height: 1;
-}
-
-.stage__foot span {
-  color: var(--color-text-muted);
-  font-size: 0.6875rem;
-}
-
-.stage__foot svg {
-  width: 17px;
-  height: 17px;
-  color: #f5a623;
-  fill: #f5a623;
-}
-
-.stage__badges {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--space-3);
-}
-
-.stage__badges img {
-  width: auto;
-  height: 34px;
-  object-fit: contain;
-}
-
 @media (prefers-reduced-motion: reduce) {
   /* Keep the information, drop the motion: everything shows as resolved. */
-  .reveal-up,
-  .stage,
-  .stage__dot,
-  .stage__pulse-line,
-  .stage__ticket,
-  .stage__status > span {
+  .reveal-up {
     animation: none;
   }
 
-  .stage__ticket {
-    opacity: 1;
-    transform: none;
   }
-
-  .stage__status-open {
-    display: none;
-  }
-
-  .stage__status-done {
-    opacity: 1;
-  }
-}
 
 /* 28. PHOTOGRAPHY
    Cards that used to carry an icon now carry a photograph; these rules replace
@@ -10536,9 +9803,7 @@ select.field__input {
 
 .post-card__art img,
 .insight__art img,
-.sector-tile__photo img,
-.hero-photo img,
-.london-aside__photo img {
+.sector-tile__photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -10574,31 +9839,21 @@ select.field__input {
   padding-top: var(--space-4);
 }
 
-/* London hero: photo above the coverage panel. */
-.london-aside {
-  display: grid;
-  gap: var(--space-4);
-}
 
-.london-aside__photo {
-  border-radius: var(--radius-lg);
-  box-shadow: 0 30px 70px -40px rgba(20, 45, 85, 0.5);
-}
+/* 28. DARK SURFACES
+   The site is light only. A few surfaces are dark: every page hero, the header
+   while it floats over one, and any `.section--ink` band. Rather than restyle
+   each component for them, they re-declare the colour tokens below, so anything
+   placed inside renders in the dark palette on its own. The rest of this section
+   is what could not be a token: the hero gradients, the logo swap and the header
+   and mega-menu literals.
 
-/* Location heroes stack a photo over the proof panel. */
-.hero-photo + .hero-proof {
-  margin-top: var(--space-4);
-}
-
-
-/* 28. DARK THEME
-   One token block. `data-theme` is resolved on <html> before first paint by the
-   inline script in lib.mjs (stored choice, else the OS preference), so there is
-   no flash and no second copy of these values to keep in sync. Everything below
-   the token block is a literal that could not be expressed as a token: the sky
-   gradients, and the handful of components that hardcode a light surface.
+   `:root[lang]` matches every page (the build always sets lang). It is there for
+   weight only, so these rules outrank the plain component rules they replace.
    ========================================================================== */
-:root[data-theme="dark"]:not([data-band="light"]) {
+:root[lang] .hero--sky,
+:root[lang] .page--sky .site-header:not(.is-scrolled),
+:root[lang] .section--ink {
   color-scheme: dark;
 
   /* Surfaces. --color-white keeps its name for the ~200 rules that use it to mean
@@ -10613,6 +9868,7 @@ select.field__input {
   --color-text: #e9eef7;
   --color-text-soft: #b7c2d2;
   --color-text-muted: #8a95a7;
+  --color-heading: var(--color-text);
 
   --color-border: #2a3343;
   --color-border-soft: #212937;
@@ -10703,101 +9959,31 @@ select.field__input {
   display: none;
 }
 
-:root[data-theme="dark"]:not([data-band="light"]) .brand__logo--light {
+:root[lang] .page--sky .site-header:not(.is-scrolled) .brand__logo--light {
   display: none;
 }
 
-:root[data-theme="dark"]:not([data-band="light"]) .brand__logo--dark {
+:root[lang] .page--sky .site-header:not(.is-scrolled) .brand__logo--dark {
   display: block;
 }
 
 /* ---- Theme toggle ---- */
-.theme-toggle {
-  flex: none;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  border-radius: var(--radius-pill);
-}
-
-.theme-toggle__track {
-  display: flex;
-  align-items: center;
-  width: 58px;
-  height: 32px;
-  padding: 3px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill);
-  background: var(--color-surface);
-  transition: background-color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
-}
-
-.theme-toggle__knob {
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--color-white);
-  color: var(--color-text);
-  box-shadow: var(--shadow-xs);
-  transition: transform var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out);
-}
-
-.theme-toggle__knob svg {
-  grid-area: 1 / 1;
-  width: 14px;
-  height: 14px;
-  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
-}
-
-.theme-toggle__moon {
-  opacity: 0;
-  transform: rotate(-90deg) scale(0.6);
-}
-
-.theme-toggle:hover .theme-toggle__track {
-  border-color: var(--color-border-hover);
-}
-
-:root[data-theme="dark"] .theme-toggle__knob {
-  transform: translateX(26px);
-}
-
-:root[data-theme="dark"] .theme-toggle__sun {
-  opacity: 0;
-  transform: rotate(90deg) scale(0.6);
-}
-
-:root[data-theme="dark"] .theme-toggle__moon {
-  opacity: 1;
-  transform: none;
-}
-
 .mobile-nav__head-actions {
   display: flex;
   align-items: center;
   gap: var(--space-3);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .theme-toggle__knob,
-  .theme-toggle__knob svg {
-    transition: none;
-  }
-}
-
 
 /* ---- Dark theme: the literals that could not become tokens ---- */
-:root[data-theme="dark"]:not([data-band="light"]) {
+:root[lang] .hero--sky {
   /* The sky gradients are the site's signature. In dark they run from a deep
      navy down into the page colour, keeping the same top-lit shape. */
   --sky-top: #16233b;
   --sky-mid: #131c2d;
 }
 
-:root[data-theme="dark"]:not([data-band="light"]) .hero--sky {
+:root[lang] .hero--sky {
   background:
     radial-gradient(38% 22% at 18% 16%, rgba(91, 141, 255, 0.16), transparent 70%),
     radial-gradient(30% 14% at 42% 8%, rgba(91, 141, 255, 0.1), transparent 70%),
@@ -10805,107 +9991,45 @@ select.field__input {
     linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 30%, var(--color-page) 78%);
 }
 
-:root[data-theme="dark"]:not([data-band="light"]) .hero--tone-cyber {
+:root[lang] .hero--tone-cyber {
   background-image:
     radial-gradient(40% 30% at 20% 14%, rgba(157, 140, 255, 0.2), transparent 70%),
     linear-gradient(180deg, #1d1b3a 0%, #161a2c 32%, var(--color-page) 80%);
 }
 
-:root[data-theme="dark"]:not([data-band="light"]) .hero--tone-cloud {
+:root[lang] .hero--tone-cloud {
   background-image:
     radial-gradient(40% 30% at 20% 14%, rgba(62, 194, 216, 0.18), transparent 70%),
     linear-gradient(180deg, #102b34 0%, #121d29 32%, var(--color-page) 80%);
 }
 
-:root[data-theme="dark"]:not([data-band="light"]) .hero--tone-network {
+:root[lang] .hero--tone-network {
   background-image:
     radial-gradient(40% 30% at 20% 14%, rgba(63, 196, 168, 0.18), transparent 70%),
     linear-gradient(180deg, #0f2b26 0%, #121e26 32%, var(--color-page) 80%);
 }
 
-:root[data-theme="dark"]:not([data-band="light"]) .hero--tone-projects {
+:root[lang] .hero--tone-projects {
   background-image:
     radial-gradient(40% 30% at 20% 14%, rgba(224, 164, 78, 0.16), transparent 70%),
     linear-gradient(180deg, #2c2313 0%, #1d1b20 32%, var(--color-page) 80%);
 }
 
-:root[data-theme="dark"]:not([data-band="light"]) .hero--home,
-:root[data-theme="dark"]:not([data-band="light"]) .hero--support,
-:root[data-theme="dark"]:not([data-band="light"]) .hero--cloud,
-:root[data-theme="dark"]:not([data-band="light"]) .hero--network,
-:root[data-theme="dark"]:not([data-band="light"]) .hero--projects {
+:root[lang] .hero--home,
+:root[lang] .hero--support,
+:root[lang] .hero--cloud,
+:root[lang] .hero--network,
+:root[lang] .hero--projects {
   background: linear-gradient(180deg, var(--sky-mid) 0%, var(--color-page) 100%);
 }
 
-:root[data-theme="dark"]:not([data-band="light"]) .page--sky .header-top {
+:root[lang] .page--sky .site-header:not(.is-scrolled) .header-top {
   background: #16233b;
   border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
 /* Panels that hardcoded a light wash or a light-blue tint. */
-:root[data-theme="dark"]:not([data-band="light"]) .svc-card--route,
-:root[data-theme="dark"]:not([data-band="light"]) .insight__art,
-:root[data-theme="dark"]:not([data-band="light"]) .ce-feature__badge,
-:root[data-theme="dark"]:not([data-band="light"]) .value-card__icon,
-:root[data-theme="dark"]:not([data-band="light"]) .platform-card,
-:root[data-theme="dark"]:not([data-band="light"]) .media--placeholder {
-  background: var(--panel-tint-soft);
-}
-
-:root[data-theme="dark"]:not([data-band="light"]) .value-card__icon,
-:root[data-theme="dark"]:not([data-band="light"]) .platform-card__icon {
-  border-color: var(--color-border);
-}
-
-:root[data-theme="dark"]:not([data-band="light"]) .insight__art {
-  color: var(--color-primary-ink);
-}
-
-:root[data-theme="dark"]:not([data-band="light"]) .avatar-stack span {
-  background: linear-gradient(135deg, #2b3d63, #1b2740);
-}
-
-:root[data-theme="dark"]:not([data-band="light"]) .dash__panel,
-:root[data-theme="dark"]:not([data-band="light"]) .tabs--panel,
-:root[data-theme="dark"]:not([data-band="light"]) .office-card,
-:root[data-theme="dark"]:not([data-band="light"]) .case-facts,
-:root[data-theme="dark"]:not([data-band="light"]) .team-card {
-  border: 1px solid var(--color-border-soft);
-}
-
-:root[data-theme="dark"]:not([data-band="light"]) .field__input::placeholder {
-  color: var(--color-text-muted);
-}
-
-:root[data-theme="dark"]:not([data-band="light"]) .field__input:hover {
-  border-color: var(--color-border-hover);
-}
-
 /* Status chips: dark tints instead of pastel fills. */
-:root[data-theme="dark"]:not([data-band="light"]) .stage__status-open {
-  background: var(--color-warning-soft);
-  color: var(--color-warning);
-}
-
-:root[data-theme="dark"]:not([data-band="light"]) .stage__status-done {
-  background: var(--color-success-soft);
-  color: var(--color-success);
-}
-
-:root[data-theme="dark"]:not([data-band="light"]) .tag--success {
-  color: var(--color-success);
-}
-
-:root[data-theme="dark"]:not([data-band="light"]) .ph,
-:root[data-theme="dark"]:not([data-band="light"]) .placeholder-tag {
-  color: var(--color-warning);
-}
-
-:root[data-theme="dark"]:not([data-band="light"]) .form-alert--error {
-  color: var(--color-error);
-}
-
-
 /* Vendor and accreditation artwork is supplied as dark logos on a transparent
    background, so on a dark page it disappears. They get a light plate instead —
    the same thing a print sheet does with a vendor mark on a dark cover. */
@@ -10999,34 +10123,29 @@ select.field__input {
    component were different colours. The icon tiles carry a 70%-white gloss that
    is invisible on white but turns every dark tint into washed grey-brown. And the
    plain menu icons were muted grey on a dark panel, which is under-contrast. */
-:root[data-theme="dark"]:not([data-band="light"]) .page--sky .site-header:not(.is-scrolled) {
+:root[lang] .page--sky .site-header:not(.is-scrolled) {
   background: var(--glass);
   -webkit-backdrop-filter: saturate(140%) blur(12px);
   backdrop-filter: saturate(140%) blur(12px);
   border-bottom: 1px solid var(--color-border-soft);
 }
 
-:root[data-theme="dark"]:not([data-band="light"]) .page--sky .header-top {
+:root[lang] .page--sky .site-header:not(.is-scrolled) .header-top {
   background: var(--color-surface);
   border-bottom-color: var(--color-border-soft);
 }
 
-:root[data-theme="dark"]:not([data-band="light"]) .site-header.is-scrolled {
-  border-bottom-color: var(--color-border);
-  box-shadow: 0 6px 24px -14px rgba(0, 0, 0, 0.8);
-}
-
 /* The *-soft tints are pastel washes built for a white page. On dark they read as
    mud, so the tile goes neutral and the accent lives in the icon alone. */
-:root[data-theme="dark"]:not([data-band="light"]) .mega-link--plain svg {
+:root[lang] .page--sky .site-header:not(.is-scrolled) .mega-link--plain svg {
   color: var(--color-primary);
 }
 
-:root[data-theme="dark"]:not([data-band="light"]) .mega-link:hover {
+:root[lang] .page--sky .site-header:not(.is-scrolled) .mega-link:hover {
   background: rgba(255, 255, 255, 0.05);
 }
 
-:root[data-theme="dark"]:not([data-band="light"]) .mega-feature {
+:root[lang] .page--sky .site-header:not(.is-scrolled) .mega-feature {
   border: 1px solid var(--color-border-soft);
 }
 
@@ -11051,17 +10170,10 @@ select.field__input {
 }
 
 .cred-card img,
-.cred-inline img,
-.photo-stack__chip img,
-.stage__badges img {
+.cred-inline img {
   padding: var(--logo-plate-pad);
   border-radius: 6px;
   background: var(--logo-plate);
-}
-
-:root[data-theme="dark"]:not([data-band="light"]) .partner-row li {
-  background: var(--logo-plate);
-  border-color: rgba(255, 255, 255, 0.14);
 }
 
 /* The pastel *-soft tints are built for a white page and read as mud on a dark
@@ -11071,397 +10183,1639 @@ select.field__input {
 }
 
 
-
-
-
-/* 29. SCROLL CHAPTERS (dark theme only)
-   The dark page runs in chapters: a run of sections in the dark palette, then a
-   run in the light one. app.js marks each section with the chapter it belongs to
-   and puts the current one on <html>, and every dark rule in section 28 carries
-   :not([data-band="light"]) — so a light chapter is simply the site's own light
-   theme, not a second palette to maintain.
-
-   The swap has to move the text, the cards and the borders together with the page,
-   or the moment in between is unreadable. Custom properties do not animate on
-   their own, so every colour token that differs between the two palettes is
-   registered below as a <color>; that makes it interpolable, and the ~200 rules
-   that read it through var() cross-fade for free. The 18 tokens left out are
-   gradients, shadows and filters, which have no <color> syntax and cut instead.
-   Light theme never matches [data-theme="dark"], so none of this runs there.
+/* 30. BOLD REDESIGN
+   Heavier type, squared actions, dark ink heroes and bands, photo-led cards.
+   The dark surfaces take their palette from section 28 (see the note there), so
+   this section only has to lay things out.
    ========================================================================== */
-@property --color-page {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #ffffff;
-}
-@property --color-white {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #ffffff;
-}
-@property --surface-card {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #f7f8fa;
-}
-@property --color-surface {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #f6f8fb;
-}
-@property --color-surface-2 {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #eef2f7;
-}
-@property --color-surface-blue {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #eaf2fe;
-}
-@property --color-text {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #0e1116;
-}
-@property --color-text-soft {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #262d38;
-}
-@property --color-text-muted {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #5b6573;
-}
-@property --color-border {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #e1e5eb;
-}
-@property --color-border-soft {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #eceff3;
-}
-@property --color-border-hover {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #cddcf8;
-}
-@property --color-primary {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #1f6bff;
-}
-@property --color-primary-ink {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #1560eb;
-}
-@property --color-primary-dark {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #0b55e0;
-}
-@property --color-primary-light {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #e4eeff;
-}
-@property --color-navy {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #0a2f7a;
-}
-@property --color-navy-dark {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #072260;
-}
-@property --color-navy-fill {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #0a2f7a;
-}
-@property --color-slate {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #45556c;
-}
-@property --color-night {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #0a0b0d;
-}
-@property --color-accent {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #0fb5cf;
-}
-@property --color-accent-soft {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #daf6fa;
-}
-@property --color-violet {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #6d5df6;
-}
-@property --color-navy-950 {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #06101f;
-}
-@property --color-navy-900 {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #0a1628;
-}
-@property --color-navy-800 {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #12233b;
-}
-@property --color-navy-700 {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #1d3252;
-}
-@property --color-on-dark {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #e8eef7;
-}
-@property --color-on-dark-muted {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #a3b1c6;
-}
-@property --color-line-dark {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: rgba(255, 255, 255, 0.1);
-}
-@property --color-success {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #14966f;
-}
-@property --color-success-soft {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #dcf5ec;
-}
-@property --color-warning {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #b87606;
-}
-@property --color-warning-soft {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #fff3dc;
-}
-@property --color-error {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #c93c3c;
-}
-@property --color-error-soft {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #fde8e8;
-}
-@property --tone-support {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #1f6bff;
-}
-@property --tone-support-soft {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #e3ebff;
-}
-@property --tone-cloud {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #0a93ab;
-}
-@property --tone-cloud-soft {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #daf6fa;
-}
-@property --tone-cyber {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #5a4be8;
-}
-@property --tone-cyber-soft {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #ebe8ff;
-}
-@property --tone-network {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #0d8a78;
-}
-@property --tone-network-soft {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #dcf4ef;
-}
-@property --tone-projects {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #b86a06;
-}
-@property --tone-projects-soft {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #fdf0dc;
-}
-@property --glass {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: rgba(255, 255, 255, 0.86);
-}
-@property --glass-strong {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: rgba(255, 255, 255, 0.92);
-}
-@property --logo-plate {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: transparent;
-}
-@property --color-primary-fill {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #1f6bff;
-}
-@property --color-primary-fill-hover {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #0b55e0;
-}
-@property --num-stroke {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #c2d2ee;
-}
-@property --quote-mark {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: rgba(31, 107, 255, 0.16);
-}
-@property --bar-track {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #ececee;
-}
-@property --svc-icon-border {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #a9c4f5;
+
+/* Body copy is inherited from <body>, which resolved it against the light palette
+   before any of these surfaces re-declared the tokens. Re-resolve it here. */
+:root[lang] .hero--sky,
+:root[lang] .page--sky .site-header:not(.is-scrolled),
+:root[lang] .section--ink {
+  color: var(--color-text-soft);
 }
 
-/* Timing. This is the whole page moving at once, so it wants its own curve rather
-   than the site's --ease-out: that one spends nine tenths of its travel in the first
-   quarter, which on a palette swap lands as a cut with a tail. This one is even
-   enough to read as a fade and short enough that you are looking at the new
-   chapter before you have finished registering the old one — much past half a
-   second and you start watching the change instead of the page. */
+:root[lang] .section--ink {
+  background:
+    radial-gradient(50% 60% at 0% 100%, rgba(31, 107, 255, 0.16), transparent 70%),
+    radial-gradient(40% 50% at 100% 0%, rgba(53, 205, 228, 0.08), transparent 70%),
+    var(--color-navy-950);
+}
+
+/* ---- Home: rhythm ---- */
+.page--home .section {
+  padding-block: clamp(72px, 8vw, 120px);
+}
+
+.page--home .section--tight {
+  padding-block: clamp(56px, 6vw, 88px);
+}
+
+/* ---- Home: photo hero ----
+   The office and the van carry the hero, the way a real storefront would. The
+   copy sits on a dark wash that clears towards the right so the photo reads, and
+   the bottom leaves room for the proof strip to overlap. */
+.hero-home {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-bottom: clamp(128px, 12vw, 176px);
+}
+
+.hero-home__bg {
+  position: absolute;
+  inset: 0 0 clamp(80px, 8vw, 112px);
+  z-index: -2;
+  aspect-ratio: auto;
+  border-radius: 0;
+  background: #0b111b;
+}
+
+.hero-home__bg img {
+  object-position: 72% 55%;
+}
+
+/* Literal colours on purpose: the wash has to stay dark whichever chapter the
+   dark theme's scroll swap happens to be on. */
+.hero-home::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 55% at 0% 0%, rgba(31, 107, 255, 0.32), transparent 70%),
+    linear-gradient(180deg, rgba(11, 17, 27, 0.78) 0%, rgba(11, 17, 27, 0.9) 55%, #0b111b 100%);
+}
+
+.hero-home__inner {
+  display: grid;
+  gap: clamp(48px, 7vw, 88px);
+  padding-top: clamp(16px, 4vw, 56px);
+}
+
+.hero-home__copy {
+  max-width: 660px;
+}
+
+.hero-home__title {
+  font-size: clamp(2.75rem, 1.35rem + 5.2vw, 5.1rem);
+}
+
+.hero-home__title span {
+  display: block;
+}
+
+.hero-home .hero-sky__lead {
+  color: rgba(233, 238, 247, 0.86);
+}
+
+.hero-home__clients {
+  display: grid;
+  gap: var(--space-2);
+  padding-top: var(--space-6);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hero-home__clients-label {
+  color: rgba(233, 238, 247, 0.7);
+  font-family: var(--font-ui);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.hero-home__clients .logo-row {
+  margin-top: 0;
+}
+
+.hero-home__clients .logo-row img {
+  max-width: 112px;
+  height: 38px;
+  margin-inline: 0;
+  opacity: 0.7;
+}
+
+@media (min-width: 768px) {
+  .hero-home__clients .logo-row {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-home::before {
+    background:
+      radial-gradient(55% 70% at 0% 0%, rgba(31, 107, 255, 0.34), transparent 70%),
+      linear-gradient(90deg, #0b111b 0%, rgba(11, 17, 27, 0.94) 30%, rgba(11, 17, 27, 0.55) 58%, rgba(11, 17, 27, 0.2) 100%),
+      linear-gradient(0deg, #0b111b 0%, transparent 18%);
+  }
+}
+
+/* ---- Home: proof strip ----
+   Pulled up over the hero's foot so it rests across the join. Each figure leads
+   with the number, set heavy and shaded from heading ink into its own tone; the
+   label sits under it beside a small tone tile. A gradient hairline in the brand
+   colours frames the whole strip. */
+.home-strip {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(-112px, -8vw, -80px);
+  padding-bottom: var(--space-2);
+}
+
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(var(--color-white), var(--color-white)) padding-box,
+    linear-gradient(120deg, var(--color-accent), var(--color-primary) 55%, var(--color-navy)) border-box;
+  box-shadow: 0 40px 80px -40px rgba(10, 22, 40, 0.5);
+}
+
+.stat-strip__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: clamp(22px, 3vw, 40px);
+  transition: background-color var(--dur) var(--ease-out);
+}
+
+.stat-strip__item:hover {
+  background: color-mix(in srgb, var(--tile-fg) 6%, transparent);
+}
+
+.stat-strip__item:nth-child(odd) {
+  border-right: 1px solid var(--color-border-soft);
+}
+
+.stat-strip__item:nth-child(-n + 2) {
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.stat-strip__value {
+  order: -1;
+  background: linear-gradient(120deg, var(--color-heading) 15%, var(--tile-fg) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: var(--font-heading);
+  font-size: clamp(2.4rem, 1.6rem + 2.6vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-strip__item dt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text-soft);
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.stat-strip__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--tile-bg);
+  color: var(--tile-fg);
+}
+
+.stat-strip__icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.home-strip__source {
+  margin-top: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--fs-xs);
+}
+
+@media (min-width: 900px) {
+  .stat-strip {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .stat-strip__item:nth-child(n) {
+    border-right: 1px solid var(--color-border-soft);
+    border-bottom: 0;
+  }
+
+  .stat-strip__item:last-child {
+    border-right: 0;
+  }
+}
+
+/* ---- Home: services band ----
+   A sticky stage beside a ruled list; see "services stage" further down. */
+.home-services__grid {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.home-services__body > .lead {
+  margin-top: var(--space-5);
+}
+
+.svc-list {
+  margin-top: var(--space-7);
+  border-top: 1px solid var(--color-border);
+}
+
+.svc-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: var(--space-5);
+  padding-block: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.svc-row__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(160deg, #1d2740, #101726);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  color: var(--tone, #62e2f3);
+}
+
+.svc-row__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.svc-row__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: clamp(1.35rem, 1.1rem + 1vw, 1.85rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  transition: color var(--dur-fast);
+}
+
+.svc-row__title svg {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  stroke-width: 2.25;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.svc-row:hover .svc-row__title {
+  color: var(--color-primary-ink);
+}
+
+.svc-row:hover .svc-row__title svg {
+  transform: translateX(6px);
+}
+
+.svc-row p {
+  margin-top: var(--space-2);
+  max-width: 62ch;
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 1024px) {
+  .home-services__grid {
+    grid-template-columns: minmax(340px, 0.85fr) 1.15fr;
+    gap: clamp(48px, 6vw, 96px);
+    align-items: start;
+  }
+
+  .home-services__aside {
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-8));
+  }
+
+  .svc-row {
+    grid-template-columns: 64px 1fr;
+    gap: var(--space-6);
+    padding-block: var(--space-7);
+  }
+
+  .svc-row__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+  }
+}
+
+/* ---- Home: photo tiles (case studies and sectors) ----
+   The photo is the card. Title and summary sit on a dark wash at the foot, and
+   the whole tile is the link. */
+.case-grid {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.case-tile {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--radius-lg);
+  background: #0b111b;
+}
+
+.case-tile > *,
+.case-tile::before {
+  grid-area: 1 / 1;
+}
+
+.case-tile::before {
+  content: "";
+  z-index: 0;
+  background: linear-gradient(0deg, rgba(8, 12, 20, 0.94) 0%, rgba(8, 12, 20, 0.62) 42%, rgba(8, 12, 20, 0) 72%);
+  pointer-events: none;
+}
+
+.case-tile__art {
+  z-index: -1;
+  border-radius: 0;
+}
+
+.case-tile__art img {
+  transition: transform 700ms var(--ease-out);
+}
+
+.case-tile:hover .case-tile__art img {
+  transform: scale(1.05);
+}
+
+.case-tile__body {
+  z-index: 1;
+  align-self: end;
+  display: grid;
+  justify-items: start;
+  gap: var(--space-2);
+  padding: clamp(20px, 2.2vw, 28px);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.case-tile__tag {
+  margin-bottom: var(--space-1);
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+.case-tile__title {
+  color: #fff;
+  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.case-tile__body p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.case-tile .card-link:focus-visible::after {
+  outline-offset: -3px;
+  outline-color: #fff;
+}
+
+@media (min-width: 640px) {
+  .case-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .case-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Phones. The services link is a way onward, so it follows the list rather than
+   sitting above the heading, and case tiles go square to keep the page short. */
+@media (max-width: 1023px) {
+  .home-services__aside {
+    order: 1;
+  }
+}
+
+@media (max-width: 639px) {
+  .case-tile__art {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+/* Four case studies only fit four-up once each tile can hold its summary. */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .case-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---- Home: statement under the proof strip ----
+   The hero's paragraph, moved out so the hero is just the promise and the
+   actions. Set large, it reads as the page's opening statement. */
+.home-strip__lead {
+  max-width: 58ch;
+  margin-top: clamp(40px, 5vw, 64px);
+  color: var(--color-heading);
+  font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+/* ---- Home: case tile cue ---- */
+.case-tile__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--space-1);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.case-tile__more svg {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.case-tile:hover .case-tile__more svg {
+  transform: translateX(4px);
+}
+
+/* ---- Home: services stage ----
+   Desktop only. The stage sticks beside the list; app.js marks the row being
+   read and writes --svc-progress (0 → 1 down the list). The active service takes
+   the stage in its own tone, its outlined numeral and colour glow drift at
+   different rates as you scroll, and the rail along the foot fills. Rows that
+   are not being read step back so the eye stays on one service at a time. */
+.svc-stage {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .home-services__aside {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-5);
+  }
+
+  .svc-stage {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: min(520px, calc(100vh - var(--header-h) - 190px));
+    min-height: 380px;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: var(--radius-xl);
+    background: linear-gradient(160deg, #151e2f 0%, #0b111b 100%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 40px 80px -40px rgba(0, 0, 0, 0.6);
+    color: #fff;
+  }
+
+  .svc-stage__slide {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-content: end;
+    justify-items: start;
+    gap: var(--space-5);
+    padding: var(--space-7) var(--space-7) calc(var(--space-7) + 4px);
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 450ms var(--ease-out), transform 650ms var(--ease-out);
+  }
+
+  .svc-stage__slide.is-active {
+    opacity: 1;
+    transform: none;
+  }
+
+  .svc-stage__glow {
+    position: absolute;
+    z-index: -1;
+    top: -25%;
+    right: -30%;
+    width: 95%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--tone) 55%, transparent), transparent);
+    transform: translate3d(0, calc(var(--svc-progress, 0) * 140px), 0);
+  }
+
+  .svc-stage__num {
+    position: absolute;
+    z-index: -1;
+    top: var(--space-5);
+    left: calc(var(--space-7) - 0.06em);
+    color: transparent;
+    font-family: var(--font-heading);
+    font-size: clamp(8rem, 11vw, 11.5rem);
+    font-weight: 800;
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.16);
+    transform: translate3d(0, calc(var(--svc-progress, 0) * -64px), 0);
+  }
+
+  .svc-stage__icon {
+    display: grid;
+    place-items: center;
+    width: 88px;
+    height: 88px;
+    border-radius: 24px;
+    background: color-mix(in srgb, var(--tone) 18%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone) 45%, transparent);
+    color: var(--tone);
+  }
+
+  .svc-stage__icon svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .svc-stage__title {
+    max-width: 12ch;
+    color: #fff;
+    font-family: var(--font-heading);
+    font-size: clamp(1.9rem, 1.2rem + 1.6vw, 2.6rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .svc-stage__count {
+    position: absolute;
+    top: var(--space-6);
+    right: var(--space-6);
+    color: rgba(255, 255, 255, 0.5);
+    font-family: var(--font-ui);
+    font-size: 0.875rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .svc-stage__now {
+    color: #fff;
+  }
+
+  .svc-stage__rail {
+    position: absolute;
+    inset: auto 0 0;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .svc-stage__fill {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-primary));
+    transform: scaleX(var(--svc-progress, 0));
+    transform-origin: left;
+  }
+
+  /* Rows step back only once the script is driving the stage. */
+  .svc-row::before {
+    content: "";
+    position: absolute;
+    top: var(--space-7);
+    bottom: var(--space-7);
+    left: calc(var(--space-6) * -1);
+    width: 3px;
+    border-radius: 2px;
+    background: var(--tone);
+    transform: scaleY(0);
+    transition: transform 450ms var(--ease-out);
+  }
+
+  .is-staged .svc-row.is-active::before {
+    transform: scaleY(1);
+  }
+
+  .is-staged .svc-row__icon,
+  .is-staged .svc-row__body {
+    transition: opacity 400ms var(--ease-out);
+  }
+
+  .is-staged .svc-row:not(.is-active):not(:hover) .svc-row__icon,
+  .is-staged .svc-row:not(.is-active):not(:hover) .svc-row__body {
+    opacity: 0.38;
+  }
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  .svc-stage__slide,
+  .svc-stage__glow,
+  .svc-stage__num {
+    transform: none;
+  }
+
+  .svc-stage__slide {
+    transition: opacity 150ms linear;
+  }
+}
+
+/* The hero has no paragraph now, so the actions keep their own distance. */
+.hero-home .btn-group {
+  margin-top: var(--space-6);
+}
+
+/* ---- Inner pages: feature photo across the hero's foot ----
+   A wide photo that starts inside the dark hero and finishes on the page below,
+   so the two sections read as one. The hero grows by the overlap to make room. */
 :root {
-  --band-dur: 420ms;
-  --band-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --feature-overlap: clamp(72px, 9vw, 150px);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  :root {
-    transition:
-    --color-page var(--band-dur) var(--band-ease),
-    --color-white var(--band-dur) var(--band-ease),
-    --surface-card var(--band-dur) var(--band-ease),
-    --color-surface var(--band-dur) var(--band-ease),
-    --color-surface-2 var(--band-dur) var(--band-ease),
-    --color-surface-blue var(--band-dur) var(--band-ease),
-    --color-text var(--band-dur) var(--band-ease),
-    --color-text-soft var(--band-dur) var(--band-ease),
-    --color-text-muted var(--band-dur) var(--band-ease),
-    --color-border var(--band-dur) var(--band-ease),
-    --color-border-soft var(--band-dur) var(--band-ease),
-    --color-border-hover var(--band-dur) var(--band-ease),
-    --color-primary var(--band-dur) var(--band-ease),
-    --color-primary-ink var(--band-dur) var(--band-ease),
-    --color-primary-dark var(--band-dur) var(--band-ease),
-    --color-primary-light var(--band-dur) var(--band-ease),
-    --color-navy var(--band-dur) var(--band-ease),
-    --color-navy-dark var(--band-dur) var(--band-ease),
-    --color-navy-fill var(--band-dur) var(--band-ease),
-    --color-slate var(--band-dur) var(--band-ease),
-    --color-night var(--band-dur) var(--band-ease),
-    --color-accent var(--band-dur) var(--band-ease),
-    --color-accent-soft var(--band-dur) var(--band-ease),
-    --color-violet var(--band-dur) var(--band-ease),
-    --color-navy-950 var(--band-dur) var(--band-ease),
-    --color-navy-900 var(--band-dur) var(--band-ease),
-    --color-navy-800 var(--band-dur) var(--band-ease),
-    --color-navy-700 var(--band-dur) var(--band-ease),
-    --color-on-dark var(--band-dur) var(--band-ease),
-    --color-on-dark-muted var(--band-dur) var(--band-ease),
-    --color-line-dark var(--band-dur) var(--band-ease),
-    --color-success var(--band-dur) var(--band-ease),
-    --color-success-soft var(--band-dur) var(--band-ease),
-    --color-warning var(--band-dur) var(--band-ease),
-    --color-warning-soft var(--band-dur) var(--band-ease),
-    --color-error var(--band-dur) var(--band-ease),
-    --color-error-soft var(--band-dur) var(--band-ease),
-    --tone-support var(--band-dur) var(--band-ease),
-    --tone-support-soft var(--band-dur) var(--band-ease),
-    --tone-cloud var(--band-dur) var(--band-ease),
-    --tone-cloud-soft var(--band-dur) var(--band-ease),
-    --tone-cyber var(--band-dur) var(--band-ease),
-    --tone-cyber-soft var(--band-dur) var(--band-ease),
-    --tone-network var(--band-dur) var(--band-ease),
-    --tone-network-soft var(--band-dur) var(--band-ease),
-    --tone-projects var(--band-dur) var(--band-ease),
-    --tone-projects-soft var(--band-dur) var(--band-ease),
-    --glass var(--band-dur) var(--band-ease),
-    --glass-strong var(--band-dur) var(--band-ease),
-    --logo-plate var(--band-dur) var(--band-ease),
-    --color-primary-fill var(--band-dur) var(--band-ease),
-    --color-primary-fill-hover var(--band-dur) var(--band-ease),
-    --num-stroke var(--band-dur) var(--band-ease),
-    --quote-mark var(--band-dur) var(--band-ease),
-    --bar-track var(--band-dur) var(--band-ease),
-    --svc-icon-border var(--band-dur) var(--band-ease);
+.hero--page.has-feature {
+  padding-bottom: calc(var(--space-7) + var(--feature-overlap));
+}
+
+.hero-feature {
+  position: relative;
+  z-index: 1;
+  margin-top: calc(var(--feature-overlap) * -1);
+}
+
+.hero-feature .media {
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 40px 80px -40px rgba(10, 22, 40, 0.55);
+}
+
+@media (min-width: 768px) {
+  .hero-feature .media {
+    aspect-ratio: 21 / 8;
   }
 }
 
-/* Gradients and filters have no <color> syntax, so the tokens above cannot carry
-   them and they cut on the first frame instead of fading with everything else.
-   These are the ones large enough to notice; a matching transition on the element
-   fades the value the custom property jumped to. --tile-gloss and the shadows are
-   left out: both ends are `none` or near-invisible on their own background, and a
-   gradient cannot interpolate to or from `none` anyway. */
-@media (prefers-reduced-motion: no-preference) {
-  .svc-card__icon,
-  .plan-detail,
-  .quote-feature,
-  .check-card,
-  .pricing-panel,
-  .route-wide,
-  .ce-feature__badge {
-    transition: background-image var(--band-dur) var(--band-ease);
+/* ---- Inner pages: tighter rhythm ----
+   Sections on the inner pages ran at up to 96px top and bottom, so every join
+   was nearly 200px of nothing. The home page keeps its own, roomier rhythm. */
+.page--sky:not(.page--home) .section {
+  padding-block: clamp(40px, 4vw, 64px);
+}
+
+.page--sky:not(.page--home) .section--tight {
+  padding-block: clamp(32px, 3vw, 48px);
+}
+
+.page:not(.page--home) .block {
+  padding-block: clamp(32px, 3.5vw, 56px);
+}
+
+.page:not(.page--home) .block--statement + .block {
+  padding-top: clamp(32px, 3.5vw, 56px);
+}
+
+/* Stacked content blocks. A section that pairs text with a card, tabs or an
+   accordion no longer splits left/right: that squeezed the heading into a 34ch
+   column. Heading and prose run across the row, the component sits below.
+   Text-and-photo splits on the overview pages keep their two columns. */
+.block-split:has(> .check-card, > .check-grid, > .tabs, > .faq-panel) {
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+/* Text first, component second, whatever the source order or --flip. */
+.block-split:has(> .check-card, > .check-grid, > .tabs, > .faq-panel) > * {
+  order: 0;
+}
+
+.block-split:has(> .check-card, > .check-grid, > .tabs, > .faq-panel) > :is(.check-card, .check-grid, .tabs, .faq-panel) {
+  order: 1;
+}
+
+.block-split:has(> .check-card, > .check-grid, > .tabs, > .faq-panel) .block-head {
+  max-width: none;
+  margin-bottom: var(--space-5);
+  text-wrap: balance;
+}
+
+.block-split:has(> .check-card, > .check-grid, > .tabs, > .faq-panel) .block-head > p,
+.block-split:has(> .check-card, > .check-grid, > .tabs, > .faq-panel) .block-prose {
+  max-width: 75ch;
+}
+
+/* Full-width card: no longer sticky, and its list flows into columns. */
+.block-split:has(> .check-card, > .check-grid, > .tabs, > .faq-panel) .check-card {
+  position: static;
+}
+
+.block-split:has(> .check-card, > .check-grid, > .tabs, > .faq-panel) .check-card ul {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  column-gap: var(--space-6);
+}
+
+.block-split:has(> .tabs) .tabs__panel {
+  max-width: 80ch;
+}
+
+/* Before/after list pairs read side by side. */
+.check-grid {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.block-split .check-grid .check-card ul {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .check-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+/* 30. RELIEF
+   The About page and every inner-page hero share one idea: surfaces are pressed
+   metal lit from the top left. Raised things carry a highlight on their top edge
+   and a shadow under them; engraved things the reverse. Motion is light and
+   pressure: the headline powers on, the proof lights switch on, the value keys
+   are typed, the mission is engraved as it scrolls up.
+   ========================================================================== */
+:root {
+  --ease-spring: cubic-bezier(0.34, 1.36, 0.64, 1);
+  --relief-overlap: clamp(110px, 15vw, 250px);
+  --plate-metal: linear-gradient(150deg, #36445c 0%, #1a2332 46%, #0f1622 100%);
+  --plate-edge: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -2px 0 rgba(0, 0, 0, 0.55);
+  --steel: linear-gradient(165deg, #fafcfe 0%, #eef2f7 55%, #e3e9f1 100%);
+}
+
+/* ---- Headline light sweep (inner-page heroes) ----
+   A band of light crosses the headline once as it loads. The sweep is the
+   background of a 300%-wide gradient clipped to the text: lit | flare | unlit,
+   slid from the unlit end to the lit end. drop-shadow (not text-shadow) because
+   a text-shadow would show through the transparent fill. */
+.hero-stack__title {
+  --lit: var(--color-heading);
+  --unlit: rgba(255, 255, 255, 0.07);
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+  background-image: linear-gradient(100deg, var(--lit) 0%, var(--lit) 33%, #ffffff 40%, var(--unlit) 47%, var(--unlit) 100%);
+  background-size: 300% 100%;
+  background-position: 0% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter:
+    drop-shadow(0 -1px 0 rgba(255, 255, 255, 0.2))
+    drop-shadow(0 3px 1px rgba(0, 0, 0, 0.5))
+    drop-shadow(0 20px 26px rgba(0, 0, 0, 0.35));
+}
+
+@keyframes relief-light {
+  from { background-position: 100% 0; }
+}
+
+@keyframes relief-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+/* Out of focus and slightly low, then sharp and in place. */
+@keyframes relief-focus {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+    filter: blur(10px);
+  }
+}
+
+/* ---- About: hero ----
+   Centred, so it sits square over the fan of photo plates beneath it. */
+.about-hero {
+  padding-bottom: calc(var(--space-8) + var(--relief-overlap));
+}
+
+.about-hero__inner {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.about-hero .breadcrumbs {
+  margin-bottom: var(--space-6);
+}
+
+.about-hero .breadcrumbs ol,
+.about-hero .btn-group {
+  justify-content: center;
+}
+
+.about-hero__title {
+  display: grid;
+  justify-items: center;
+  gap: 0.12em;
+  color: var(--color-heading);
+  font-size: clamp(2.2rem, 1.2rem + 3.4vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.about-hero__line {
+  display: block;
+  animation: relief-focus 900ms var(--ease-out) 150ms backwards;
+}
+
+.about-hero__line + .about-hero__line {
+  animation-delay: 380ms;
+}
+
+/* The nameplate: raised metal, engraved-cyan type, a sheen that crosses it
+   once. box-decoration-break gives each wrapped line its own plate on phones. */
+.about-hero__plate {
+  padding: 0.02em 0.32em 0.08em;
+  border-radius: 0.24em;
+  color: var(--color-accent-on-dark);
+  background:
+    linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.24) 50%, transparent 60%) no-repeat,
+    linear-gradient(180deg, #2b374c 0%, #19222f 55%, #121a26 100%);
+  background-size: 250% 100%, 100% 100%;
+  background-position: -60% 0, 0 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(0, 0, 0, 0.45),
+    0 22px 34px -16px rgba(0, 0, 0, 0.85);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.55), 0 1px 0 rgba(255, 255, 255, 0.12);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  animation: plate-sheen 1.4s var(--ease-in-out) 1s backwards;
+}
+
+@keyframes plate-sheen {
+  from { background-position: 160% 0, 0 0; }
+}
+
+.about-hero__lead {
+  max-width: 58ch;
+  margin-block: var(--space-6);
+  color: var(--color-text-soft);
+  font-size: clamp(1.05rem, 1rem + 0.35vw, 1.25rem);
+  line-height: 1.55;
+}
+
+.about-hero__lead,
+.about-hero .btn-group {
+  animation: relief-in 800ms var(--ease-out) 700ms backwards;
+}
+
+/* ---- About: relief stage ----
+   Three photo plates dealt out from one stack, with the rating and certification
+   as pressed seals. The stage straddles the hero's foot and the page below, and
+   tilts toward the pointer (app.js sets --rx, --ry and --sheen). */
+.relief {
+  position: relative;
+  z-index: 1;
+  margin-top: calc(var(--relief-overlap) * -1);
+  perspective: 1600px;
+}
+
+.relief__stage {
+  position: relative;
+  aspect-ratio: 5 / 4;
+  transform: rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg));
+  transform-style: preserve-3d;
+  transition: transform 700ms var(--ease-out);
+}
+
+.relief__plate {
+  position: absolute;
+  padding: clamp(6px, 0.8vw, 10px);
+  border-radius: clamp(16px, 2vw, 26px);
+  background: var(--plate-metal);
+  box-shadow:
+    var(--plate-edge),
+    0 0 0 1px rgba(0, 0, 0, 0.35),
+    0 50px 80px -40px rgba(4, 8, 14, 0.85);
+  animation: relief-deal 1.3s var(--ease-spring) backwards;
+}
+
+.relief__plate .media {
+  border-radius: clamp(11px, 1.4vw, 18px);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.55);
+}
+
+/* Sheen: a soft band of light that slides with the tilt. */
+.relief__plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.16) 48%, transparent 60%) no-repeat;
+  background-size: 260% 100%;
+  background-position: calc(50% + var(--sheen, 0%)) 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  transition: background-position 700ms var(--ease-out);
+}
+
+.relief__plate--left {
+  --from-x: 58%;
+  top: 26%;
+  left: 0;
+  width: 56%;
+  transform: rotate(-7deg);
+  animation-delay: 600ms;
+}
+
+.relief__plate--right {
+  --from-x: -58%;
+  top: 26%;
+  right: 0;
+  width: 56%;
+  transform: rotate(7deg);
+  animation-delay: 680ms;
+}
+
+.relief__plate--centre {
+  --from-x: 0%;
+  top: 0;
+  left: 28%;
+  width: 44%;
+  transform: translateZ(40px);
+  animation-delay: 380ms;
+}
+
+.relief__plate--centre img {
+  object-position: 68% 50%;
+}
+
+@keyframes relief-deal {
+  from {
+    opacity: 0;
+    transform: translate(var(--from-x), 22%) scale(0.8);
+  }
+}
+
+.relief__seal {
+  position: absolute;
+  transform: translateZ(80px);
+  animation: relief-seal 900ms var(--ease-spring) backwards;
+}
+
+@keyframes relief-seal {
+  from {
+    opacity: 0;
+    transform: translateZ(80px) scale(0.3) rotate(-25deg);
+  }
+}
+
+/* A round medallion: raised face, a machined ring round it. */
+.relief__seal--rating {
+  bottom: 0;
+  left: 2%;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 2px;
+  width: clamp(104px, 12vw, 152px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  color: #b7c2d2;
+  background: radial-gradient(circle at 35% 28%, #33415a 0%, #182131 55%, #0f1622 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.6),
+    0 0 0 5px #0e141f,
+    0 0 0 6px rgba(255, 255, 255, 0.1),
+    0 30px 50px -20px rgba(0, 0, 0, 0.85);
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  text-align: center;
+  animation-delay: 1250ms;
+}
+
+.relief__seal--rating strong {
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: clamp(1.7rem, 1.1rem + 1.5vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.25), 0 3px 2px rgba(0, 0, 0, 0.6);
+}
+
+.relief__seal--rating .stars svg {
+  width: 11px;
+  height: 11px;
+}
+
+.relief__seal--cert {
+  top: 8%;
+  right: 1%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 290px;
+  padding: 8px 14px 8px 8px;
+  border-radius: 16px;
+  color: #b7c2d2;
+  background: var(--plate-metal);
+  box-shadow: var(--plate-edge), 0 0 0 1px rgba(0, 0, 0, 0.4), 0 24px 40px -18px rgba(0, 0, 0, 0.85);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  line-height: 1.3;
+  animation-delay: 1400ms;
+}
+
+.relief__seal--cert img {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  padding: 4px;
+  border-radius: 10px;
+  background: #eef1f6;
+}
+
+.relief__seal--cert strong {
+  display: block;
+  color: #ffffff;
+  font-size: 0.8125rem;
+}
+
+@media (max-width: 559px) {
+  .relief__seal--cert span {
+    display: none;
   }
 
-  .media img,
-  .article-cover img {
-    transition: filter var(--band-dur) var(--band-ease);
+  .relief__seal--cert {
+    padding: 6px;
+  }
+}
+
+@media (min-width: 768px) {
+  .relief__stage {
+    aspect-ratio: 11 / 5;
+  }
+
+  .relief__plate--left,
+  .relief__plate--right {
+    top: 17%;
+    width: 40%;
+  }
+
+  .relief__plate--left {
+    --from-x: 75%;
+    left: 1%;
+  }
+
+  .relief__plate--right {
+    --from-x: -75%;
+    right: 1%;
+  }
+
+  .relief__plate--centre {
+    left: 34.5%;
+    width: 31%;
+  }
+
+  .relief__seal--rating {
+    left: 25%;
+    bottom: 2%;
+  }
+
+  .relief__seal--cert {
+    top: 9%;
+    right: 3%;
+  }
+}
+
+/* ---- About: values as keys ---- */
+.value-keys {
+  padding-top: clamp(56px, 7vw, 112px);
+}
+
+.value-keys__head {
+  display: grid;
+  gap: var(--space-4);
+  margin-bottom: var(--space-7);
+}
+
+.value-keys__head h2 {
+  text-wrap: balance;
+}
+
+.value-keys__head > p:last-child {
+  max-width: 60ch;
+  color: var(--color-text-soft);
+}
+
+/* The tray is recessed: shadow on its inside top edge, light on its lip.
+   [role] outranks the list reset in the base layer, which zeroes the padding. */
+.value-keys__tray[role="list"] {
+  --cap-h: clamp(150px, 15vw, 196px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: clamp(20px, 2.4vw, 32px);
+  padding: clamp(18px, 2.6vw, 36px);
+  border-radius: clamp(24px, 3vw, 40px);
+  background: linear-gradient(180deg, #d9e1ec 0%, #e8edf4 100%);
+  box-shadow:
+    inset 0 4px 10px rgba(15, 27, 45, 0.16),
+    inset 0 1px 2px rgba(15, 27, 45, 0.22),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 0 rgba(255, 255, 255, 0.9);
+  list-style: none;
+}
+
+.value-key {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: start;
+  gap: var(--space-5);
+}
+
+/* Backlight under the cap. */
+.value-key::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 8px;
+  inset-inline: -6px;
+  height: calc(var(--cap-h) + 12px);
+  border-radius: 26px;
+  background: radial-gradient(70% 60% at 50% 100%, rgba(31, 107, 255, 0.7), rgba(53, 205, 228, 0.25) 55%, transparent 75%);
+  filter: blur(12px);
+  opacity: 0;
+}
+
+.value-key__cap {
+  position: relative;
+  display: grid;
+  align-content: space-between;
+  height: var(--cap-h);
+  margin-bottom: 7px;
+  padding: 20px 22px 22px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #ffffff 0%, #f0f3f8 100%);
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    inset 0 -4px 0 rgba(15, 27, 45, 0.05),
+    0 6px 0 #c6d0de,
+    0 7px 0 #b1bdd0,
+    0 20px 26px -10px rgba(15, 27, 45, 0.4);
+}
+
+/* The cap's dished top. */
+.value-key__cap::before {
+  content: "";
+  position: absolute;
+  inset: 9px 11px 13px;
+  border-radius: 15px;
+  background: radial-gradient(120% 90% at 50% 15%, rgba(255, 255, 255, 1), rgba(232, 237, 245, 0.7) 75%);
+  box-shadow: inset 0 1px 3px rgba(15, 27, 45, 0.08);
+  pointer-events: none;
+}
+
+.value-key__icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  color: var(--color-primary-ink);
+  background: linear-gradient(180deg, #e3eaf6 0%, #eef3fb 100%);
+  box-shadow: inset 0 2px 3px rgba(15, 27, 45, 0.16), 0 1px 0 #ffffff;
+}
+
+.value-key__icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.value-key__legend {
+  position: relative;
+  color: var(--color-heading);
+  font-size: clamp(1.4rem, 1.1rem + 0.8vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 0 #ffffff;
+}
+
+.value-key p {
+  padding-inline: 4px;
+  color: var(--color-text-soft);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+/* Typed in turn, then left backlit. */
+@keyframes key-press {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  28% {
+    transform: translateY(6px);
+    box-shadow:
+      inset 0 1px 0 #ffffff,
+      inset 0 -2px 0 rgba(15, 27, 45, 0.05),
+      0 0 0 #c6d0de,
+      0 1px 0 #b1bdd0,
+      0 6px 10px -6px rgba(15, 27, 45, 0.4);
+  }
+}
+
+@keyframes key-glow {
+  0% { opacity: 0; }
+  28% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+.js .value-keys__tray.is-on .value-key__cap {
+  animation: key-press 560ms var(--ease-out) calc(200ms + var(--i) * 320ms) backwards;
+}
+
+.js .value-keys__tray.is-on .value-key::before {
+  animation: key-glow 1400ms var(--ease-out) calc(200ms + var(--i) * 320ms) forwards;
+}
+
+/* ---- About: mission card ----
+   Centred: a slim photo banner in a recessed window, a quote medallion pressed
+   onto its lower edge, the mission engraved beneath, then the detail. */
+.mission__head {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-7);
+  text-align: center;
+}
+
+.mission__head h2 {
+  text-wrap: balance;
+}
+
+.mission-plaque {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  max-width: 1040px;
+  margin-inline: auto;
+  padding: clamp(10px, 1.2vw, 14px);
+  border-radius: clamp(24px, 3vw, 36px);
+  background: var(--steel);
+  box-shadow:
+    inset 0 2px 0 #ffffff,
+    inset 0 -3px 0 rgba(15, 27, 45, 0.07),
+    0 0 0 1px rgba(15, 27, 45, 0.06),
+    0 12px 24px -12px rgba(15, 27, 45, 0.22),
+    0 50px 90px -46px rgba(15, 27, 45, 0.5);
+  text-align: center;
+  overflow: hidden;
+}
+
+.mission-plaque__window {
+  justify-self: stretch;
+  padding: 6px;
+  border-radius: clamp(16px, 2.2vw, 26px);
+  background: linear-gradient(180deg, #d5dde8 0%, #eaeff5 100%);
+  box-shadow:
+    inset 0 3px 8px rgba(15, 27, 45, 0.28),
+    inset 0 1px 2px rgba(15, 27, 45, 0.3),
+    0 1px 0 #ffffff;
+}
+
+.mission-plaque__window .media {
+  border-radius: clamp(11px, 1.6vw, 20px);
+}
+
+.mission-plaque__window img {
+  object-position: 50% 22%;
+}
+
+@media (min-width: 768px) {
+  .mission-plaque__window .media {
+    aspect-ratio: 4 / 1;
+  }
+}
+
+.mission-plaque__seal {
+  --seal: clamp(56px, 6vw, 72px);
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: var(--seal);
+  aspect-ratio: 1;
+  margin-top: calc(var(--seal) / -2);
+  border-radius: 50%;
+  color: var(--color-primary-ink);
+  background: radial-gradient(circle at 35% 28%, #ffffff 0%, #eef2f8 60%, #dde4ee 100%);
+  box-shadow:
+    inset 0 2px 0 #ffffff,
+    inset 0 -3px 6px rgba(15, 27, 45, 0.12),
+    0 0 0 5px #eef2f7,
+    0 0 0 6px rgba(15, 27, 45, 0.08),
+    0 16px 26px -12px rgba(15, 27, 45, 0.45);
+}
+
+.mission-plaque__seal svg {
+  width: 40%;
+  height: 40%;
+}
+
+.mission-plaque__content {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-5);
+  padding: clamp(16px, 2.4vw, 28px) clamp(12px, 4vw, 56px) clamp(24px, 3.6vw, 44px);
+}
+
+/* Engraved: ink darker than the steel, a highlight on the lower lip of each
+   stroke and a shadow on the upper one. */
+.mission-plaque__text p {
+  max-width: 36ch;
+  color: #22324d;
+  font-family: var(--font-heading);
+  font-size: clamp(1.3rem, 1rem + 1.2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 -1px 0 rgba(15, 27, 45, 0.28);
+  text-wrap: balance;
+}
+
+.mission-plaque__body {
+  max-width: 62ch;
+  color: var(--color-text-soft);
+  line-height: 1.7;
+}
+
+.mission-plaque .btn-group {
+  justify-content: center;
+}
+
+/* Scroll-driven where supported: the photo drifts inside its window. The
+   statement itself stays still and solid. */
+@supports (animation-timeline: view()) {
+  .mission-plaque__window img {
+    animation: plaque-drift linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+}
+
+@keyframes plaque-drift {
+  from { transform: scale(1.14) translateY(-4%); }
+  to { transform: scale(1.14) translateY(4%); }
+}
+
+/* ---- Inner pages: stacked hero ----
+   Headline across the full row, lead and actions under it, then whatever used
+   to sit in the side column (proof figures, a featured article, the service
+   index) running full width below. The headline gets the same light sweep as
+   the About page, once, faster. */
+.hero-stack .hero-stack__title {
+  max-width: none;
+  font-size: clamp(2.5rem, 1.2rem + 4.2vw, 5.1rem);
+  line-height: 1.02;
+  text-wrap: balance;
+  animation: relief-light 1.3s var(--ease-in-out) 200ms backwards;
+}
+
+.hero-stack .hero-sky__lead {
+  max-width: 60ch;
+}
+
+.hero-stack__aside {
+  margin-top: var(--space-7);
+  animation: relief-in 700ms var(--ease-out) 300ms backwards;
+}
+
+/* Whatever runs across the hero's foot is one raised faceplate: the proof
+   figures, London's coverage panel, the IT services index. */
+.faceplate,
+.hero-stack__aside .coverage-card,
+.hero-stack__aside .service-index {
+  border-radius: 18px;
+  background: linear-gradient(180deg, #1c2536 0%, #141c29 100%);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(0, 0, 0, 0.45),
+    0 24px 48px -24px rgba(0, 0, 0, 0.8);
+}
+
+/* Proof figures: a groove between units. */
+.faceplate {
+  display: grid;
+  padding: 0;
+  list-style: none;
+}
+
+.faceplate__unit {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-4);
+  align-items: center;
+  padding: 20px 44px 20px 22px;
+}
+
+.faceplate__unit + .faceplate__unit {
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.045);
+}
+
+/* A debossed well for the icon. */
+.faceplate__icon {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  color: var(--color-navy);
+  background: linear-gradient(180deg, #0f1521 0%, #18202e 100%);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.65), 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.faceplate__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.faceplate__unit strong {
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: clamp(1.3rem, 1.1rem + 0.6vw, 1.65rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.faceplate__unit > span:last-child {
+  color: var(--color-text-soft);
+  font-size: 0.8125rem;
+}
+
+/* Status light: flickers on in turn, then stays lit. */
+.faceplate__led {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3ecf9a;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5), 0 0 10px 1px rgba(62, 207, 154, 0.75);
+  animation: led-on 900ms linear backwards;
+  animation-delay: calc(700ms + var(--i) * 220ms);
+}
+
+@keyframes led-on {
+  0%,
+  40% {
+    background: #1d2b2b;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5);
+  }
+
+  50% {
+    background: #3ecf9a;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5), 0 0 10px 1px rgba(62, 207, 154, 0.75);
+  }
+
+  62% {
+    background: #1d2b2b;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@media (min-width: 768px) {
+  .faceplate {
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+  }
+
+  .faceplate__unit + .faceplate__unit {
+    box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.6), inset 2px 0 0 rgba(255, 255, 255, 0.045);
+  }
+}
+
+/* London: the coverage panel in three columns. */
+.hero-stack__aside .coverage-card {
+  gap: var(--space-5);
+}
+
+.hero-stack__aside .coverage-card > div {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+.hero-stack__aside .coverage-card .coverage-card__stats {
+  grid-template-columns: repeat(2, auto);
+  gap: var(--space-6);
+  margin-top: 0;
+}
+
+@media (min-width: 1024px) {
+  .hero-stack__aside .coverage-card {
+    grid-template-columns: 1fr auto 1.5fr;
+    align-items: center;
+    gap: var(--space-7);
+  }
+
+  .hero-stack__aside .coverage-card .coverage-card__stats {
+    padding: 0 var(--space-7);
+    border-block: 0;
+    border-inline: 1px solid var(--color-border-soft);
+  }
+
+  /* IT services hub: the index becomes a row of five tiles. The 01–05 numbers
+     only restated list order, so the tiles drop them. */
+  .hero-stack__aside .service-index ul {
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-2);
+  }
+
+  .hero-stack__aside .service-index a {
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "icon arrow" "text text";
+    align-content: start;
+    align-items: start;
+    height: 100%;
+    padding: var(--space-4);
+  }
+
+  .hero-stack__aside .service-index__num {
+    display: none;
+  }
+
+  .hero-stack__aside .service-index__icon {
+    grid-area: icon;
+  }
+
+  .hero-stack__aside .service-index a > span:nth-child(3) {
+    grid-area: text;
+  }
+
+  .hero-stack__aside .service-index a > svg {
+    grid-area: arrow;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-hero__line,
+  .about-hero__plate,
+  .about-hero__lead,
+  .about-hero .btn-group,
+  .relief__plate,
+  .relief__seal,
+  .hero-stack .hero-stack__title,
+  .hero-stack__aside,
+  .faceplate__led,
+  .js .value-keys__tray.is-on .value-key__cap,
+  .mission-plaque__window img {
+    animation: none !important;
+  }
+
+  .js .value-keys__tray.is-on .value-key::before {
+    animation: none !important;
+    opacity: 0.4;
+  }
+
+  .relief__stage,
+  .relief__plate::after {
+    transition: none;
   }
 }

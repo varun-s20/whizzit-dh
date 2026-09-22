@@ -1,55 +1,10 @@
-// Home page. Layout follows the approved /ref design; every fact, quote, logo and
-// photo comes from staging.whizzit.co.uk (see /_source).
+// Home page. Every fact, quote, logo and photo comes from staging.whizzit.co.uk
+// (see /_source); the layout is the bold redesign — photo-led hero, a proof strip
+// that overlaps it, an ink services band, and photo tiles for stories and sectors.
 import {
-  page, statValue, btn, icon, photo, stockPhoto, stars, reviewAvatar,
+  page, statValue, btn, textLink, icon, photo, stockPhoto, stars, reviewAvatar,
   SITE, SERVICES, INDUSTRIES, CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, PHOTOS, BLOG, STOCK, CATEGORY_PHOTO, SECTOR_PHOTO,
 } from "../lib.mjs";
-
-/* ---------- Hero stage ----------
-   A looping, explanatory animation: alerts arrive, get picked up and resolve.
-   CSS keyframes only, so it runs off the main thread, and it settles on the
-   resolved state when the visitor prefers reduced motion. */
-const tickets = [
-  { icon: "mail", title: "Phishing email quarantined", meta: "Microsoft 365 · finance team" },
-  { icon: "laptop", title: "Failed disk spotted early", meta: "Laptop · replaced next day" },
-  { icon: "wifi", title: "Site connection failed over", meta: "Stevenage office · no downtime" },
-];
-
-const heroStage = `
-<div class="stage" aria-hidden="true">
-  <div class="stage__bar">
-    <span class="stage__live"><span class="stage__dot"></span>Monitoring</span>
-    <span class="stage__count">1,240 devices</span>
-  </div>
-
-  <svg class="stage__pulse" viewBox="0 0 320 48" fill="none" preserveAspectRatio="none">
-    <path class="stage__pulse-line" d="M0 32 H70 l10-16 10 26 8-14 10 6 H180 l10-10 8 14 10-18 8 12 H320" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-
-  <ul class="stage__feed" role="list">
-    ${tickets.map((t, i) => `
-    <li class="stage__ticket stage__ticket--${i + 1}">
-      <span class="stage__icon">${icon(t.icon)}</span>
-      <span class="stage__text"><strong>${t.title}</strong><span>${t.meta}</span></span>
-      <span class="stage__status"><span class="stage__status-open">Open</span><span class="stage__status-done">${icon("check")}Resolved</span></span>
-    </li>`).join("")}
-  </ul>
-
-  <div class="stage__foot">
-    <div>
-      <strong>9 min</strong>
-      <span>Average first response</span>
-    </div>
-    <div>
-      <strong>${icon("star")}${SITE.google.rating}</strong>
-      <span>${SITE.google.count} Google reviews</span>
-    </div>
-    <div class="stage__badges">
-      <img src="@/assets/images/partners/cyber-essentials.png" alt="" width="60" height="44" decoding="async">
-      <img src="@/assets/images/partners/microsoft-csp.png" alt="" width="60" height="44" decoding="async">
-    </div>
-  </div>
-</div>`;
 
 /* ---------- About tabs (from /about/) ---------- */
 const about = [
@@ -58,18 +13,43 @@ const about = [
   { key: "story", label: "Our story", text: "We saw a gap in the affordable IT support market for a business that genuinely puts clients first. WhizzIT combines best in class technical expertise with the accountability and responsiveness of a senior team that stays close to every account." },
 ];
 
-/* ---------- Services (five pillars, plus the “something else” route) ---------- */
-const serviceCards = SERVICES.map((s, i) => `
-  <article class="svc-card${i === 0 ? " is-featured" : ""}">
-    <span class="svc-card__icon">${icon(s.icon)}</span>
-    <h3 class="svc-card__title"><a class="card-link" href="@/${s.href}">${s.title}</a></h3>
-    <p>${s.desc}</p>
-  </article>`).join("") + `
-  <article class="svc-card svc-card--route">
-    <span class="svc-card__icon">${icon("message")}</span>
-    <h3 class="svc-card__title"><a class="card-link" href="@/contact.html">Something else?</a></h3>
-    <p>Not sure what you need? Tell us what you’re wrestling with and we’ll point you in the right direction.</p>
-  </article>`;
+/* ---------- Services ----------
+   A ruled list on the right, and on the left a sticky stage that follows the
+   reader down it: the service being read takes the stage in its own colour, and
+   the rail fills with the scroll (initServiceStage in app.js). The stage repeats
+   what the list says, so it is hidden from assistive tech. */
+const serviceItems = [
+  ...SERVICES,
+  { icon: "message", tone: "support", title: "Something else?", href: "contact.html", desc: "Not sure what you need? Tell us what you’re wrestling with and we’ll point you in the right direction." },
+];
+const pad = (n) => String(n).padStart(2, "0");
+
+const serviceRows = serviceItems.map((s) => `
+  <li class="svc-row tone-${s.tone}">
+    <span class="svc-row__icon">${icon(s.icon)}</span>
+    <div class="svc-row__body">
+      <h3 class="svc-row__title"><a class="card-link" href="@/${s.href}">${s.title}</a>${icon("arrow")}</h3>
+      <p>${s.desc}</p>
+    </div>
+  </li>`).join("");
+
+const serviceStage = `
+  <div class="svc-stage" aria-hidden="true">
+    ${serviceItems.map((s, i) => `
+    <div class="svc-stage__slide tone-${s.tone}${i === 0 ? " is-active" : ""}">
+      <span class="svc-stage__glow"></span>
+      <span class="svc-stage__num">${pad(i + 1)}</span>
+      <span class="svc-stage__icon">${icon(s.icon)}</span>
+      <span class="svc-stage__title">${s.title}</span>
+    </div>`).join("")}
+    <div class="svc-stage__foot">
+      <span class="svc-stage__count"><span class="svc-stage__now">01</span> / ${pad(serviceItems.length)}</span>
+      <span class="svc-stage__rail"><span class="svc-stage__fill"></span></span>
+    </div>
+  </div>`;
+
+/* ---------- Proof strip: an icon and a tone per figure, in STATS order ---------- */
+const STAT_LOOK = [["handHeart", "cyber"], ["award", "support"], ["clock", "cloud"], ["star", "projects"]];
 
 /* ---------- Case studies ---------- */
 const CASE_PHOTO = {
@@ -79,13 +59,15 @@ const CASE_PHOTO = {
   "mbkb-group": PHOTOS.team,
 };
 
-const projects = CASE_STUDIES.map((c) => `
-  <article class="project-card">
-    ${photo(CASE_PHOTO[c.slug], { cls: "project-card__art", ratio: "3-2", sizes: "(min-width: 768px) 45vw, 100vw" })}
-    <span class="tag">${c.sector}</span>
-    <h3 class="project-card__title"><a class="card-link" href="@/our-customers/${c.slug}.html">${c.title}</a></h3>
-    <p>${c.excerpt}</p>
-    <span class="read-more" aria-hidden="true">Read the story ${icon("arrow")}</span>
+const cases = CASE_STUDIES.map((c) => `
+  <article class="case-tile">
+    ${photo(CASE_PHOTO[c.slug], { cls: "case-tile__art", ratio: "4-5", sizes: "(min-width: 1024px) 24vw, (min-width: 640px) 46vw, 92vw" })}
+    <div class="case-tile__body">
+      <span class="case-tile__tag">${c.sector}</span>
+      <h3 class="case-tile__title"><a class="card-link" href="@/our-customers/${c.slug}.html">${c.title}</a></h3>
+      <p>${c.excerpt}</p>
+      <span class="case-tile__more" aria-hidden="true">Read the story ${icon("arrow")}</span>
+    </div>
   </article>`).join("");
 
 const START = 2;
@@ -111,29 +93,40 @@ const insight = (p, variant) => `
   </article>`;
 
 const main = `
-<section class="hero hero--sky" aria-labelledby="hero-title">
-  <div class="container hero-sky__grid">
-    <div class="hero-sky__copy">
+<section class="hero hero--sky hero-home" aria-labelledby="hero-title">
+  ${photo(PHOTOS.van, { cls: "hero-home__bg", ratio: "16-9", sizes: "100vw", loading: "eager" })}
+  <div class="container hero-home__inner">
+    <div class="hero-home__copy">
       <p class="eyebrow reveal-up" style="--delay:0ms">Managed IT services provider</p>
-      <h1 class="hero-sky__title reveal-up" style="--delay:60ms" id="hero-title">Managed IT<br><span>that keeps your business moving.</span></h1>
-      <p class="hero-sky__lead reveal-up" style="--delay:120ms">WhizzIT delivers expert managed IT services and reliable IT support to businesses across the UK. Proactive maintenance, responsive support and no tech jargon. Simple, secure and stress free.</p>
-      <div class="btn-group reveal-up" style="--delay:180ms">
-        ${btn("Book a consultation", "contact.html", { arrow: false, track: "home-hero-book-consultation" })}
+      <h1 class="hero-sky__title hero-home__title reveal-up" style="--delay:60ms" id="hero-title">Managed IT <span>that keeps your business moving.</span></h1>
+      <div class="btn-group reveal-up" style="--delay:120ms">
+        ${btn("Book a consultation", "contact.html", { track: "home-hero-book-consultation" })}
         ${btn("Explore services", "it-services.html", { variant: "secondary", arrow: false, track: "home-hero-services" })}
       </div>
-      <p class="hero-sky__note reveal-up" style="--delay:240ms">${icon("phone")}<a href="${SITE.phoneHref}" data-track="home-hero-phone">${SITE.phone}</a> · ${SITE.responseLine}</p>
+      <p class="hero-sky__note reveal-up" style="--delay:180ms">${icon("phone")}<a href="${SITE.phoneHref}" data-track="home-hero-phone">${SITE.phone}</a> · ${SITE.responseLine}</p>
     </div>
-    <div class="hero-sky__visual">${heroStage}</div>
-  </div>
-  <div class="container">
-    <div class="client-band">
-      <p class="client-band__label">Trusted by the businesses we look after</p>
+    <div class="hero-home__clients">
+      <p class="hero-home__clients-label">Trusted by the businesses we look after</p>
       <ul class="logo-row" role="list">
         ${CLIENTS.slice(0, 6).map((c) => `<li><img src="@/assets/images/clients/${c.file}" alt="${c.title}" decoding="async"></li>`).join("")}
       </ul>
     </div>
   </div>
 </section>
+
+<div class="home-strip">
+  <div class="container">
+    <dl class="stat-strip">
+      ${STATS.map((s, i) => `
+      <div class="stat-strip__item tone-${STAT_LOOK[i][1]}">
+        <dt><span class="stat-strip__icon">${icon(STAT_LOOK[i][0])}</span>${s.label}</dt>
+        <dd class="stat-strip__value">${statValue(s)}</dd>
+      </div>`).join("")}
+    </dl>
+    <p class="home-strip__source">Figures published by WhizzIT. Response and resolution times measured across every ticket in 2025.</p>
+    <p class="home-strip__lead">WhizzIT delivers expert managed IT services and reliable IT support to businesses across the UK. Proactive maintenance, responsive support and no tech jargon. Simple, secure and stress free.</p>
+  </div>
+</div>
 
 <section class="section home-about" aria-labelledby="about-title">
   <div class="container">
@@ -148,25 +141,24 @@ const main = `
           <div class="tabs__list pill-tabs" role="tablist" aria-label="About WhizzIT">
             ${about.map((t, i) => `<button class="tabs__tab" type="button" role="tab" id="tab-${t.key}" aria-controls="panel-${t.key}" aria-selected="${i === 0}">${t.label}</button>`).join("")}
           </div>
-          ${about.map((t) => `<div class="tabs__panel" role="tabpanel" id="panel-${t.key}" aria-labelledby="tab-${t.key}" tabindex="0"><p>${t.text} <a class="more-link" href="@/about.html">More about us</a></p></div>`).join("")}
+          ${about.map((t) => `<div class="tabs__panel" role="tabpanel" id="panel-${t.key}" aria-labelledby="tab-${t.key}" tabindex="0"><p>${t.text}</p>${textLink("More about us", "about.html", "home-about-more")}</div>`).join("")}
         </div>
-        <dl class="mini-stats">
-          ${STATS.map((s) => `<div><dt>${s.label}</dt><dd>${statValue(s)}</dd></div>`).join("")}
-        </dl>
-        <p class="small muted">Figures published by WhizzIT. Response and resolution times measured across every ticket in 2025.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section home-services" aria-labelledby="services-title">
-  <div class="container">
-    <div class="center-head">
-      <h2 class="grad-head" id="services-title">Everything IT, under one roof</h2>
-      <p>From day to day support to cloud, cyber security and full project delivery, WhizzIT looks after the lot. Five core services, one accountable team.</p>
+<section class="section section--ink home-services" data-service-stage aria-labelledby="services-title">
+  <div class="container home-services__grid">
+    <div class="home-services__aside">
+      ${serviceStage}
+      ${textLink("View all services", "it-services.html", "home-all-services")}
     </div>
-    <div class="svc-grid">${serviceCards}</div>
-    <div class="center-cta">${btn("View all services", "it-services.html", { variant: "secondary", arrow: false, track: "home-all-services" })}</div>
+    <div class="home-services__body">
+      <h2 class="grad-head" id="services-title">Everything IT, under one roof</h2>
+      <p class="lead">From day to day support to cloud, cyber security and full project delivery, WhizzIT looks after the lot. Five core services, one accountable team.</p>
+      <ul class="svc-list" role="list">${serviceRows}</ul>
+    </div>
   </div>
 </section>
 
@@ -177,9 +169,9 @@ const main = `
         <h2 class="grad-head" id="results-title">Real clients, real results</h2>
         <p>From hotels and construction firms to clinics and consultancies, businesses of every shape rely on WhizzIT to keep their technology running.</p>
       </div>
-      ${btn("Read the success stories", "our-customers.html#stories", { variant: "secondary", arrow: false, track: "home-all-stories" })}
+      ${textLink("Read the success stories", "our-customers.html#stories", "home-all-stories")}
     </div>
-    <div class="project-grid">${projects}</div>
+    <div class="case-grid">${cases}</div>
   </div>
 </section>
 
@@ -278,7 +270,7 @@ const main = `
         <h2 class="grad-head" id="insights-title">Insights &amp; innovations</h2>
         <p>Practical advice from the WhizzIT team, from cyber security and cloud strategy to getting more from the technology you already pay for.</p>
       </div>
-      ${btn("View all articles", "blog.html", { variant: "secondary", arrow: false, track: "home-blog" })}
+      ${textLink("View all articles", "blog.html", "home-blog")}
     </div>
     <div class="insight-grid">
       ${insight(BLOG[0], "tall")}

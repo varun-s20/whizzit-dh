@@ -26,6 +26,7 @@ const card = (p) => `
 
 const main = `
 ${pageHero({
+  feature: false,
   eyebrow: "Insights",
   title: "IT advice for the people who run the business",
   lead: "Practical, jargon-free guidance from our engineers on IT support, cyber security, cloud and getting more from the technology you already pay for.",

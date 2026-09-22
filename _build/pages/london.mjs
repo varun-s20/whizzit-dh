@@ -1,5 +1,5 @@
 // IT Support London — the flagship location page. Signature: the coverage panel
-// (head office, travel time, areas served) sits in the hero, and the page closes
+// (head office, travel time, areas served) runs across the hero's foot, and the page closes
 // with the London-specific service list.
 import {
   page, reviewAvatar, btn, icon, photo, stockPhoto, breadcrumbs, ctaBand, serviceRow,
@@ -7,7 +7,7 @@ import {
 } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
-import { renderBlocks } from "../blocks.mjs";
+import { renderBlocks, pageHero } from "../blocks.mjs";
 
 const m = parsePage(pageByPath("/locations/it-support-london/").html);
 const crumbs = [
@@ -24,37 +24,34 @@ const london = SITE.offices[0];
 const areas = ["City of London", "Shoreditch", "Islington", "Camden", "Westminster", "Canary Wharf", "Southwark", "Hammersmith", "Croydon", "Greater London"];
 
 const main = `
-<section class="hero hero--sky hero--london" aria-labelledby="london-title">
-  <div class="container hero-page__grid">
-    <div>
-      ${breadcrumbs(crumbs)}
-      <p class="eyebrow">${icon("mapPin")}IT support in London</p>
-      <h1 class="hero-sky__title" id="london-title">${m.title}</h1>
-      <p class="hero-sky__lead">${m.lead}</p>
-      <div class="btn-group">
-        ${btn("Book a consultation", "contact.html", { arrow: false, track: "london-cta" })}
-        ${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "secondary", iconName: "phone", arrow: false, track: "london-phone" })}
+${pageHero({
+  eyebrow: `${icon("mapPin")}IT support in London`,
+  title: m.title,
+  lead: m.lead,
+  crumbs: breadcrumbs(crumbs),
+  cls: "hero--london",
+  actions: `${btn("Book a consultation", "contact.html", { arrow: false, track: "london-cta" })}${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "secondary", iconName: "phone", arrow: false, track: "london-phone" })}`,
+  note: `${SITE.responseLine} · ${SITE.google.label} · On site when it needs hands`,
+  feature: stockPhoto(STOCK.london, { ratio: "16-9", sizes: "(min-width: 1280px) 1240px, 100vw", loading: "eager" }),
+  aside: `
+    <aside class="coverage-card" aria-label="London coverage">
+      <div>
+        <p class="coverage-card__label">${icon("building")}Head office</p>
+        <p class="coverage-card__address">${london.address}</p>
+        <a class="text-link" href="${london.maps}" rel="noopener"><span>Get directions</span>${icon("arrow")}</a>
       </div>
-      <p class="hero-sky__note">${icon("checkCircle")}${SITE.responseLine} · ${SITE.google.label} · On site when it needs hands</p>
-    </div>
-    <div class="london-aside">
-      ${stockPhoto(STOCK.london, { cls: "london-aside__photo", ratio: "3-2", sizes: "(min-width: 1024px) 45vw, 100vw", loading: "eager" })}
-    <aside class="coverage-card">
-      <p class="coverage-card__label">${icon("building")}Head office</p>
-      <p class="coverage-card__address">${london.address}</p>
-      <a class="text-link" href="${london.maps}" rel="noopener"><span>Get directions</span>${icon("arrow")}</a>
       <div class="coverage-card__stats">
         <div><strong>9 min</strong><span>Average first response</span></div>
         <div><strong>6 hours</strong><span>Average resolution</span></div>
       </div>
-      <p class="coverage-card__areas-label">Areas we cover</p>
-      <ul class="coverage-card__areas" role="list">
-        ${areas.map((a) => `<li>${a}</li>`).join("")}
-      </ul>
-    </aside>
-    </div>
-  </div>
-</section>
+      <div>
+        <p class="coverage-card__areas-label">Areas we cover</p>
+        <ul class="coverage-card__areas" role="list">
+          ${areas.map((a) => `<li>${a}</li>`).join("")}
+        </ul>
+      </div>
+    </aside>`,
+})}
 
 ${renderBlocks(blocks, { key: "london" })}
 
