@@ -1,6 +1,6 @@
 // Blog article template. Content comes from the WordPress export (_source/wp-posts.json),
 // parsed in content.mjs — titles, dates, authors and prose are the client's own.
-import { page, icon, blogCard, blogArt, ctaBand, breadcrumbs, serviceRow, service, btn, SITE, cleanUrl } from "../lib.mjs";
+import { page, icon, blogCard, blogArt, ctaBand, breadcrumbs, serviceRow, service, btn, callbackForm, SITE, cleanUrl } from "../lib.mjs";
 import { BLOG } from "../site.mjs";
 
 // Which core service each article category points readers towards.
@@ -35,6 +35,7 @@ BLOG.forEach((post, index) => {
       <h1 class="hero__title mt-5">${post.title}</h1>
       <p class="lead hero__lead">${post.excerpt}</p>
       <div class="person mt-6"><span class="avatar" aria-hidden="true">WZ</span><span><span class="person__name">${post.author}</span><span class="person__role">WhizzIT</span></span></div>
+      ${callbackForm({ track: `article-${post.slug}` })}
       <div class="blog-card__art article-cover tone-${post.tone}" aria-hidden="true">${blogArt(post.icon)}</div>
     </div>
   </header>

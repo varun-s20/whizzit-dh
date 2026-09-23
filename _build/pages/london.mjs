@@ -30,8 +30,7 @@ ${pageHero({
   lead: m.lead,
   crumbs: breadcrumbs(crumbs),
   cls: "hero--london",
-  actions: `${btn("Book a consultation", "contact.html", { arrow: false, track: "london-cta" })}${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "secondary", iconName: "phone", arrow: false, track: "london-phone" })}`,
-  note: `${SITE.responseLine} · ${SITE.google.label} · On site when it needs hands`,
+  note: "On site when it needs hands",
   feature: stockPhoto(STOCK.london, { ratio: "16-9", sizes: "(min-width: 1280px) 1240px, 100vw", loading: "eager" }),
   aside: `
     <aside class="coverage-card" aria-label="London coverage">

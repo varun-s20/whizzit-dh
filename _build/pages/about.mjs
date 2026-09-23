@@ -1,6 +1,6 @@
 // About page. Content is WhizzIT's own, taken from /about/ on staging (see _source/content/about.md).
 import {
-  page, statValue, reviewAvatar, stars, btn, icon, photo, breadcrumbs,
+  page, statValue, reviewAvatar, stars, btn, icon, photo, breadcrumbs, callbackForm, heroNote,
   SITE, STATS, TEAM, CREDENTIALS, PARTNERS, PHOTOS, TESTIMONIALS,
 } from "../lib.mjs";
 
@@ -27,10 +27,8 @@ const main = `
       <span class="about-hero__line"><span class="about-hero__plate">that puts clients first.</span></span>
     </h1>
     <p class="about-hero__lead">We saw a gap in the affordable IT support market for a business that genuinely puts clients first. WhizzIT combines best in class technical expertise with the accountability and responsiveness of a senior team that stays close to every account.</p>
-    <div class="btn-group">
-      ${btn("Book a consultation", "contact.html", { arrow: false, track: "about-hero-consultation" })}
-      ${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "secondary", iconName: "phone", arrow: false, track: "about-hero-phone" })}
-    </div>
+    ${callbackForm({ track: "about-hero" })}
+    ${heroNote("UK-wide coverage", "about-hero")}
   </div>
 </section>
 

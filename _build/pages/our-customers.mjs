@@ -1,7 +1,7 @@
 // Our Customers. Signature: the Google rating headline over a masonry review wall,
 // with the four case studies below it.
 import {
-  page, statValue, reviewAvatar, stars, btn, icon, photo, breadcrumbs, ctaBand,
+  page, statValue, reviewAvatar, stars, btn, icon, photo, breadcrumbs, ctaBand, callbackForm, heroNote,
   SITE, CLIENTS, CASE_STUDIES, TESTIMONIALS, PHOTOS, STATS,
 } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
@@ -31,10 +31,8 @@ ${/* Signature layout for this page: the rating is stated once, centred and full
       <a class="rating-bar__link" href="${SITE.google.reviewsUrl}" rel="noopener" data-track="customers-google">${icon("google")}<span>Read them on Google</span>${icon("arrow")}</a>
     </div>
 
-    <div class="btn-group">
-      ${btn("Book a consultation", "contact.html", { arrow: false, track: "customers-cta" })}
-      ${btn("See the success stories", "#stories", { variant: "secondary", arrow: false, track: "customers-stories" })}
-    </div>
+    ${callbackForm({ track: "customers-hero" })}
+    ${heroNote("UK-wide coverage", "customers-hero")}
   </div>
 
   <div class="container">

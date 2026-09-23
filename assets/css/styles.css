@@ -13,6 +13,9 @@
                page; they re-declare the colour tokens (see section 28).
                Status: success/warning/error. Blue is for action and
                emphasis, not for every icon and heading.
+               Brand orange is the logo's own gradient, #EC7C20 into
+               #CB3829 (--brand-*): a thin accent only, never body text
+               on white (#EC7C20 is 2.9:1 there) and never an action.
    Type        Urbanist 400–800 — headings (h1/h2 at 800, tight tracking)
                and body. Figtree 500–700 — buttons, nav and small UI labels.
                Fluid scale via clamp(); see --fs-* tokens.
@@ -115,6 +118,9 @@
   --color-primary-ink: #1560eb;
   --color-primary-dark: #0b55e0;
   --color-primary-light: #e4eeff;
+  --brand-orange: #ec7c20;
+  --brand-ember: #cb3829;
+  --brand-flame: linear-gradient(135deg, var(--brand-orange) 0%, var(--brand-ember) 100%);
   --color-navy: #0a2f7a;
   --color-navy-fill: #0a2f7a;
   --color-navy-dark: #072260;
@@ -140,7 +146,7 @@
   --color-primary-fill-hover: #0b55e0;
   --icon-tile-neutral: var(--color-primary-light);
   --num-stroke: #c2d2ee;
-  --quote-mark: rgba(31, 107, 255, 0.16);
+  --quote-mark: rgba(236, 124, 32, 0.28);
   --bar-track: #ececee;
   --svc-icon-border: #a9c4f5;
   --svc-icon-bg: radial-gradient(circle at 50% 35%, #ffffff, #e5eefc);
@@ -377,11 +383,13 @@ strong {
   color: var(--color-primary-ink);
 }
 
+/* The mark before every eyebrow is the one place orange shows on every page. */
 .eyebrow::before {
   content: "";
   width: 22px;
   height: 8px;
   flex: none;
+  color: var(--brand-orange);
   background:
     radial-gradient(circle at 4px 4px, currentColor 3px, transparent 3.5px),
     radial-gradient(circle at 18px 4px, transparent 2px, currentColor 2.5px, currentColor 3.5px, transparent 4px),
@@ -705,7 +713,7 @@ strong {
   bottom: 2px;
   height: 2px;
   border-radius: 2px;
-  background: currentColor;
+  background: var(--brand-flame);
   transform: scaleX(0);
   transition: transform var(--dur) var(--ease-out);
 }
@@ -4770,7 +4778,7 @@ select.field__input {
   position: absolute;
   inset: 0 0 auto;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  background: linear-gradient(90deg, transparent, rgba(236, 124, 32, 0.55), rgba(203, 56, 41, 0.4), transparent);
 }
 
 .site-footer__cta {
@@ -6714,10 +6722,10 @@ select.field__input {
   opacity: 1;
 }
 
+/* Icon beside the text, never alone on a line: the text wraps inside its span. */
 .hero-sky__note {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   gap: 6px;
   margin-top: var(--space-5);
   color: var(--color-text-soft);
@@ -6725,9 +6733,11 @@ select.field__input {
 }
 
 .hero-sky__note svg {
+  flex: none;
   width: 16px;
   height: 16px;
-  color: var(--color-primary-ink);
+  margin-top: 0.15em;
+  color: var(--brand-orange);
 }
 
 .hero-sky__note a {
@@ -6993,8 +7003,21 @@ select.field__input {
 }
 
 .stat-band__grid > div {
+  position: relative;
   padding-top: var(--space-5);
   border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+/* A short lit run of the logo gradient on each figure's rule, like the form's edge. */
+.stat-band__grid > div::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--brand-flame);
 }
 
 .stat-band__grid dd {
@@ -7055,6 +7078,11 @@ select.field__input {
 .quote-feature__mark svg {
   width: 56px;
   height: 56px;
+}
+
+/* Room on the right so the first lines clear the quote mark. */
+.quote-feature blockquote {
+  padding-right: clamp(40px, 5vw, 72px);
 }
 
 .quote-feature blockquote p {
@@ -7438,8 +7466,9 @@ select.field__input {
   transform: translateY(-2px);
 }
 
+/* Ember, not orange: small text on white needs the darker end (4.9:1). */
 .detail-card__num {
-  color: var(--color-primary-ink);
+  color: var(--brand-ember);
   font-family: var(--font-ui);
   font-size: 0.75rem;
   font-weight: 600;
@@ -8674,7 +8703,7 @@ select.field__input {
 }
 
 .sub-grid__num {
-  color: var(--color-primary-ink);
+  color: var(--brand-ember);
   font-family: var(--font-ui);
   font-size: 0.75rem;
   font-weight: 600;
@@ -9936,7 +9965,7 @@ select.field__input {
   --color-primary-fill-hover: #3b7bff;
   --icon-tile-neutral: rgba(255, 255, 255, 0.05);
   --num-stroke: #33436b;
-  --quote-mark: rgba(91, 141, 255, 0.22);
+  --quote-mark: rgba(236, 124, 32, 0.34);
   --bar-track: #1d2534;
   --svc-icon-border: #2f4270;
   --svc-icon-bg: radial-gradient(circle at 50% 35%, #1d2740, #141c2c);
@@ -9987,7 +10016,7 @@ select.field__input {
   background:
     radial-gradient(38% 22% at 18% 16%, rgba(91, 141, 255, 0.16), transparent 70%),
     radial-gradient(30% 14% at 42% 8%, rgba(91, 141, 255, 0.1), transparent 70%),
-    radial-gradient(60% 40% at 80% 70%, rgba(53, 205, 228, 0.08), transparent 70%),
+    radial-gradient(60% 40% at 80% 70%, rgba(236, 124, 32, 0.1), transparent 70%),
     linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 30%, var(--color-page) 78%);
 }
 
@@ -10271,6 +10300,21 @@ select.field__input {
   color: rgba(233, 238, 247, 0.86);
 }
 
+/* Capped below desktop so its four fields keep the two-column layout instead of
+   squeezing into one row on tablets. */
+.hero-home__form {
+  max-width: 640px;
+}
+
+/* The form on frosted glass: the van stays visible through it. */
+.hero-home .callback {
+  margin-top: 0;
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(13, 18, 27, 0.72);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+
 .hero-home__clients {
   display: grid;
   gap: var(--space-2);
@@ -10303,6 +10347,16 @@ select.field__input {
 }
 
 @media (min-width: 1024px) {
+  .hero-home__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(380px, 460px);
+    align-items: center;
+    column-gap: clamp(40px, 5vw, 80px);
+  }
+
+  .hero-home__clients {
+    grid-column: 1 / -1;
+  }
+
   .hero-home::before {
     background:
       radial-gradient(55% 70% at 0% 0%, rgba(31, 107, 255, 0.34), transparent 70%),
@@ -10844,11 +10898,6 @@ select.field__input {
   }
 }
 
-/* The hero has no paragraph now, so the actions keep their own distance. */
-.hero-home .btn-group {
-  margin-top: var(--space-6);
-}
-
 /* ---- Inner pages: feature photo across the hero's foot ----
    A wide photo that starts inside the dark hero and finishes on the page below,
    so the two sections read as one. The hero grows by the overlap to make room. */
@@ -11031,8 +11080,12 @@ select.field__input {
 }
 
 .about-hero .breadcrumbs ol,
-.about-hero .btn-group {
+.about-hero .hero-sky__note {
   justify-content: center;
+}
+
+.about-hero .callback {
+  max-width: 1040px;
 }
 
 .about-hero__title {
@@ -11056,12 +11109,12 @@ select.field__input {
   animation-delay: 380ms;
 }
 
-/* The nameplate: raised metal, engraved-cyan type, a sheen that crosses it
+/* The nameplate: raised metal in the logo's charcoal, brand-orange type, a sheen that crosses it
    once. box-decoration-break gives each wrapped line its own plate on phones. */
 .about-hero__plate {
   padding: 0.02em 0.32em 0.08em;
   border-radius: 0.24em;
-  color: var(--color-accent-on-dark);
+  color: var(--brand-orange);
   background:
     linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.24) 50%, transparent 60%) no-repeat,
     linear-gradient(180deg, #2b374c 0%, #19222f 55%, #121a26 100%);
@@ -11091,7 +11144,8 @@ select.field__input {
 }
 
 .about-hero__lead,
-.about-hero .btn-group {
+.about-hero .callback,
+.about-hero .hero-sky__note {
   animation: relief-in 800ms var(--ease-out) 700ms backwards;
 }
 
@@ -11537,7 +11591,7 @@ select.field__input {
   aspect-ratio: 1;
   margin-top: calc(var(--seal) / -2);
   border-radius: 50%;
-  color: var(--color-primary-ink);
+  color: var(--brand-ember);
   background: radial-gradient(circle at 35% 28%, #ffffff 0%, #eef2f8 60%, #dde4ee 100%);
   box-shadow:
     inset 0 2px 0 #ffffff,
@@ -11798,7 +11852,8 @@ select.field__input {
   .about-hero__line,
   .about-hero__plate,
   .about-hero__lead,
-  .about-hero .btn-group,
+  .about-hero .callback,
+  .about-hero .hero-sky__note,
   .relief__plate,
   .relief__seal,
   .hero-stack .hero-stack__title,
@@ -11818,4 +11873,155 @@ select.field__input {
   .relief__plate::after {
     transition: none;
   }
+}
+
+
+/* 31. CALLBACK FORM
+   The live site's "Request a callback" form, at the top of every page that had
+   it. A quiet surface in the hero with the logo's orange as a short lit edge;
+   the fields are the site's own (.field), so the form follows the dark hero
+   palette and the light article header without overrides. Laid out by its own
+   width (container queries), because it sits in a 660px column on the home page
+   and across 1240px elsewhere.
+   ========================================================================== */
+.callback {
+  position: relative;
+  width: 100%;
+  margin-top: var(--space-6);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border-soft);
+  border-radius: 18px;
+  background: var(--color-surface);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 24px 48px -30px rgba(0, 0, 0, 0.55);
+  text-align: left;
+  container-type: inline-size;
+}
+
+.callback::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: var(--space-5);
+  width: 56px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--brand-flame);
+}
+
+.callback__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 10px;
+  margin-bottom: var(--space-4);
+  color: var(--color-text-soft);
+  font-size: var(--fs-small);
+}
+
+.callback__head strong {
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.callback__row {
+  display: grid;
+  gap: var(--space-4);
+}
+
+/* Fields read as wells pressed into the surface. */
+.callback .field__input {
+  min-height: 48px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.16);
+}
+
+.callback .field__input:focus {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.16), var(--shadow-focus);
+}
+
+/* One line to start, growing with what is typed where the browser can. */
+.callback textarea.field__input {
+  min-height: 48px;
+  max-height: 160px;
+  resize: none;
+  field-sizing: content;
+}
+
+.callback__submit {
+  min-height: 48px;
+  justify-self: stretch;
+}
+
+@container (min-width: 400px) {
+  .callback__row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .callback__message,
+  .callback__submit,
+  .callback--phone .callback__row > .field:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Wide: one row. Each field is a subgrid over label / input / error rows, so the
+   inputs line up whatever the labels say, and the button sits on the input row. */
+@container (min-width: 820px) {
+  .callback__row {
+    grid-template-columns: 1fr 1fr 1.5fr auto;
+    grid-template-rows: auto auto auto;
+    gap: var(--space-2) var(--space-4);
+  }
+
+  .callback--phone .callback__row {
+    grid-template-columns: 1fr 1fr 1fr 1.5fr auto;
+  }
+
+  .callback__row > .field {
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+  }
+
+  .callback__message,
+  .callback--phone .callback__row > .field:first-child {
+    grid-column: auto;
+  }
+
+  .callback__submit {
+    grid-row: 2;
+    grid-column: -2;
+    align-self: start;
+  }
+}
+
+.callback__success {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  color: var(--color-text-soft);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.callback__success svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  color: var(--color-success);
+}
+
+.callback__success strong {
+  color: var(--color-text);
+}
+
+.callback__success a {
+  color: var(--color-navy);
+  font-weight: 600;
+}
+
+/* Inside the hero stack, the form and the proof faceplate below it are both
+   surfaces; the note line between them keeps them apart. */
+.hero-stack .callback + .hero-sky__note {
+  margin-top: var(--space-4);
 }

@@ -31,7 +31,6 @@ ${pageHero({
   title: "IT advice for the people who run the business",
   lead: "Practical, jargon-free guidance from our engineers on IT support, cyber security, cloud and getting more from the technology you already pay for.",
   crumbs: breadcrumbs(crumbs),
-  actions: `${btn("Talk to an engineer", "contact.html", { arrow: false, track: "blog-cta" })}${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "secondary", iconName: "phone", arrow: false, track: "blog-phone" })}`,
   aside: `
     <article class="featured-post">
       <p class="featured-post__label">${icon("sparkle")}Latest article</p>

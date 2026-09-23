@@ -335,7 +335,6 @@ ${pageHero({
     lead: m.lead,
     crumbs: breadcrumbs(crumbs),
     cls: "hero--case",
-    actions: `${btn("Book a consultation", "contact.html", { arrow: false, track: `case-${study.slug}-cta` })}${btn("More customer stories", "our-customers.html#stories", { variant: "secondary", arrow: false, track: `case-${study.slug}-more` })}`,
     feature: photo(studyPhoto, { ratio: "16-9", sizes: "(min-width: 1280px) 1240px, 100vw", loading: "eager" }),
   })}
 

@@ -101,12 +101,50 @@
     <div class="hero-home__copy">
       <p class="eyebrow reveal-up" style="--delay:0ms">Managed IT services provider</p>
       <h1 class="hero-sky__title hero-home__title reveal-up" style="--delay:60ms" id="hero-title">Managed IT <span>that keeps your business moving.</span></h1>
-      <div class="btn-group reveal-up" style="--delay:120ms">
-        <a class="btn btn--primary" href="contact.html" data-track="home-hero-book-consultation"><span>Book a consultation</span><svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
-        <a class="btn btn--secondary" href="it-services.html" data-track="home-hero-services"><span>Explore services</span></a>
-      </div>
-      <p class="hero-sky__note reveal-up" style="--delay:180ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><a href="tel:02046342518" data-track="home-hero-phone">020 4634 2518</a> · Same working day response</p>
+      <div class="reveal-up" style="--delay:120ms"><p class="hero-sky__note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Prefer to talk? <a href="tel:02046342518" data-track="home-hero-phone">Call 020 4634 2518</a> · Rated 5.0 on Google · UK-wide coverage</span></p></div>
     </div>
+    
+    <div class="hero-home__form reveal-up" style="--delay:180ms">
+<div class="callback callback--phone">
+  <form class="callback__form" action="/api/submit.php" method="post" data-validate data-demo data-success="callback-success" aria-labelledby="callback-title">
+    <input type="hidden" name="form_name" value="callback">
+    <input class="visually-hidden" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p class="callback__head"><strong id="callback-title">Request a callback</strong><span>We respond the same working day.</span></p>
+    <div class="callback__row">
+      
+  <div class="field">
+    <label class="field__label" for="cb-name">Name</label>
+    
+    <input class="field__input" id="cb-name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" required aria-describedby="cb-name-error">
+    <p class="field__error" id="cb-name-error"></p>
+  </div>
+      
+  <div class="field">
+    <label class="field__label" for="cb-email">Email</label>
+    
+    <input class="field__input" id="cb-email" name="email" type="email" autocomplete="email" placeholder="jane@company.co.uk" required aria-describedby="cb-email-error">
+    <p class="field__error" id="cb-email-error"></p>
+  </div>
+      
+  <div class="field">
+    <label class="field__label" for="cb-phone">Phone</label>
+    
+    <input class="field__input" id="cb-phone" name="phone" type="tel" autocomplete="tel" placeholder="07700 900123" required data-msg-required="Enter your phone number" aria-describedby="cb-phone-error" pattern="[0-9 +\(\)\-]{7,20}">
+    <p class="field__error" id="cb-phone-error"></p>
+  </div>
+      <div class="field callback__message">
+        <label class="field__label" for="cb-message">How can we help? <span class="field__optional">(optional)</span></label>
+        <textarea class="field__input" id="cb-message" name="message" rows="1" placeholder="A quick note about your IT…" aria-describedby="cb-message-error"></textarea>
+        <p class="field__error" id="cb-message-error"></p>
+      </div>
+      <button class="btn btn--primary callback__submit" type="submit" data-track="home-hero-submit"><span>Request a callback</span></button>
+    </div>
+  </form>
+  <div class="callback__success" id="callback-success" tabindex="-1" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+    <p><strong>Got it, thank you.</strong> Your callback request is with the team. We’ll respond the same working day. Need it sorted sooner? <a href="tel:02046342518" data-track="home-hero-success-phone">Call 020 4634 2518</a></p>
+  </div>
+</div></div>
     <div class="hero-home__clients">
       <p class="hero-home__clients-label">Trusted by the businesses we look after</p>
       <ul class="logo-row" role="list">

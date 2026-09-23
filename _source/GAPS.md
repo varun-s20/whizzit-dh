@@ -56,12 +56,12 @@ Privacy · Cookies.
 
 | # | Gap | Why it matters | Blocking |
 |---|---|---|---|
-| 1 | **Brand colours.** The real logo is orange/charcoal; the approved `/ref` direction is blue | Every page inherits this. Orange accent + blue, or blue only? | Yes — affects all 13 designs |
+| 1 | ~~**Brand colours.**~~ Resolved 23 Sep 2026: blue stays the action colour; the logo's orange (#EC7C20 → #CB3829) is a subtle accent | — | No |
 | 2 | **Video testimonials** (in scope) | None exist on staging. Needs filming or dropping from scope | Yes |
 | 3 | **Live Google reviews widget** (in scope) | Needs Place ID + API key, or a paid widget (Elfsight/Trustindex) | Yes |
 | 4 | **Remote support portal URL** (sticky header in scope) | No such link exists on staging | Yes |
 | 5 | **Booking page / scheduler URL** (sticky header in scope) | Staging CTAs all point at `/contact/` | Yes |
-| 6 | **Form endpoint + reCAPTCHA keys** | Staging posts to `/api/submit.php`; our build is demo-only | Yes, before launch |
+| 6 | **Form endpoint + reCAPTCHA keys** | Staging posts to `/api/submit.php`; our build is demo-only. Applies to the contact form and the callback form now in 96 page heroes (staging's site key is bound to its own domain) | Yes, before launch |
 | 7 | **Company number, registered address, VAT** | Footer, legal pages, LocalBusiness schema | Before launch |
 | 8 | **Opening hours + SLA wording** | Location pages, schema, support pages | Before launch |
 | 9 | **More photography** | Only 6 photos exist for 13 distinct page designs | Yes — designs will repeat otherwise |
@@ -91,7 +91,10 @@ Privacy · Cookies.
 - No `/terms/` page exists (we removed the one we had invented).
 - Post content in WordPress holds **whole-page markup**, not just article bodies. Rebuilding as Elementor templates means the prose has to be separated from the hero/forms — already done in `_build/content.mjs`.
 - WordPress core sitemap (`wp-sitemap.xml`) is in use; no SEO plugin detected. Yoast/RankMath is part of our scope.
-- URL structure is preserved exactly, as agreed with the client.
+- URL structure is preserved exactly, as agreed with the client. Checked 23 Sep 2026: all 100 built pages sit at
+  the same path as the 102 staging URLs (the static preview adds `.html`; canonical tags already use the
+  staging form, e.g. `/about/`). The two staging URLs with no page here are WordPress's own archives,
+  `/blog/author/billywhizzit-co-uk/` and `/blog/category/uncategorized/`, which WordPress generates itself.
 
 ---
 

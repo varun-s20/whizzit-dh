@@ -2,7 +2,7 @@
 // (see /_source); the layout is the bold redesign — photo-led hero, a proof strip
 // that overlaps it, an ink services band, and photo tiles for stories and sectors.
 import {
-  page, statValue, btn, textLink, icon, photo, stockPhoto, stars, reviewAvatar,
+  page, statValue, btn, textLink, icon, photo, stockPhoto, stars, reviewAvatar, callbackForm, heroNote,
   SITE, SERVICES, INDUSTRIES, CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, PHOTOS, BLOG, STOCK, CATEGORY_PHOTO, SECTOR_PHOTO,
 } from "../lib.mjs";
 
@@ -99,12 +99,11 @@ const main = `
     <div class="hero-home__copy">
       <p class="eyebrow reveal-up" style="--delay:0ms">Managed IT services provider</p>
       <h1 class="hero-sky__title hero-home__title reveal-up" style="--delay:60ms" id="hero-title">Managed IT <span>that keeps your business moving.</span></h1>
-      <div class="btn-group reveal-up" style="--delay:120ms">
-        ${btn("Book a consultation", "contact.html", { track: "home-hero-book-consultation" })}
-        ${btn("Explore services", "it-services.html", { variant: "secondary", arrow: false, track: "home-hero-services" })}
-      </div>
-      <p class="hero-sky__note reveal-up" style="--delay:180ms">${icon("phone")}<a href="${SITE.phoneHref}" data-track="home-hero-phone">${SITE.phone}</a> · ${SITE.responseLine}</p>
+      <div class="reveal-up" style="--delay:120ms">${heroNote("UK-wide coverage", "home-hero")}</div>
     </div>
+    ${/* The callback form sits beside the headline on wide screens, as on the
+         live site, on frosted glass so the van still reads through it. */""}
+    <div class="hero-home__form reveal-up" style="--delay:180ms">${callbackForm({ track: "home-hero", phone: true })}</div>
     <div class="hero-home__clients">
       <p class="hero-home__clients-label">Trusted by the businesses we look after</p>
       <ul class="logo-row" role="list">

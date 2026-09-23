@@ -91,19 +91,28 @@ link cannot be resolved, and `_source/GAPS.md` records the link audit (currently
 - **Fonts:** Urbanist 400–800 (headings and body), Figtree 500–700 (buttons, navigation, small UI labels),
   loaded from Google Fonts.
 - **Colour:** `--color-primary` #1F6BFF (actions) · `--color-navy` #0A2F7A (secondary actions, tabs, ticks) ·
-  `--color-heading` #0A1628 (headings) · `--color-night` #0A0B0D (footer) · near-white surfaces.
+  `--color-heading` #0A1628 (headings) · `--color-night` #0A0B0D (footer) · near-white surfaces ·
+  `--brand-orange` #EC7C20 → `--brand-ember` #CB3829 (the logo's gradient, accent only; see below).
 - **Headings** are solid heading-ink at weight 800 with tight tracking. `.grad-head` keeps its name but no
   longer fades; hero titles put their second half in a cyan-to-blue gradient.
 - **Light only.** There is no dark mode and no theme switch. A few surfaces are dark by design — every
   `.hero--sky` hero, the header while it floats over one, and any `.section--ink` band — and they get there by
   re-declaring the colour tokens (section 28 of `styles.css`), so components inside them need no overrides.
 - **Inner-page heroes** (`pageHero()` in `blocks.mjs`) are one column: breadcrumbs, headline across the full
-  row, lead, actions. Whatever used to sit in a side column runs full width beneath as a raised "faceplate":
+  row, lead, the callback form, a call line. Whatever used to sit in a side column runs full width beneath as a raised "faceplate":
   proof figures (`heroProof()`, each with a status light that switches on at load), London's coverage panel,
   the IT services index as five tiles, or the blog's featured article. The headline gets one light sweep on
   load. They end in a wide feature photo that overlaps the hero's foot and the section below. Service pages
   get their service's photo; industry, location and case-study pages pass their own; the blog index opts out
   with `feature: false`. Inner-page sections use a tighter rhythm than the homepage (40–64px).
+- **Callback form** (`callbackForm()` in `lib.mjs`, section 31 of `styles.css`): the live site's "Request a
+  callback" form, on the same 96 pages that carry it there (every page but Contact, Privacy, Cookies and Thank
+  you). Same fields, copy and endpoint contract as staging: POST `/api/submit.php`, `form_name=callback`, the
+  `botcheck` honeypot. On the home page it sits beside the headline on frosted glass (from 1024px), as on the
+  live site; elsewhere it runs under the lead. The home form also asks for a phone number (required;
+  `callbackForm({ phone: true })`), which staging's form does not, so the endpoint must accept `phone`. It replaces the hero's button pair; the phone moves to the line beneath it
+  (`heroNote()`). It lays itself out by its own width with container queries: one column, two, or one row.
+  `data-demo` shows the success state in place until the endpoint and reCAPTCHA are wired (GAPS #6).
 - **Relief** (section 30 of `styles.css`) is the shared surface language for the About page and the inner
   heroes: pressed metal lit from the top left, raised things highlighted on their top edge, engraved things
   the reverse. Motion is light and pressure, and every animation is off under reduced motion.
@@ -194,8 +203,13 @@ form beside the copy, because the form is the page's job.
   forms → sections → page modifiers → footer → animation → responsive → reduced motion → home → about →
   inner pages → service pages → the remaining core pages → relief (About, stacked heroes).
 
-**Open decision:** the palette follows the approved reference direction (blue), while the WhizzIT logo is
-orange/charcoal. Confirm whether orange becomes a secondary accent — it is a token change in one place.
+**Brand orange (decided 23 Sep 2026):** the client asked for their orange, kept subtle. It is the logo's own
+gradient, exactly: `--brand-orange` #EC7C20 into `--brand-ember` #CB3829 (`--brand-flame`). It appears as an
+accent only, in the role of a brand mark: the mark before every eyebrow, the current-page rule in the nav, the
+About nameplate, the lit edge of the callback form and of each "By the numbers" figure, the phone icon in the
+hero call line, quote marks, card numbers (in ember, which passes AA on white), a faint glow in the corner of
+every dark hero, and the footer's top rule. Actions stay blue, and orange never carries body text on white
+(#EC7C20 is 2.9:1).
 
 ---
 

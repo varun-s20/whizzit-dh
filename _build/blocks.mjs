@@ -1,7 +1,7 @@
 // Renders the parsed staging blocks with the new design system. Each block kind
 // gets its own component. Blocks with a card, tabs or accordion stack: heading and
 // prose across the row, the component below (see .block-split:has in styles.css).
-import { icon, btn, reviewAvatar, stockPhoto, SITE, STOCK } from "./lib.mjs";
+import { icon, btn, reviewAvatar, stockPhoto, callbackForm, heroNote, SITE, STOCK } from "./lib.mjs";
 
 // Blocks we render ourselves from site data rather than from page content.
 const SKIP = /^(Credentials you can check|Brands we partner with|Frequently asked questions|The businesses we look after|Proof, not promises)$/i;
@@ -160,11 +160,12 @@ export function renderBlocks(blocks, { key = "b" } = {}) {
 const TONE_PHOTO = { support: "supportDesk", cloud: "cloudRacks", cyber: "cyber", network: "serverRoom", projects: "meeting" };
 export const heroFeature = (item) => stockPhoto(item, { ratio: "16-9", sizes: "(min-width: 1280px) 1240px, 100vw", loading: "eager" });
 
-export function pageHero({ eyebrow, title, lead, crumbs = "", actions = "", aside = "", cls = "", feature, note = "" }) {
-  const tone = (cls.match(/hero--tone-(w+)/) || [])[1];
+export function pageHero({ eyebrow, title, lead, crumbs = "", aside = "", cls = "", feature, note }) {
+  const tone = (cls.match(/hero--tone-(\w+)/) || [])[1];
   const fig = feature === false ? "" : feature || heroFeature(STOCK[TONE_PHOTO[tone]] || STOCK.office);
   // One column, top to bottom: the headline gets the full row instead of sharing
-  // it with a side panel, and whatever used to sit beside it runs full width below.
+  // it with a side panel, then the callback form the live site has on every page,
+  // and whatever used to sit beside it runs full width below.
   return `
 <section class="hero hero--sky hero--page hero-stack${fig ? " has-feature" : ""} ${cls}" aria-labelledby="page-hero-title">
   <div class="container">
@@ -172,10 +173,8 @@ export function pageHero({ eyebrow, title, lead, crumbs = "", actions = "", asid
     ${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ""}
     <h1 class="hero-sky__title hero-stack__title" id="page-hero-title">${title}</h1>
     ${lead ? `<p class="hero-sky__lead">${lead}</p>` : ""}
-    <div class="btn-group">
-      ${actions || `${btn("Book a consultation", "contact.html", { arrow: false, track: "page-hero-cta" })}${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "secondary", iconName: "phone", arrow: false, track: "page-hero-phone" })}`}
-    </div>
-    <p class="hero-sky__note">${icon("checkCircle")}${note || `${SITE.responseLine} · ${SITE.google.label} · UK-wide coverage`}</p>
+    ${callbackForm({ track: "page-hero" })}
+    ${heroNote(note, "page-hero")}
     ${aside ? `<div class="hero-stack__aside">${aside}</div>` : ""}
   </div>
 </section>${fig ? `

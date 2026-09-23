@@ -1,19 +1,11 @@
 // Contact. Signature: the enquiry form sits beside the two real offices, with the
 // direct routes (phone, email) above the fold.
-import { page, btn, icon, breadcrumbs, reviewAvatar, SITE, TESTIMONIALS, CREDENTIALS } from "../lib.mjs";
+import { page, btn, icon, breadcrumbs, reviewAvatar, field, SITE, TESTIMONIALS, CREDENTIALS } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
 
 const m = parsePage(pageByPath("/contact/").html);
 const crumbs = [{ title: "Home", href: "index.html" }, { title: "Contact" }];
-
-const field = ({ id, label, type = "text", autocomplete = "", required = true, name = id, hint = "", msg = "", attrs = "", dataName = "" }) => `
-  <div class="field">
-    <label class="field__label" for="${id}"${dataName ? ` data-name="${dataName}"` : ""}>${label}${required ? "" : ' <span class="field__optional">(optional)</span>'}</label>
-    ${hint ? `<p class="field__hint" id="${id}-hint">${hint}</p>` : ""}
-    <input class="field__input" id="${id}" name="${name}" type="${type}"${autocomplete ? ` autocomplete="${autocomplete}"` : ""}${required ? " required" : ""}${msg ? ` data-msg-required="${msg}"` : ""} aria-describedby="${hint ? `${id}-hint ` : ""}${id}-error"${attrs}>
-    <p class="field__error" id="${id}-error"></p>
-  </div>`;
 
 const main = `
 <section class="hero hero--sky hero--contact" aria-labelledby="contact-title">

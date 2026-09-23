@@ -41,6 +41,53 @@ export function btn(label, href, { variant = "primary", size = "", track = "", a
   return `<a class="${classes}" href="${at(href)}"${t}>${lead}<span>${label}</span>${trail}</a>`;
 }
 
+// Form field: visible label, the hooks app.js validates against (form[data-validate])
+// and an error slot. Shared by the contact form and the callback form.
+export const field = ({ id, label, type = "text", autocomplete = "", required = true, name = id, hint = "", msg = "", attrs = "", dataName = "", placeholder = "" }) => `
+  <div class="field">
+    <label class="field__label" for="${id}"${dataName ? ` data-name="${dataName}"` : ""}>${label}${required ? "" : ' <span class="field__optional">(optional)</span>'}</label>
+    ${hint ? `<p class="field__hint" id="${id}-hint">${hint}</p>` : ""}
+    <input class="field__input" id="${id}" name="${name}" type="${type}"${autocomplete ? ` autocomplete="${autocomplete}"` : ""}${placeholder ? ` placeholder="${esc(placeholder)}"` : ""}${required ? " required" : ""}${msg ? ` data-msg-required="${msg}"` : ""} aria-describedby="${hint ? `${id}-hint ` : ""}${id}-error"${attrs}>
+    <p class="field__error" id="${id}-error"></p>
+  </div>`;
+
+// "Request a callback": the form WhizzIT's live site carries at the top of every
+// page, with the same fields, copy and endpoint contract (POST /api/submit.php,
+// form_name=callback, the botcheck honeypot). data-demo shows the success state
+// in place; remove it once the endpoint and reCAPTCHA are wired up.
+// `phone` adds a required phone field (the home page asks for one); the endpoint
+// needs to accept a `phone` value before that goes live.
+export function callbackForm({ track = "callback", phone = false } = {}) {
+  return `
+<div class="callback${phone ? " callback--phone" : ""}">
+  <form class="callback__form" action="/api/submit.php" method="post" data-validate data-demo data-success="callback-success" aria-labelledby="callback-title">
+    <input type="hidden" name="form_name" value="callback">
+    <input class="visually-hidden" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p class="callback__head"><strong id="callback-title">Request a callback</strong><span>We respond the same working day.</span></p>
+    <div class="callback__row">
+      ${field({ id: "cb-name", name: "name", label: "Name", autocomplete: "name", placeholder: "Jane Smith" })}
+      ${field({ id: "cb-email", name: "email", label: "Email", type: "email", autocomplete: "email", placeholder: "jane@company.co.uk" })}
+      ${phone ? field({ id: "cb-phone", name: "phone", label: "Phone", type: "tel", autocomplete: "tel", placeholder: "07700 900123", msg: "Enter your phone number", attrs: ' pattern="[0-9 +\\(\\)\\-]{7,20}"' }) : ""}
+      <div class="field callback__message">
+        <label class="field__label" for="cb-message">How can we help? <span class="field__optional">(optional)</span></label>
+        <textarea class="field__input" id="cb-message" name="message" rows="1" placeholder="A quick note about your IT…" aria-describedby="cb-message-error"></textarea>
+        <p class="field__error" id="cb-message-error"></p>
+      </div>
+      <button class="btn btn--primary callback__submit" type="submit" data-track="${track}-submit"><span>Request a callback</span></button>
+    </div>
+  </form>
+  <div class="callback__success" id="callback-success" tabindex="-1" hidden>
+    ${icon("checkCircle")}
+    <p><strong>Got it, thank you.</strong> Your callback request is with the team. We’ll respond the same working day. Need it sorted sooner? <a href="${SITE.phoneHref}" data-track="${track}-success-phone">Call ${SITE.phone}</a></p>
+  </div>
+</div>`;
+}
+
+// The line under a hero's callback form: the phone for anyone who would rather
+// talk, then proof.
+export const heroNote = (tail = "UK-wide coverage", track = "hero") =>
+  `<p class="hero-sky__note">${icon("phone")}<span>Prefer to talk? <a href="${SITE.phoneHref}" data-track="${track}-phone">Call ${SITE.phone}</a> · ${SITE.google.label} · ${tail}</span></p>`;
+
 export function textLink(label, href, track = "") {
   const t = track ? ` data-track="${track}"` : "";
   return `<a class="text-link" href="${at(href)}"${t}><span>${label}</span>${icon("arrow")}</a>`;
