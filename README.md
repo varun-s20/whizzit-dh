@@ -118,7 +118,7 @@ link cannot be resolved, and `_source/GAPS.md` records the link audit (currently
   the reverse. Motion is light and pressure, and every animation is off under reduced motion.
 - **Buttons** are squared (`--radius-sm`): blue primary, heading-ink outline secondary. Cards use 14–28px radii.
 - **Closing CTA** (`ctaBand()` in `lib.mjs`, also used for the footer CTA) is a split card: photo on one side,
-  navy-to-signal gradient on the other.
+  a dark panel warmed by orange and ember glows on the other, with a white primary button.
 - **Header** is two rows. The utility strip (desktop only, ≥1100px, collapses on
   scroll) carries the response line, phone and email. The bar below it holds the
   logo, five mega triggers plus a direct Contact link, then
@@ -203,13 +203,14 @@ form beside the copy, because the form is the page's job.
   forms → sections → page modifiers → footer → animation → responsive → reduced motion → home → about →
   inner pages → service pages → the remaining core pages → relief (About, stacked heroes).
 
-**Brand orange (decided 23 Sep 2026):** the client asked for their orange, kept subtle. It is the logo's own
-gradient, exactly: `--brand-orange` #EC7C20 into `--brand-ember` #CB3829 (`--brand-flame`). It appears as an
-accent only, in the role of a brand mark: the mark before every eyebrow, the current-page rule in the nav, the
-About nameplate, the lit edge of the callback form and of each "By the numbers" figure, the phone icon in the
-hero call line, quote marks, card numbers (in ember, which passes AA on white), a faint glow in the corner of
-every dark hero, and the footer's top rule. Actions stay blue, and orange never carries body text on white
-(#EC7C20 is 2.9:1).
+**Brand orange (decided 23 Sep 2026):** the client asked for their orange. It is the logo's own gradient,
+exactly: `--brand-orange` #EC7C20 into `--brand-ember` #CB3829 (`--brand-flame`). It is used for accents
+and details, never for buttons or text (an all-orange pass on buttons, eyebrows and the home headline was tried
+and rolled back as too much): the mark before every eyebrow, the current-page rule in the nav, the About
+nameplate, the closing CTA panel's warm glow, checklist ticks, the rack-strip, Contact and About key icons,
+the About key glow, quote marks, card numbers (ember, 5.1:1 on white), the lit edges on the callback form and
+the stat figures, the home strip's frame, a warm glow in every dark hero, the footer rule and text selection.
+Buttons, links, eyebrow text, tabs and focus stay blue and navy.
 
 ---
 

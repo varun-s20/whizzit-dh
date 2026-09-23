@@ -259,8 +259,8 @@ export function faq(items, { title = "Questions we hear often", lead = "", id = 
   </section>`;
 }
 
-// Closing call to action: a photo of someone on the phone beside the brand
-// gradient. One card for every page — the section band and the footer both use it.
+// Closing call to action: a photo of someone on the phone beside a dark panel
+// warmed by the brand orange. One card for every page — the section band and the footer both use it.
 function ctaCard({ title, text, cta = "Book a consultation", href = "contact.html", track = "cta-band", level = 2 }) {
   return `<div class="cta-band">
         ${photo(PHOTOS.headset, { cls: "cta-band__photo", ratio: "4-3", sizes: "(min-width: 1024px) 34vw, 100vw" })}

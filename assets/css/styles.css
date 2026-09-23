@@ -14,8 +14,10 @@
                Status: success/warning/error. Blue is for action and
                emphasis, not for every icon and heading.
                Brand orange is the logo's own gradient, #EC7C20 into
-               #CB3829 (--brand-*): a thin accent only, never body text
-               on white (#EC7C20 is 2.9:1 there) and never an action.
+               #CB3829 (--brand-*): accents and details (eyebrow marks,
+               ticks, icons, glows, lit edges, the closing CTA panel),
+               never buttons or text; actions and type stay blue/ink.
+               --brand-ink is ember on light surfaces, orange on dark.
    Type        Urbanist 400–800 — headings (h1/h2 at 800, tight tracking)
                and body. Figtree 500–700 — buttons, nav and small UI labels.
                Fluid scale via clamp(); see --fs-* tokens.
@@ -121,6 +123,7 @@
   --brand-orange: #ec7c20;
   --brand-ember: #cb3829;
   --brand-flame: linear-gradient(135deg, var(--brand-orange) 0%, var(--brand-ember) 100%);
+  --brand-ink: var(--brand-ember);
   --color-navy: #0a2f7a;
   --color-navy-fill: #0a2f7a;
   --color-navy-dark: #072260;
@@ -493,7 +496,7 @@ strong {
 }
 
 ::selection {
-  background: var(--color-primary-light);
+  background: rgba(236, 124, 32, 0.24);
   color: var(--color-text);
 }
 
@@ -1490,8 +1493,8 @@ body.nav-locked {
   height: 20px;
   border-radius: 50%;
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232457f5' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 12px no-repeat,
-    var(--color-primary-light);
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23cb3829' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 12px no-repeat,
+    rgba(236, 124, 32, 0.14);
 }
 
 .check-list--two {
@@ -1506,8 +1509,8 @@ body.nav-locked {
 .section--dark .check-list li::before,
 .hero--cyber .check-list li::before {
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2362e2f3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 12px no-repeat,
-    rgba(98, 226, 243, 0.12);
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ec7c20' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 12px no-repeat,
+    rgba(236, 124, 32, 0.14);
 }
 
 /* Feature / icon block */
@@ -3289,8 +3292,9 @@ select.field__input {
   overflow: hidden;
   border-radius: var(--radius-xl);
   background:
-    radial-gradient(70% 90% at 100% 0%, rgba(53, 205, 228, 0.38), transparent 62%),
-    linear-gradient(135deg, #0a2f7a 0%, #1f6bff 100%);
+    radial-gradient(70% 90% at 100% 0%, rgba(236, 124, 32, 0.34), transparent 62%),
+    radial-gradient(60% 70% at 0% 100%, rgba(203, 56, 41, 0.22), transparent 65%),
+    linear-gradient(135deg, #0b111b 0%, #182131 100%);
   color: rgba(255, 255, 255, 0.86);
 }
 
@@ -6403,7 +6407,7 @@ select.field__input {
   border-radius: 50%;
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='m6 10.2 2.6 2.6L14 7.4' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat,
-    var(--color-navy);
+    var(--brand-flame);
 }
 
 .plan-option {
@@ -7440,7 +7444,7 @@ select.field__input {
   border-radius: 50%;
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='m6 10.2 2.6 2.6L14 7.4' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat,
-    var(--color-navy);
+    var(--brand-flame);
 }
 
 /* Numbered detail cards */
@@ -9306,8 +9310,8 @@ select.field__input {
   width: 46px;
   height: 46px;
   border-radius: 14px;
-  background: var(--color-primary-light);
-  color: var(--color-navy);
+  background: rgba(236, 124, 32, 0.12);
+  color: var(--brand-ink);
 }
 
 .contact-routes__icon svg {
@@ -9916,6 +9920,7 @@ select.field__input {
   --color-accent: #35cde4;
   --color-accent-soft: #0f2f39;
   --color-accent-on-dark: #62e2f3;
+  --brand-ink: var(--brand-orange);
 
   --color-violet: #9b8cff;
 
@@ -10016,7 +10021,7 @@ select.field__input {
   background:
     radial-gradient(38% 22% at 18% 16%, rgba(91, 141, 255, 0.16), transparent 70%),
     radial-gradient(30% 14% at 42% 8%, rgba(91, 141, 255, 0.1), transparent 70%),
-    radial-gradient(60% 40% at 80% 70%, rgba(236, 124, 32, 0.1), transparent 70%),
+    radial-gradient(60% 40% at 80% 70%, rgba(236, 124, 32, 0.16), transparent 70%),
     linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 30%, var(--color-page) 78%);
 }
 
@@ -10385,7 +10390,7 @@ select.field__input {
   border-radius: var(--radius-xl);
   background:
     linear-gradient(var(--color-white), var(--color-white)) padding-box,
-    linear-gradient(120deg, var(--color-accent), var(--color-primary) 55%, var(--color-navy)) border-box;
+    linear-gradient(120deg, var(--brand-orange), var(--brand-ember) 45%, var(--color-navy)) border-box;
   box-shadow: 0 40px 80px -40px rgba(10, 22, 40, 0.5);
 }
 
@@ -11424,7 +11429,7 @@ select.field__input {
   inset-inline: -6px;
   height: calc(var(--cap-h) + 12px);
   border-radius: 26px;
-  background: radial-gradient(70% 60% at 50% 100%, rgba(31, 107, 255, 0.7), rgba(53, 205, 228, 0.25) 55%, transparent 75%);
+  background: radial-gradient(70% 60% at 50% 100%, rgba(236, 124, 32, 0.75), rgba(203, 56, 41, 0.25) 55%, transparent 75%);
   filter: blur(12px);
   opacity: 0;
 }
@@ -11464,8 +11469,8 @@ select.field__input {
   width: 44px;
   height: 44px;
   border-radius: 13px;
-  color: var(--color-primary-ink);
-  background: linear-gradient(180deg, #e3eaf6 0%, #eef3fb 100%);
+  color: var(--brand-ember);
+  background: linear-gradient(180deg, #f7e6da 0%, #fcf2ea 100%);
   box-shadow: inset 0 2px 3px rgba(15, 27, 45, 0.16), 0 1px 0 #ffffff;
 }
 
@@ -11719,7 +11724,7 @@ select.field__input {
   width: 46px;
   height: 46px;
   border-radius: 13px;
-  color: var(--color-navy);
+  color: var(--brand-orange);
   background: linear-gradient(180deg, #0f1521 0%, #18202e 100%);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.65), 0 1px 0 rgba(255, 255, 255, 0.06);
 }
