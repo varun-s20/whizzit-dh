@@ -35,7 +35,7 @@ BLOG.forEach((post, index) => {
       <h1 class="hero__title mt-5">${post.title}</h1>
       <p class="lead hero__lead">${post.excerpt}</p>
       <div class="person mt-6"><span class="avatar" aria-hidden="true">WZ</span><span><span class="person__name">${post.author}</span><span class="person__role">WhizzIT</span></span></div>
-      ${callbackForm({ track: `article-${post.slug}` })}
+      ${callbackForm({ track: `article-${post.slug}`, captchaTheme: "light" })}
       <div class="blog-card__art article-cover tone-${post.tone}" aria-hidden="true">${blogArt(post.icon)}</div>
     </div>
   </header>

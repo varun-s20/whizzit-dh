@@ -450,7 +450,100 @@ function initRevealAnimations() {
 
 /* Form UX validation. Server-side validation is still required once a
    backend is connected — this only improves the experience. */
+/* Live form sending: the same contract as the current whizzit.co.uk site. The
+   form posts its FormData to its action (/api/submit.php) and asks for JSON; any
+   reply that is not an error and does not say success:false counts as sent.
+   reCAPTCHA v2 is fetched only once someone engages with a form, and revealed
+   on the first press of submit; if Google's script cannot load at all, the form
+   still posts and the server decides, so an outage never costs a lead. */
+const captcha = (() => {
+  let started = false;
+  let failed = false;
+  const ready = () => Boolean(window.grecaptcha && typeof window.grecaptcha.getResponse === "function");
+  const load = () => {
+    if (started || ready()) return;
+    started = true;
+    const script = document.createElement("script");
+    script.src = "https://www.google.com/recaptcha/api.js";
+    script.async = true;
+    script.defer = true;
+    script.onerror = () => { failed = true; };
+    document.head.append(script);
+  };
+  // Read this form's own token: getResponse() with no widget id only reads the
+  // first widget on the page, and a page can carry two forms.
+  const tokenFor = (form) => form.querySelector('textarea[name="g-recaptcha-response"]')?.value || "";
+  return { load, ready, tokenFor, failed: () => failed };
+})();
+
+function initCaptchaLoading() {
+  const rows = [...document.querySelectorAll(".g-recaptcha")];
+  if (!rows.length) return;
+  const go = () => captcha.load();
+  rows.forEach((row) => {
+    const form = row.closest("form");
+    form?.addEventListener("focusin", go, { passive: true });
+    form?.addEventListener("pointerdown", go, { passive: true });
+  });
+  if (!("IntersectionObserver" in window)) return go();
+  const io = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) {
+      go();
+      io.disconnect();
+    }
+  }, { rootMargin: "600px" });
+  rows.forEach((row) => io.observe(row));
+}
+
+function sendLive(form) {
+  const honeypot = form.querySelector('[name="botcheck"]');
+  if (honeypot?.checked) return;
+
+  const row = form.querySelector(".captcha-row");
+  const errorBox = form.querySelector(".form-error");
+  if (errorBox) errorBox.hidden = true;
+
+  if (row && !captcha.failed()) {
+    captcha.load();
+    if (!captcha.ready() || !captcha.tokenFor(form)) {
+      // First press reveals the check; only a second press without it complains.
+      if (row.classList.contains("is-armed")) row.classList.add("has-error");
+      row.classList.add("is-armed");
+      row.scrollIntoView({ block: "center", behavior: prefersReducedMotion.matches ? "auto" : "smooth" });
+      return;
+    }
+  }
+  row?.classList.remove("has-error");
+
+  const button = form.querySelector('[type="submit"]');
+  button?.setAttribute("aria-busy", "true");
+  if (button) button.disabled = true;
+
+  fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
+    .then((r) => r.json().catch(() => ({})).then((data) => r.ok && data.success !== false))
+    .then((ok) => {
+      if (!ok) throw new Error("rejected");
+      const kind = form.querySelector('[name="form_name"]')?.value || "contact";
+      (window.dataLayer = window.dataLayer || []).push({ event: "generate_lead", form_name: kind, page_path: location.pathname });
+      const success = document.getElementById(form.dataset.success);
+      form.reset();
+      if (success) {
+        form.hidden = true;
+        success.hidden = false;
+        success.focus();
+      }
+    })
+    .catch(() => {
+      if (errorBox) errorBox.hidden = false;
+    })
+    .finally(() => {
+      button?.removeAttribute("aria-busy");
+      if (button) button.disabled = false;
+    });
+}
+
 function initForms() {
+  initCaptchaLoading();
   document.querySelectorAll("form[data-validate]").forEach((form) => {
     form.noValidate = true;
     let attempted = false;
@@ -518,8 +611,13 @@ function initForms() {
 
       if (summary) summary.hidden = true;
 
-      // Demo mode: no backend yet, so show the success state in place.
-      // Remove data-demo once the form posts to a real endpoint.
+      if (!form.hasAttribute("data-demo")) {
+        event.preventDefault();
+        sendLive(form);
+        return;
+      }
+
+      // Demo mode (the static preview): no backend, so show the success state in place.
       if (form.hasAttribute("data-demo")) {
         event.preventDefault();
         const button = form.querySelector('[type="submit"]');

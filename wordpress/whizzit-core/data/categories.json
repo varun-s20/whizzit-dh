@@ -1,0 +1,60 @@
+{
+ "categories": [
+  {
+   "slug": "support",
+   "label": "IT Support",
+   "used": true,
+   "tone": "support",
+   "icon": "headset",
+   "photo": "support-desk"
+  },
+  {
+   "slug": "managed-it",
+   "label": "Managed IT",
+   "used": true,
+   "tone": "support",
+   "icon": "activity",
+   "photo": "team"
+  },
+  {
+   "slug": "security",
+   "label": "Cyber Security",
+   "used": true,
+   "tone": "cyber",
+   "icon": "shield",
+   "photo": "cyber"
+  },
+  {
+   "slug": "cloud",
+   "label": "Cloud",
+   "used": true,
+   "tone": "cloud",
+   "icon": "cloud",
+   "photo": "cloud-racks"
+  },
+  {
+   "slug": "network",
+   "label": "Network",
+   "used": false,
+   "tone": "support",
+   "icon": "book",
+   "photo": "server-room"
+  },
+  {
+   "slug": "strategy",
+   "label": "IT Strategy",
+   "used": true,
+   "tone": "projects",
+   "icon": "compass",
+   "photo": "office"
+  },
+  {
+   "slug": "careers",
+   "label": "Careers",
+   "used": true,
+   "tone": "projects",
+   "icon": "graduation",
+   "photo": "education"
+  }
+ ]
+}

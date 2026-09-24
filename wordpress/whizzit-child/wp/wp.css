@@ -1,0 +1,49 @@
+/* WhizzIT on WordPress: the few rules WordPress and Elementor need on top of the
+   design's stylesheet (assets/css/styles.css, generated; never edit that copy).
+   Loaded after it. No !important: each rule wins on specificity. */
+
+/* Elementor's body typography, if its default fonts are ever switched back on,
+   lands on body.elementor-kit-N (0,1,1 here beats its 0,1,0). */
+:root body {
+  font-family: var(--font-body);
+}
+
+/* The stack container every imported page sits in: full width, no padding, no
+   gap, so each section runs edge to edge exactly as in the design. */
+.e-con.whz-stack,
+.e-con.whz-stack > .e-con-inner {
+  --padding-top: 0px;
+  --padding-right: 0px;
+  --padding-bottom: 0px;
+  --padding-left: 0px;
+  --gap: 0px;
+  --row-gap: 0px;
+  --column-gap: 0px;
+  --content-width: 100%;
+  --width: 100%;
+  max-width: none;
+}
+
+.e-con.whz-stack > .elementor-widget,
+.e-con.whz-stack > .e-con-inner > .elementor-widget {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* The sticky header sits under the admin bar when you are logged in. */
+body.admin-bar .site-header {
+  top: 32px;
+}
+
+@media (max-width: 782px) {
+  body.admin-bar .site-header {
+    top: 46px;
+  }
+}
+
+/* Below 600px WordPress lets the admin bar scroll away with the page. */
+@media (max-width: 600px) {
+  body.admin-bar .site-header {
+    top: 0;
+  }
+}

@@ -21,6 +21,9 @@ const brandLogo = (variant = "dark") =>
       <img class="brand__logo--dark" src="@/assets/images/brand/whizzit-logo.svg" alt="" aria-hidden="true" width="150" height="36" decoding="async">
     </span>`;
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+// Remote-support and booking links: set in WordPress (Settings → WhizzIT), so the
+// export leaves a placeholder the theme fills in.
+const LINK = process.env.WHIZZIT_EXPORT === "wp" ? { remote: "#remote-support", booking: "#booking" } : { remote: SITE.remoteSupport, booking: "contact.html" };
 const at = (href) => (/^(https?:|mailto:|tel:|#)/.test(href) ? href : `@/${href}`);
 export const ph = (text) => `<span class="ph">[${text}]</span>`;
 export const phTag = (text = "Placeholder") => `<span class="placeholder-tag">${text}</span>`;
@@ -51,16 +54,26 @@ export const field = ({ id, label, type = "text", autocomplete = "", required = 
     <p class="field__error" id="${id}-error"></p>
   </div>`;
 
+// Live forms (the WordPress export) post to /api/submit.php exactly as the current
+// site does: FormData, reCAPTCHA v2 revealed on the first press of submit, JSON
+// reply. The static preview keeps data-demo, which shows the success state
+// without sending anything.
+export const formMode = () => (WP_EXPORT ? "" : " data-demo");
+
+export const captchaRow = (theme = "dark") => (WP_EXPORT
+  ? `<div class="captcha-row"><div class="g-recaptcha" data-sitekey="${SITE.recaptchaSiteKey}" data-theme="${theme}"></div><p class="field__error">Please complete the reCAPTCHA to continue.</p></div>
+    <p class="form-error" role="alert" hidden>Sorry, something went wrong. Please call ${SITE.phone} or email ${SITE.email}.</p>`
+  : "");
+
 // "Request a callback": the form WhizzIT's live site carries at the top of every
 // page, with the same fields, copy and endpoint contract (POST /api/submit.php,
-// form_name=callback, the botcheck honeypot). data-demo shows the success state
-// in place; remove it once the endpoint and reCAPTCHA are wired up.
+// form_name=callback, the botcheck honeypot).
 // `phone` adds a required phone field (the home page asks for one); the endpoint
 // needs to accept a `phone` value before that goes live.
-export function callbackForm({ track = "callback", phone = false } = {}) {
+export function callbackForm({ track = "callback", phone = false, captchaTheme = "dark" } = {}) {
   return `
 <div class="callback${phone ? " callback--phone" : ""}">
-  <form class="callback__form" action="/api/submit.php" method="post" data-validate data-demo data-success="callback-success" aria-labelledby="callback-title">
+  <form class="callback__form" action="/api/submit.php" method="post" data-validate${formMode()} data-success="callback-success" aria-labelledby="callback-title">
     <input type="hidden" name="form_name" value="callback">
     <input class="visually-hidden" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
     <p class="callback__head"><strong id="callback-title">Request a callback</strong><span>We respond the same working day.</span></p>
@@ -75,6 +88,7 @@ export function callbackForm({ track = "callback", phone = false } = {}) {
       </div>
       <button class="btn btn--primary callback__submit" type="submit" data-track="${track}-submit"><span>Request a callback</span></button>
     </div>
+    ${captchaRow(captchaTheme)}
   </form>
   <div class="callback__success" id="callback-success" tabindex="-1" hidden>
     ${icon("checkCircle")}
@@ -378,7 +392,7 @@ function megaServices(file) {
 }
 
 function megaIndustries(file) {
-  const list = INDUSTRIES.map(
+  const list = WP_EXPORT ? "{{SECTORS_MEGA}}" : INDUSTRIES.map(
     (i) => `<li><a class="mega-link mega-link--plain" href="${at(i.href)}"${cur(i.href, file)}>${icon(i.icon)}<span>${i.title}</span></a></li>`
   ).join("");
   return `<div class="container mega__inner mega__inner--industries">
@@ -432,6 +446,7 @@ function header(file) {
       <div class="header-top__contact">
         <a href="${SITE.phoneHref}" data-track="header-top-phone">${icon("phone")}${SITE.phone}</a>
         <a href="mailto:${SITE.email}" data-track="header-top-email">${icon("mail")}${SITE.email}</a>
+        <a href="${at(LINK.remote)}" data-track="header-top-remote">${icon("remote")}Remote support</a>
       </div>
     </div>
   </div>
@@ -441,7 +456,7 @@ function header(file) {
       <ul class="primary-nav__list">${items}</ul>
     </nav>
     <div class="site-header__actions">
-      ${btn("Book a consultation", "contact.html", { variant: "navy", size: "sm", arrow: false, track: "header-book-consultation", cls: "site-header__cta" })}
+      ${btn("Book a consultation", LINK.booking, { variant: "navy", size: "sm", arrow: false, track: "header-book-consultation", cls: "site-header__cta" })}
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu" data-menu-toggle>${icon("menu")}<span>Menu</span></button>
       <a class="menu-fallback" href="#footer-nav">Menu</a>
     </div>
@@ -457,7 +472,7 @@ function mobileNav(file) {
         { title: "Specialist services", links: SPECIALIST },
       ];
     if (item.type === "industries")
-      return [{ title: "Sectors", links: [{ title: "All industries", href: "industries.html" }, ...INDUSTRIES] }];
+      return [{ title: "Sectors", links: [{ title: "All industries", href: "industries.html" }, ...(WP_EXPORT ? [{ title: "{{SECTORS_MOBILE}}", href: "#sectors-mobile" }] : INDUSTRIES)] }];
     return item.groups;
   };
 
@@ -489,7 +504,7 @@ function mobileNav(file) {
       <ul class="mobile-nav__list">${list}</ul>
     </div>
     <div class="mobile-nav__foot">
-      ${btn("Book a consultation", "contact.html", { track: "mobile-book-consultation" })}
+      ${btn("Book a consultation", LINK.booking, { track: "mobile-book-consultation" })}
       <a class="btn btn--secondary" href="${SITE.phoneHref}" data-track="mobile-phone">${icon("phone")}<span>Call ${SITE.phone}</span></a>
     </div>
   </div>
@@ -535,7 +550,7 @@ function footer(cta) {
       </div>
       <nav class="site-footer__nav" aria-label="Footer">
         ${col("IT services", [{ title: "All IT services", href: "it-services.html" }, ...SERVICES])}
-        ${col("Industries", [{ title: "All industries", href: "industries.html" }, ...INDUSTRIES.slice(0, 6)])}
+        ${col("Industries", [{ title: "All industries", href: "industries.html" }, ...(WP_EXPORT ? [{ title: "{{SECTORS_FOOTER}}", href: "#sectors-footer" }] : INDUSTRIES.slice(0, 6))])}
         ${col("Company", [
           { title: "About WhizzIT", href: "about.html" },
           { title: "Our customers", href: "our-customers.html" },
@@ -561,8 +576,53 @@ function footer(cta) {
 </footer>`;
 }
 
+/* ---------- WordPress export ----------
+   With WHIZZIT_EXPORT=wp, page() records each page instead of writing HTML, and
+   links are rewritten for WordPress: "@/about.html" becomes "/about/" (root-
+   relative, so it works on the dev, staging and live domains alike) and
+   "@/assets/…" becomes "{{ASSETS}}/…", which the child theme swaps for its own
+   assets URL. _build/wp-export.mjs writes the records out. */
+export const WP_EXPORT = process.env.WHIZZIT_EXPORT === "wp";
+export const wpRecords = { pages: [], chrome: null };
+
+export function wpUrls(html) {
+  const out = html
+    .replace(/@\/index\.html/g, "/")
+    .replace(/@\/([^"'\s<>]*?)\.html/g, "/$1/")
+    .replace(/@\/assets\//g, "{{ASSETS}}/");
+  if (out.includes("@/")) throw new Error(`Unresolved @/ link: ${out.slice(out.indexOf("@/") - 60, out.indexOf("@/") + 60)}`);
+  return out;
+}
+
+const wpPath = (file) => (file === "index.html" ? "/" : `/${file.replace(/\.html$/, "")}/`);
+
 /* ---------- Page shell ---------- */
 export function page({ file, title, description, bodyClass, crumbs = null, main, schema = [], ogType = "website", footerCta = null }) {
+  if (WP_EXPORT) {
+    // The chrome is the same on every page (the current menu item is marked in
+    // the browser), so it is captured once; the footer CTA varies per page.
+    // Two pages add a CTA card to the footer; it is exported as its own part and
+    // placed at {{FOOTER_CTA}} only on the pages that ask for it.
+    wpRecords.chrome ??= {
+      header: wpUrls(header("")),
+      mobileNav: wpUrls(mobileNav("")),
+      footer: wpUrls(footer(null)).replace('<div class="container">', '<div class="container">{{FOOTER_CTA}}'),
+      footerCta: wpUrls(`<div class="site-footer__cta">${ctaCard({ title: "{{TITLE}}", text: "{{TEXT}}", cta: "{{LABEL}}", href: "contact.html", track: "footer-cta" })}</div>`),
+      // Used by the blog post template.
+      callback: wpUrls(callbackForm({ track: "{{TRACK}}", captchaTheme: "{{CAPTCHA_THEME}}" })),
+      ctaBand: wpUrls(ctaBand({ title: "{{TITLE}}", text: "{{TEXT}}", cta: "{{LABEL}}", track: "{{TRACK}}" })),
+    };
+    wpRecords.pages.push({
+      path: wpPath(file),
+      file,
+      title,
+      description,
+      bodyClass: `page ${bodyClass}`,
+      footerCta,
+      main: wpUrls(main),
+    });
+    return file;
+  }
   const depth = file.split("/").length - 1;
   const r = "../".repeat(depth);
   const canonical = cleanUrl(file);

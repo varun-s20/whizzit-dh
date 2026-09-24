@@ -1,6 +1,6 @@
 // Contact. Signature: the enquiry form sits beside the two real offices, with the
 // direct routes (phone, email) above the fold.
-import { page, btn, icon, breadcrumbs, reviewAvatar, field, SITE, TESTIMONIALS, CREDENTIALS } from "../lib.mjs";
+import { page, btn, icon, breadcrumbs, reviewAvatar, field, formMode, captchaRow, WP_EXPORT, SITE, TESTIMONIALS, CREDENTIALS } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
 
@@ -37,7 +37,9 @@ const main = `
       <h2 class="h4" id="form-title">Send us a message</h2>
       <p class="muted mt-3">Tell us what you need. ${SITE.responseLine}, and your details stay with us.</p>
 
-      <form class="form mt-6" action="#" method="post" data-validate data-demo data-success="contact-success" aria-labelledby="form-title">
+      <form class="form mt-6" action="/api/submit.php" method="post" data-validate${formMode()} data-success="contact-success" aria-labelledby="form-title">
+        <input type="hidden" name="form_name" value="contact">
+        <input class="visually-hidden" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="form-alert form-alert--error" data-error-summary tabindex="-1" role="alert" hidden>
           <p><strong>There is a problem</strong></p>
           <ul></ul>
@@ -55,6 +57,7 @@ const main = `
           <textarea class="field__input" id="message" name="message" rows="5" required minlength="10" data-msg-required="Tell us briefly what you need help with" aria-describedby="message-error"></textarea>
           <p class="field__error" id="message-error"></p>
         </div>
+        ${captchaRow("dark")}
         <div class="form__actions">
           <button class="btn btn--primary btn--lg" type="submit" data-track="contact-form-submit"><span>Send message</span>${icon("arrow", "btn__arrow")}</button>
           <p class="small muted">By submitting, you agree to our <a href="@/privacy-policy.html">privacy policy</a>.</p>
@@ -67,7 +70,7 @@ const main = `
         <p>Your message is with the team. We'll respond the same working day. Need it sorted sooner?</p>
         ${btn(`Call ${SITE.phone}`, SITE.phoneHref, { iconName: "phone", arrow: false, track: "contact-success-phone" })}
       </div>
-      <p class="form-note">${icon("alert")}Demo form. [Connect to the WhizzIT endpoint and reCAPTCHA keys before launch.]</p>
+      ${WP_EXPORT ? "" : `<p class="form-note">${icon("alert")}Demo form. [Connect to the WhizzIT endpoint and reCAPTCHA keys before launch.]</p>`}
     </div>
   </div>
 </section>

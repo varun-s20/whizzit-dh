@@ -11,6 +11,9 @@ export const SITE = {
   phoneHref: "tel:02046342518",
   email: "info@whizzit.co.uk",
   responseLine: "Same working day response",
+  // reCAPTCHA v2 site key the live forms use (public by design; bound to the
+  // client's domains in their Google reCAPTCHA console).
+  recaptchaSiteKey: "6LetGGItAAAAABGoBmlvEaWqFhJNfk97jeH2zaOv",
   // [CLIENT TO SUPPLY] no remote-support portal exists on staging yet.
   remoteSupport: "contact.html",
   offices: [

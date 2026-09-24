@@ -1,7 +1,16 @@
 // Renders the parsed staging blocks with the new design system. Each block kind
 // gets its own component. Blocks with a card, tabs or accordion stack: heading and
 // prose across the row, the component below (see .block-split:has in styles.css).
-import { icon, btn, reviewAvatar, stockPhoto, callbackForm, heroNote, SITE, STOCK } from "./lib.mjs";
+import { icon, btn, reviewAvatar, stockPhoto, callbackForm, heroNote, WP_EXPORT, SITE, STOCK } from "./lib.mjs";
+
+// WordPress export: each structured block carries its data in a marker comment,
+// so the importer builds a WhizzIT Elementor widget with real fields (and
+// repeaters for lists, cards, tabs and FAQs) instead of fixed markup. "--" is
+// escaped so the JSON can never close the comment early.
+const wz = (type, settings, html) =>
+  WP_EXPORT ? `<!--wz:${JSON.stringify({ type, settings }).replace(/--/g, "\\u002d\\u002d")}-->${html}<!--/wz-->` : html;
+const headData = (b) => ({ eyebrow: b.eyebrow || "", title: b.title, lead: b.lead && !leadIsRepeated(b) ? b.lead : "" });
+const listData = (b) => (b.lists.length > 1 ? b.lists.map((l) => ({ title: l.title || "What's included", items: l.items })) : [{ title: b.listTitle || "What's included", items: b.list }]);
 
 // Blocks we render ourselves from site data rather than from page content.
 const SKIP = /^(Credentials you can check|Brands we partner with|Frequently asked questions|The businesses we look after|Proof, not promises)$/i;
@@ -30,6 +39,12 @@ const checkCards = (b) => b.lists.length > 1
   : checkCard(b.list, b.listTitle || "What's included");
 
 function proseBlock(b, id) {
+  return b.list.length
+    ? wz("prose-lists", { ...headData(b), body: b.html, lists: listData(b), repeated: Boolean(b.listTitle) && b.listTitle.trim().toLowerCase() === b.title.trim().toLowerCase() }, proseBlockHtml(b, id))
+    : wz("statement", { ...headData(b), body: b.html }, proseBlockHtml(b, id));
+}
+
+function proseBlockHtml(b, id) {
   if (!b.list.length) {
     // Centred head: the prose below it is centred too, so a left-aligned heading
     // sat out of line with its own body and left the right half of the row empty.
@@ -56,6 +71,10 @@ function proseBlock(b, id) {
 }
 
 function cardsBlock(b, id) {
+  return wz("cards", { ...headData(b), body: b.html, cards: b.cards }, cardsBlockHtml(b, id));
+}
+
+function cardsBlockHtml(b, id) {
   // Head centred to match the prose and the grid beneath it: a left-aligned head
   // over centred prose reads as two unrelated columns.
   return `
@@ -76,6 +95,10 @@ function cardsBlock(b, id) {
 }
 
 function tabsBlock(b, id, key) {
+  return wz("tabs", { ...headData(b), body: b.html, lists: b.list.length ? listData(b) : [], tabs: b.tabs }, tabsBlockHtml(b, id, key));
+}
+
+function tabsBlockHtml(b, id, key) {
   return `
   <section class="section block" aria-labelledby="${id}">
     <div class="container block-split">
@@ -98,6 +121,10 @@ const isFaq = (b) => /faq|frequently asked|questions/i.test(b.title);
 
 // Accordion content that is not a FAQ: same disclosure list, no FAQ furniture.
 function discloseBlock(b, id) {
+  return wz("accordion", { ...headData(b), body: b.html, items: b.faq }, discloseBlockHtml(b, id));
+}
+
+function discloseBlockHtml(b, id) {
   return `
   <section class="section block" aria-labelledby="${id}">
     <div class="container block-split">
@@ -113,6 +140,10 @@ function discloseBlock(b, id) {
 }
 
 function faqBlock(b, id, { first = true } = {}) {
+  return wz("faq", { ...headData(b), items: b.faq, first }, faqBlockHtml(b, id, { first }));
+}
+
+function faqBlockHtml(b, id, { first = true } = {}) {
   return `
   <section class="section block block--faq"${first ? ' id="faq"' : ""} aria-labelledby="${id}">
     <div class="container faq-split">
