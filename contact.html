@@ -42,6 +42,7 @@
       <div class="header-top__contact">
         <a href="tel:02046342518" data-track="header-top-phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg>020 4634 2518</a>
         <a href="mailto:info@whizzit.co.uk" data-track="header-top-email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 7 9 6 9-6"/></svg>info@whizzit.co.uk</a>
+        <a href="contact.html" data-track="header-top-remote"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="3.5" width="19" height="13" rx="2"/><path d="M8 21h8M12 16.5V21"/><path d="m10 8 3 2-3 2"/></svg>Remote support</a>
       </div>
     </div>
   </div>
@@ -119,7 +120,9 @@
       <h2 class="h4" id="form-title">Send us a message</h2>
       <p class="muted mt-3">Tell us what you need. Same working day response, and your details stay with us.</p>
 
-      <form class="form mt-6" action="#" method="post" data-validate data-demo data-success="contact-success" aria-labelledby="form-title">
+      <form class="form mt-6" action="/api/submit.php" method="post" data-validate data-demo data-success="contact-success" aria-labelledby="form-title">
+        <input type="hidden" name="form_name" value="contact">
+        <input class="visually-hidden" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="form-alert form-alert--error" data-error-summary tabindex="-1" role="alert" hidden>
           <p><strong>There is a problem</strong></p>
           <ul></ul>
@@ -161,6 +164,7 @@
           <textarea class="field__input" id="message" name="message" rows="5" required minlength="10" data-msg-required="Tell us briefly what you need help with" aria-describedby="message-error"></textarea>
           <p class="field__error" id="message-error"></p>
         </div>
+        
         <div class="form__actions">
           <button class="btn btn--primary btn--lg" type="submit" data-track="contact-form-submit"><span>Send message</span><svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
           <p class="small muted">By submitting, you agree to our <a href="privacy-policy.html">privacy policy</a>.</p>

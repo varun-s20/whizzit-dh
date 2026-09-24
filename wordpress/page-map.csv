@@ -1,0 +1,101 @@
+type,wp_id,url,title,template,parent_id
+page,144,/,WhizzIT | Managed IT Services &#038; IT Support,front-page,0
+page,101,/about/,About WhizzIT | Independent Managed IT Provider,page-about,0
+page,113,/blog/,IT Support &#038; Cyber Security Insights | WhizzIT Blog,page-blog,0
+page,130,/cloud-services-london/,Cloud Services London | Microsoft 365 &#038; Azure | WhizzIT,page-cloud-london,0
+page,131,/contact/,Contact WhizzIT | Talk to Our IT Support Team,page-contact,0
+page,132,/cookie-policy/,Cookie Policy | WhizzIT,legal,0
+page,137,/cyber-security/,Managed Cyber Security Services for Business | WhizzIT,service-overview,0
+page,133,/cyber-security/configuration-review-services/,Configuration Review | Microsoft 365 &#038; Cloud | WhizzIT,sub-service,137
+page,134,/cyber-security/cyber-essentials-services/,Cyber Essentials Certification Support | WhizzIT,sub-service,137
+page,135,/cyber-security/dark-web-monitoring-services/,Managed Dark Web Monitoring for UK Business | WhizzIT,sub-service,137
+page,136,/cyber-security/email-security-services/,Email Security | Anti-Phishing &#038; Protection | WhizzIT,sub-service,137
+page,138,/cyber-security/managed-detection-response-services/,Managed Detection &#038; Response (MDR) | WhizzIT,sub-service,137
+page,139,/cyber-security/managed-siem-soc-as-a-service/,Managed SIEM &#038; SOC as a Service | WhizzIT,sub-service,137
+page,140,/cyber-security/network-security-services/,Network Security | Firewalls &#038; Remote Access | WhizzIT,sub-service,137
+page,141,/cyber-security/password-management-services/,Managed Password Security for UK Business | WhizzIT,sub-service,137
+page,142,/cyber-security/penetration-testing-services/,Penetration Testing Services | External &#038; Internal | WhizzIT,sub-service,137
+page,143,/cyber-security/security-awareness-training-services/,Security Awareness Training &#038; Phishing Simulation | WhizzIT,sub-service,137
+page,145,/industries/,Specialist IT Support by Industry &#038; Sector | WhizzIT,page-industries,0
+page,147,/it-project-management/,IT Project Management Services | WhizzIT,service-overview,0
+page,146,/it-project-management/ai-governance-services/,AI Governance Consultancy Services | WhizzIT,sub-service,147
+page,148,/it-project-management/it-health-check-services/,IT Health Check Services | WhizzIT,sub-service,147
+page,149,/it-project-management/it-policies-procedures-services/,IT Policies &#038; Procedures | WhizzIT,sub-service,147
+page,150,/it-project-management/it-strategy-services/,IT Strategy Services | Technology Roadmap | WhizzIT,sub-service,147
+page,151,/it-project-management/technology-audit-services/,Technology Audit Services | IT &#038; Security Audit | WhizzIT,sub-service,147
+page,152,/it-services/,"IT Support, Cloud &#038; Cyber Security Services | WhizzIT",page-it-services,0
+page,153,/it-support-construction/,IT Support for Construction Firms | WhizzIT,sector,0
+page,154,/it-support-healthcare/,IT Support for Healthcare Organisations | WhizzIT,sector,0
+page,156,/it-support/,Managed IT Support Services | WhizzIT,service-overview,0
+page,155,/it-support/apple-mac-it-support-services/,Apple Mac IT Support | Mac &#038; Mixed Environments | WhizzIT,sub-service,156
+page,157,/it-support/managed-it-support-services/,Fully Managed IT Support | Outsourced IT Team | WhizzIT,sub-service,156
+page,158,/it-support/project-delivery-professional-services/,IT Project Delivery &#038; Professional Services | WhizzIT,sub-service,156
+page,159,/locations/,IT Support Locations Across the UK | WhizzIT,page-locations,0
+page,160,/locations/it-support-birmingham/,Expert IT Support Birmingham | 5-Star Rated | WhizzIT,location,159
+page,161,/locations/it-support-bradford/,Expert IT Support Bradford | 5-Star Rated | WhizzIT,location,159
+page,162,/locations/it-support-cardiff/,Expert IT Support Cardiff | 5-Star Rated | WhizzIT,location,159
+page,163,/locations/it-support-coventry/,Expert IT Support Coventry | 5-Star Rated | WhizzIT,location,159
+page,164,/locations/it-support-edinburgh/,Expert IT Support Edinburgh | 5-Star Rated | WhizzIT,location,159
+page,165,/locations/it-support-hertfordshire/,Expert IT Support Hertfordshire | 5-Star Rated | WhizzIT,location,159
+page,166,/locations/it-support-leeds/,Expert IT Support Leeds | 5-Star Rated | WhizzIT,location,159
+page,167,/locations/it-support-leicester/,Expert IT Support Leicester | 5-Star Rated | WhizzIT,location,159
+page,168,/locations/it-support-london/,Expert IT Support London | 5-Star Rated | WhizzIT,page-london,159
+page,169,/locations/it-support-manchester/,Expert IT Support Manchester | 5-Star Rated | WhizzIT,location,159
+page,170,/locations/it-support-newcastle/,Expert IT Support Newcastle | 5-Star Rated | WhizzIT,location,159
+page,171,/locations/it-support-south-wales/,Expert IT Support South Wales | 5-Star Rated | WhizzIT,location,159
+page,172,/locations/it-support-stevenage/,Expert IT Support Stevenage | 5-Star Rated | WhizzIT,location,159
+page,173,/locations/it-support-wales/,Expert IT Support Wales | 5-Star Rated | WhizzIT,location,159
+page,178,/managed-cloud-services/,Managed Cloud Services | Microsoft 365 &#038; Azure | WhizzIT,service-overview,0
+page,174,/managed-cloud-services/business-continuity-disaster-recovery-services/,Business Continuity &#038; Disaster Recovery Services | WhizzIT,sub-service,178
+page,175,/managed-cloud-services/cloud-management-services/,Cloud Management Services | Microsoft 365 &#038; Azure | WhizzIT,sub-service,178
+page,176,/managed-cloud-services/cloud-migration-services/,Cloud Migration Services | Microsoft 365 &#038; Azure | WhizzIT,sub-service,178
+page,177,/managed-cloud-services/google-workspace-backup-services/,Managed Google Workspace Backup for UK SMEs | WhizzIT,sub-service,178
+page,179,/managed-cloud-services/managed-cloud-infrastructure-services/,Managed Cloud Infrastructure Services | WhizzIT,sub-service,178
+page,180,/managed-cloud-services/microsoft-365-backup-services/,Managed Microsoft 365 Backup for UK Business | WhizzIT,sub-service,178
+page,181,/managed-cloud-services/microsoft-azure-services/,Microsoft Azure Services | Migration &#038; Management | WhizzIT,sub-service,178
+page,182,/managed-it-services-for-business-services-organisations/,Managed IT Services for Business Services | WhizzIT,sector,0
+page,183,/managed-it-services-for-education-organisations/,Managed IT Services for Education | WhizzIT,sector,0
+page,184,/managed-it-services-for-financial-services-business/,Managed IT Services for Financial Services | WhizzIT,sector,0
+page,185,/managed-it-services-for-insurance-services-businesses/,Managed IT Services for Insurance Firms | WhizzIT,sector,0
+page,186,/managed-it-services-for-legal-firms/,Managed IT Services for Legal Firms | WhizzIT,sector,0
+page,187,/managed-it-services-for-manufacturing-businesses/,Managed IT Services for Manufacturing | WhizzIT,sector,0
+page,189,/network-management/,Managed Network Services &#038; 24/7 Monitoring | WhizzIT,service-overview,0
+page,188,/network-management/business-wifi-services/,Business Wi-Fi &#038; Wireless Networks | WhizzIT,sub-service,189
+page,190,/network-management/managed-firewall-services/,Managed Firewall Services | WhizzIT,sub-service,189
+page,191,/network-management/network-monitoring-services/,Network Monitoring &#038; Management | WhizzIT,sub-service,189
+page,192,/network-management/sd-wan-connectivity-services/,SD-WAN &#038; Managed Connectivity | WhizzIT,sub-service,189
+page,193,/network-management/structured-cabling-services/,Structured Cabling &#038; Network Installation | WhizzIT,sub-service,189
+page,195,/our-customers/,Client Reviews &#038; Success Stories | WhizzIT,page-our-customers,0
+page,194,/our-customers/gh-building-and-landscaping/,Case Study: GH Building &#038; Landscaping IT Support | WhizzIT,case-study,195
+page,196,/our-customers/ixia-clinical/,Ixia Clinical: Google to Microsoft 365 Migration | WhizzIT,case-study,195
+page,197,/our-customers/mbkb-group/,Case Study: IT Setup &#038; Support for MBKB Group | WhizzIT,case-study,195
+page,198,/our-customers/the-portland-hotel-group/,Case Study: IT Support for Portland Hotel Group | WhizzIT,case-study,195
+page,199,/privacy-policy/,Privacy Policy | WhizzIT,legal,0
+page,200,/thank-you-london/,Thank you | WhizzIT IT Support London,thank-you,0
+post,102,/blog/ai-automation-cloud-security/,"AI, automation and cloud security | WhizzIT",single-post,
+post,103,/blog/cloud-computing-careers-in-the-uk/,Cloud computing careers in the UK | WhizzIT,single-post,
+post,104,/blog/cloud-data-protection/,Cloud Data Protection for UK Businesses | WhizzIT,single-post,
+post,105,/blog/common-it-mistakes-small-businesses-make-and-how-to-avoid-them/,Common IT Mistakes Small Businesses Make | WhizzIT,single-post,
+post,106,/blog/construction-it-problems-and-how-to-overcome-them/,Construction IT problems and how to overcome them | WhizzIT,single-post,
+post,107,/blog/cyber-resiliency-strategy-enterprise-risk-management/,Cyber resilience strategy for UK businesses | WhizzIT,single-post,
+post,108,/blog/cyber-security-and-resilience-bill/,UK Cyber Security &#038; Resilience Bill Explained | WhizzIT,single-post,
+post,109,/blog/cyber-security-company-london-protecting-your-digital-future/,Cyber Security Company London | WhizzIT,single-post,
+post,110,/blog/google-workspace-backup-uk-smes/,Google Workspace backup for UK SMEs | WhizzIT,single-post,
+post,111,/blog/how-to-choose-managed-network-services-provider/,Choosing a managed network provider in the UK | WhizzIT,single-post,
+post,112,/blog/hybrid-cloud-security-best-practices/,Hybrid cloud security for UK businesses | WhizzIT,single-post,
+post,114,/blog/managed-cloud-services-guide/,A guide to managed cloud services | WhizzIT,single-post,
+post,115,/blog/managed-it-services-2026/,Managed IT Services in 2026: Why You Need Them | WhizzIT,single-post,
+post,116,/blog/managed-it-services-hybrid-working/,Managed IT services for hybrid working | WhizzIT,single-post,
+post,117,/blog/managed-it-services-small-business-growth/,Managed IT services for small business growth | WhizzIT,single-post,
+post,118,/blog/managed-it-services-startups/,Managed IT services for startups | WhizzIT,single-post,
+post,119,/blog/managed-it-services-vs-in-house-it/,Managed IT vs in-house IT for UK SMEs | WhizzIT,single-post,
+post,120,/blog/managed-it-support-small-businesses/,Managed IT support for small businesses | WhizzIT,single-post,
+post,121,/blog/multi-factor-authentication-uk-business/,Multi-factor authentication for UK business | WhizzIT,single-post,
+post,122,/blog/ransomware-and-backup-security/,How ransomware targets UK business backups | WhizzIT,single-post,
+post,123,/blog/reactive-to-proactive-managed-it/,Reactive to proactive IT for UK SMEs | WhizzIT,single-post,
+post,124,/blog/signs-outgrown-break-fix-it-support/,Signs your UK SME has outgrown break-fix IT | WhizzIT,single-post,
+post,125,/blog/the-ultimate-guide-to-it-support-everything-you-need-to-know/,IT support guide for UK small businesses | WhizzIT,single-post,
+post,126,/blog/top-5-it-challenges-uk-smes-2026/,Top 5 IT challenges for UK SMEs in 2026 | WhizzIT,single-post,
+post,127,/blog/what-is-lateral-movement-in-cybersecurity/,Lateral movement explained for UK SMEs | WhizzIT,single-post,
+post,128,/blog/why-businesses-are-shifting-to-managed-it-services/,Why businesses are shifting to managed IT services | WhizzIT,single-post,
+post,129,/blog/why-reliable-it-support-in-london-is-essential-for-small-businesses/,What IT Downtime Costs a London Small Business | WhizzIT,single-post,

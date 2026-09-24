@@ -1,7 +1,7 @@
 // Industries hub. Signature: a sector directory where each card carries its own
 // risk line, paired with the sector-specific case studies.
 import {
-  page, btn, icon, photo, stockPhoto, breadcrumbs, ctaBand, serviceRow,
+  page, btn, icon, photo, stockPhoto, breadcrumbs, ctaBand, serviceRow, WP_EXPORT,
   SITE, SERVICES, INDUSTRIES, CASE_STUDIES, TESTIMONIALS, PHOTOS, CREDENTIALS, STOCK, SECTOR_PHOTO,
 } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
@@ -12,7 +12,7 @@ const m = parsePage(pageByPath("/industries/").html);
 const crumbs = [{ title: "Home", href: "index.html" }, { title: "Industries" }];
 
 // What each sector tends to come to us for — drawn from the sector pages.
-const SECTOR_NOTE = {
+export const SECTOR_NOTE = {
   "business-services": "Client confidentiality, billable hours and systems that cannot be down in a working day.",
   construction: "Site connectivity, rugged kit and project data that has to reach the office.",
   healthcare: "Patient data, GDPR obligations and systems clinicians depend on daily.",
@@ -30,7 +30,7 @@ ${pageHero({
   lead: m.lead,
   crumbs: breadcrumbs(crumbs),
   aside: heroProof([
-    { icon: "briefcase", value: `${INDUSTRIES.length} sectors`, label: "With dedicated support pages" },
+    { icon: "briefcase", value: WP_EXPORT ? "[whizzit_sectors_count] sectors" : `${INDUSTRIES.length} sectors`, label: "With dedicated support pages" },
     { icon: "shield", value: "Cyber Essentials", label: "Certified provider" },
     { icon: "clock", value: "9 min", label: "Average first response" },
   ]),
@@ -47,7 +47,7 @@ ${pageHero({
       ${btn("Not listed? Talk to us", "contact.html", { variant: "secondary", arrow: false, track: "industries-contact" })}
     </div>
     <div class="sector-directory">
-      ${INDUSTRIES.map((s, i) => `
+      ${WP_EXPORT ? '[whizzit_sectors view="directory"]' : INDUSTRIES.map((s, i) => `
       <article class="sector-tile sector-tile--photo">
         <a class="card-link" href="@/${s.href}" aria-label="${s.title}"></a>
         ${stockPhoto(STOCK[SECTOR_PHOTO[s.key]], { cls: "sector-tile__photo", ratio: "3-2", sizes: "(min-width: 1024px) 24vw, 100vw" })}

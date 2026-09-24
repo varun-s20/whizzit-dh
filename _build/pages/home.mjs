@@ -3,7 +3,7 @@
 // that overlaps it, an ink services band, and photo tiles for stories and sectors.
 import {
   page, statValue, btn, textLink, icon, photo, stockPhoto, stars, reviewAvatar, callbackForm, heroNote,
-  SITE, SERVICES, INDUSTRIES, CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, PHOTOS, BLOG, STOCK, CATEGORY_PHOTO, SECTOR_PHOTO,
+  WP_EXPORT, SITE, SERVICES, INDUSTRIES, CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, PHOTOS, BLOG, STOCK, CATEGORY_PHOTO, SECTOR_PHOTO,
 } from "../lib.mjs";
 
 /* ---------- About tabs (from /about/) ---------- */
@@ -215,7 +215,7 @@ const main = `
       ${btn("View all industries", "industries.html", { variant: "secondary", arrow: false, track: "home-industries" })}
     </div>
     <ul class="sector-cards" role="list">
-      ${INDUSTRIES.map((s) => `
+      ${WP_EXPORT ? '[whizzit_sectors view="cards"]' : INDUSTRIES.map((s) => `
       <li class="sector-card">
         <a href="@/${s.href}">
           ${stockPhoto(STOCK[SECTOR_PHOTO[s.key]], { cls: "sector-card__art", ratio: "3-2", sizes: "(min-width: 1024px) 24vw, (min-width: 640px) 46vw, 92vw", alt: "" })}
@@ -272,10 +272,7 @@ const main = `
       ${textLink("View all articles", "blog.html", "home-blog")}
     </div>
     <div class="insight-grid">
-      ${insight(BLOG[0], "tall")}
-      ${insight(BLOG[1], "card")}
-      ${insight(BLOG[2], "card")}
-      ${insight(BLOG[3], "wide")}
+      ${WP_EXPORT ? "[whizzit_insights]" : [insight(BLOG[0], "tall"), insight(BLOG[1], "card"), insight(BLOG[2], "card"), insight(BLOG[3], "wide")].join("")}
     </div>
   </div>
 </section>

@@ -1,0 +1,4 @@
+# Site backups contain the client database (user emails, password hashes). Never commit.
+*.wpress
+# Packaged theme/plugin zips; rebuild with python package_plugin.py
+wordpress/dist/

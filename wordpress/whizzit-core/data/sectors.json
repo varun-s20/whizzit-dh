@@ -1,0 +1,76 @@
+{
+ "sectors": [
+  {
+   "key": "business-services",
+   "path": "/managed-it-services-for-business-services-organisations/",
+   "label": "Business Services",
+   "icon": "briefcase",
+   "desc": "Stable, secure and well-managed IT for professional service providers, consultancies and agencies whose reputation depends on client service.",
+   "note": "Client confidentiality, billable hours and systems that cannot be down in a working day.",
+   "photo": "meeting"
+  },
+  {
+   "key": "construction",
+   "path": "/it-support-construction/",
+   "label": "Construction",
+   "icon": "hardHat",
+   "desc": "Phone-first IT support for construction companies, tackling job-site connectivity, cyber security risks and outdated systems.",
+   "note": "Site connectivity, rugged kit and project data that has to reach the office.",
+   "photo": "construction"
+  },
+  {
+   "key": "healthcare",
+   "path": "/it-support-healthcare/",
+   "label": "Healthcare",
+   "icon": "heartPulse",
+   "desc": "Confidentiality-focused IT for healthcare and clinical organisations, from GDPR-aware security to tested backup and recovery.",
+   "note": "Patient data, GDPR obligations and systems clinicians depend on daily.",
+   "photo": "healthcare"
+  },
+  {
+   "key": "financial",
+   "path": "/managed-it-services-for-financial-services-business/",
+   "label": "Financial Services",
+   "icon": "landmark",
+   "desc": "Secure, resilient IT for advisers, accountants, wealth managers and lending firms working in a regulated industry.",
+   "note": "Regulated data, evidence for audits and resilient access to platforms.",
+   "photo": "finance"
+  },
+  {
+   "key": "legal",
+   "path": "/managed-it-services-for-legal-firms/",
+   "label": "Legal",
+   "icon": "scale",
+   "desc": "Confidentiality-first managed IT for law firms, protecting case files and client information while keeping fee earners productive.",
+   "note": "Case files, client obligations and security questionnaires that have to be answered.",
+   "photo": "legal"
+  },
+  {
+   "key": "education",
+   "path": "/managed-it-services-for-education-organisations/",
+   "label": "Education",
+   "icon": "graduation",
+   "desc": "Dependable classroom technology and safeguarding-aware IT for schools, academies, colleges and education providers.",
+   "note": "Safeguarding, classroom technology and budgets that have to stretch.",
+   "photo": "education"
+  },
+  {
+   "key": "manufacturing",
+   "path": "/managed-it-services-for-manufacturing-businesses/",
+   "label": "Manufacturing",
+   "icon": "layers",
+   "desc": "Resilient IT for production environments, from ERP platforms and connected machinery to secure multi-site connectivity.",
+   "note": "ERP platforms, connected machinery and multi-site connectivity.",
+   "photo": "manufacturing"
+  },
+  {
+   "key": "insurance",
+   "path": "/managed-it-services-for-insurance-services-businesses/",
+   "label": "Insurance",
+   "icon": "fileCheck",
+   "desc": "Reliable systems for brokers, insurers and claims teams that depend on fast access to policy platforms and customer records.",
+   "note": "Policy platforms, claims systems and fast access to customer records.",
+   "photo": "insurance"
+  }
+ ]
+}

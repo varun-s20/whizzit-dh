@@ -2,7 +2,7 @@
 // locations index, 4 case studies and the two standalone pages. Content is parsed
 // from the staging export, so the copy and URLs stay exactly as the client has them.
 import {
-  page, reviewAvatar, btn, icon, photo, stockPhoto, breadcrumbs, ctaBand, serviceRow, textLink,
+  page, reviewAvatar, btn, icon, photo, stockPhoto, breadcrumbs, ctaBand, serviceRow, textLink, WP_EXPORT,
   SITE, SERVICES, INDUSTRIES, LOCATIONS, CASE_STUDIES, PARTNERS, PHOTOS, TESTIMONIALS, CREDENTIALS, STOCK, SECTOR_PHOTO,
 } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
@@ -162,7 +162,7 @@ ${credentialStrip()}
       <h2 class="grad-head" id="other-sectors-title">Other industries we support</h2>
     </div>
     <ul class="sector-grid" role="list">
-      ${INDUSTRIES.filter((s) => s.key !== sector.key).slice(0, 4).map((s) => `<li><a href="@/${s.href}"><span class="sector-grid__icon">${icon(s.icon)}</span><strong>${s.title}</strong><span>${s.desc}</span></a></li>`).join("")}
+      ${WP_EXPORT ? '[whizzit_sectors view="grid" exclude="current" limit="4"]' : INDUSTRIES.filter((s) => s.key !== sector.key).slice(0, 4).map((s) => `<li><a href="@/${s.href}"><span class="sector-grid__icon">${icon(s.icon)}</span><strong>${s.title}</strong><span>${s.desc}</span></a></li>`).join("")}
     </ul>
   </div>
 </section>

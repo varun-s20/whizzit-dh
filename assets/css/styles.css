@@ -12030,3 +12030,28 @@ select.field__input {
 .hero-stack .callback + .hero-sky__note {
   margin-top: var(--space-4);
 }
+
+/* Live forms (WordPress): reCAPTCHA is revealed on the first press of submit
+   (app.js sendLive), and a failed send shows the live site's error line. */
+.captcha-row {
+  display: none;
+  margin-top: var(--space-4);
+}
+
+.captcha-row.is-armed {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.captcha-row.has-error .field__error {
+  display: flex;
+}
+
+.form-error {
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: 12px;
+  background: var(--color-error-soft);
+  color: var(--color-error);
+  font-size: var(--fs-small);
+}

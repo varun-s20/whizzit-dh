@@ -1,0 +1,44 @@
+{
+ "services": [
+  {
+   "key": "support",
+   "title": "IT Support",
+   "url": "/it-support/",
+   "short": "Fast, friendly help when things go wrong.",
+   "icon": "headset",
+   "tone": "support"
+  },
+  {
+   "key": "cloud",
+   "title": "Managed Cloud Services",
+   "url": "/managed-cloud-services/",
+   "short": "Microsoft 365, Azure and Google Workspace, managed end to end.",
+   "icon": "cloud",
+   "tone": "cloud"
+  },
+  {
+   "key": "cyber",
+   "title": "Cyber Security",
+   "url": "/cyber-security/",
+   "short": "Protection aligned to Cyber Essentials best practice.",
+   "icon": "shield",
+   "tone": "cyber"
+  },
+  {
+   "key": "network",
+   "title": "Network Management",
+   "url": "/network-management/",
+   "short": "Networks designed, built and monitored by our engineers.",
+   "icon": "network",
+   "tone": "network"
+  },
+  {
+   "key": "projects",
+   "title": "IT Project Management",
+   "url": "/it-project-management/",
+   "short": "Moves, migrations and upgrades delivered on time.",
+   "icon": "projects",
+   "tone": "projects"
+  }
+ ]
+}
