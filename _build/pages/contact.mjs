@@ -7,6 +7,20 @@ import { parsePage } from "../parse.mjs";
 const m = parsePage(pageByPath("/contact/").html);
 const crumbs = [{ title: "Home", href: "index.html" }, { title: "Contact" }];
 
+// Office maps: Google's keyless embed pins the address (q) and centres the view
+// on ll, so moving ll north drops the pin within the frame (5.13e-5 degrees of
+// latitude per pixel at z=15, measured from the embed itself). The frame is 130px
+// taller than the band that shows, because the crop hides Google's place card, so
+// the pin drops 65px to reach the band's middle, and 15px more so the marker's
+// head, not its tip, sits there.
+const LAT_PER_PX = 5.13e-5;
+const PIN_DROP_PX = 80;
+const mapSrc = (o) => {
+  const [lat, lng] = o.coords;
+  const ll = `${(lat + PIN_DROP_PX * LAT_PER_PX).toFixed(6)},${lng}`;
+  return `https://www.google.com/maps?q=${encodeURIComponent(o.address).replace(/%20/g, "+")}&amp;ll=${ll}&amp;z=15&amp;output=embed`;
+};
+
 const main = `
 <section class="hero hero--sky hero--contact" aria-labelledby="contact-title">
   <div class="container contact-hero">
@@ -85,16 +99,22 @@ const main = `
       </div>
       ${btn("See all locations", "locations.html", { variant: "secondary", arrow: false, track: "contact-locations" })}
     </div>
+    ${/* Each office sits on its own Google map, pinned where the office is. The
+         map is scenery: the address is in the card, "Get directions" opens Google
+         Maps, and the frame takes no focus or pointer so it never traps a scroll. */""}
     <div class="office-grid">
       ${SITE.offices.map((o) => `
-      <article class="office-card office-card--lg">
-        <span class="office-card__icon">${icon("mapPin")}</span>
-        <h3>${o.name}</h3>
-        <p class="office-card__label">${o.label}</p>
-        <p>${o.address}</p>
-        <div class="btn-group mt-5">
-          <a class="btn btn--secondary btn--sm" href="${o.maps}" rel="noopener">${icon("mapPin")}<span>Get directions</span></a>
-          <a class="btn btn--ghost btn--sm" href="${SITE.phoneHref}">${icon("phone")}<span>${SITE.phone}</span></a>
+      <article class="office-card office-card--lg office-card--map">
+        <div class="office-card__map" aria-hidden="true"><iframe src="${mapSrc(o)}" title="Map of the ${o.name} office" loading="lazy" referrerpolicy="no-referrer-when-downgrade" tabindex="-1"></iframe></div>
+        <div class="office-card__body">
+          <span class="office-card__icon">${icon("mapPin")}</span>
+          <h3>${o.name}</h3>
+          <p class="office-card__label">${o.label}</p>
+          <p>${o.address}</p>
+          <div class="btn-group mt-5">
+            <a class="btn btn--secondary btn--sm" href="${o.maps}" rel="noopener">${icon("mapPin")}<span>Get directions</span></a>
+            <a class="btn btn--ghost btn--sm" href="${SITE.phoneHref}">${icon("phone")}<span>${SITE.phone}</span></a>
+          </div>
         </div>
       </article>`).join("")}
     </div>

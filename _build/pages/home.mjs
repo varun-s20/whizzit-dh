@@ -51,6 +51,37 @@ const serviceStage = `
 /* ---------- Proof strip: an icon and a tone per figure, in STATS order ---------- */
 const STAT_LOOK = [["handHeart", "cyber"], ["award", "support"], ["clock", "cloud"], ["star", "projects"]];
 
+// A figure with an href (the Google rating) links out: its note becomes the link
+// text, and the link stretches over the whole tile.
+const statItem = (s, i) => `
+      <div class="stat-strip__item${s.href ? " stat-strip__item--link" : ""} tone-${STAT_LOOK[i][1]}">
+        <dt><span class="stat-strip__icon">${icon(STAT_LOOK[i][0])}</span>${s.label}</dt>
+        <dd class="stat-strip__value">${statValue(s)}</dd>
+        ${s.href ? `<dd class="stat-strip__more"><a class="card-link" href="${s.href}" target="_blank" rel="noopener" data-track="home-strip-google">${s.note}${icon("arrow")}</a></dd>` : ""}
+      </div>`;
+
+/* ---------- About photos ----------
+   WhizzIT's own photography as an auto-sliding carousel. The track is a
+   scroll-snap row, so it swipes natively on touch. Slim bars at the foot fill
+   over each slide's time and jump to a photo; two small arrows step through
+   (initCarousels in app.js). */
+const ABOUT_PHOTOS = [PHOTOS.team, PHOTOS.serviceDesk, PHOTOS.office, PHOTOS.van];
+const aboutCarousel = `
+      <div class="photo-carousel home-about__media" data-carousel role="region" aria-roledescription="carousel" aria-label="Inside WhizzIT">
+        <div class="photo-carousel__track" id="about-photos" data-carousel-track>
+          ${ABOUT_PHOTOS.map((p, i) => `<div class="photo-carousel__slide" role="group" aria-roledescription="slide" aria-label="${i + 1} of ${ABOUT_PHOTOS.length}">${photo(p, { ratio: "4-3", sizes: "(min-width: 1024px) 45vw, 100vw", loading: i ? "lazy" : "eager" })}</div>`).join("")}
+        </div>
+        <div class="photo-carousel__controls">
+          <div class="photo-carousel__dots">
+            ${ABOUT_PHOTOS.map((p, i) => `<button class="photo-carousel__dot" type="button" aria-controls="about-photos" aria-label="Show photo ${i + 1}"${i ? "" : ' aria-current="true"'} data-carousel-dot></button>`).join("")}
+          </div>
+          <div class="photo-carousel__arrows">
+            <button class="photo-carousel__nav" type="button" aria-controls="about-photos" aria-label="Previous photo" data-carousel-prev>${icon("arrowLeft")}</button>
+            <button class="photo-carousel__nav" type="button" aria-controls="about-photos" aria-label="Next photo" data-carousel-next>${icon("arrow")}</button>
+          </div>
+        </div>
+      </div>`;
+
 /* ---------- Case studies ---------- */
 const CASE_PHOTO = {
   "the-portland-hotel-group": PHOTOS.van,
@@ -118,11 +149,7 @@ const main = `
 <div class="home-strip">
   <div class="container">
     <dl class="stat-strip">
-      ${STATS.map((s, i) => `
-      <div class="stat-strip__item tone-${STAT_LOOK[i][1]}">
-        <dt><span class="stat-strip__icon">${icon(STAT_LOOK[i][0])}</span>${s.label}</dt>
-        <dd class="stat-strip__value">${statValue(s)}</dd>
-      </div>`).join("")}
+      ${STATS.map(statItem).join("")}
     </dl>
     <p class="home-strip__source">Figures published by WhizzIT. Response and resolution times measured across every ticket in 2025.</p>
     <p class="home-strip__lead">WhizzIT delivers expert managed IT services and reliable IT support to businesses across the UK. Proactive maintenance, responsive support and no tech jargon. Simple, secure and stress free.</p>
@@ -136,7 +163,7 @@ const main = `
       <p>WhizzIT is a managed IT services provider supporting businesses across the UK. Our focus is simple: reliable, high quality IT and exceptional customer service.</p>
     </div>
     <div class="home-about__grid">
-      ${photo(PHOTOS.team, { cls: "home-about__media", ratio: "4-3", sizes: "(min-width: 1024px) 45vw, 100vw", loading: "eager" })}
+      ${aboutCarousel}
       <div class="home-about__body">
         <div class="tabs" data-tabs>
           <div class="tabs__list pill-tabs" role="tablist" aria-label="About WhizzIT">

@@ -2,8 +2,8 @@
 // locations index, 4 case studies and the two standalone pages. Content is parsed
 // from the staging export, so the copy and URLs stay exactly as the client has them.
 import {
-  page, reviewAvatar, btn, icon, photo, stockPhoto, breadcrumbs, ctaBand, serviceRow, textLink, WP_EXPORT,
-  SITE, SERVICES, INDUSTRIES, LOCATIONS, CASE_STUDIES, PARTNERS, PHOTOS, TESTIMONIALS, CREDENTIALS, STOCK, SECTOR_PHOTO,
+  page, reviewAvatar, btn, icon, photo, stockPhoto, breadcrumbs, serviceRow, textLink, WP_EXPORT,
+  SITE, SERVICES, INDUSTRIES, LOCATIONS, CASE_STUDIES, PARTNERS, PHOTOS, TESTIMONIALS, CREDENTIALS, STOCK,
 } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
@@ -89,14 +89,14 @@ ${pageHero({
 ${renderBlocks(m.blocks, { key: child.href.replace(/[^a-z]+/g, "-") })}
 ${credentialStrip()}
 ${relatedStrip(`More ${parent.title}`, siblings)}
-${ctaBand({
-      title: `Talk to us about ${m.title}`,
-      text: `Tell us what you need and we'll tell you what we'd do. ${SITE.responseLine}, and no obligation.`,
-      track: `subservice-${child.href}`,
-    })}
 `;
 
     page({
+      footerCta: {
+        title: `Talk to us about ${m.title}`,
+        text: `Tell us what you need and we'll tell you what we'd do. ${SITE.responseLine}, and no obligation.`,
+        track: `subservice-${child.href}`,
+      },
       file: child.href,
       title: `${m.title} | ${parent.title}`,
       description: first(m.lead, `${m.title} from WhizzIT, part of our ${parent.title.toLowerCase()} service for UK businesses.`),
@@ -119,6 +119,12 @@ ${ctaBand({
 /* ==========================================================================
    2. INDUSTRY PAGES (8)
    ========================================================================== */
+const SECTOR_TRIOS = [
+  ["team", "serviceDesk", "office"],
+  ["serviceDesk", "network", "team"],
+  ["office", "team", "van"],
+  ["network", "office", "serviceDesk"],
+];
 INDUSTRIES.forEach((sector, i) => {
   const m = model(sector.href);
   if (!m) return;
@@ -128,7 +134,9 @@ INDUSTRIES.forEach((sector, i) => {
     { title: "Industries", href: "industries.html" },
     { title: sector.title },
   ];
-  const sectorPhoto = STOCK[SECTOR_PHOTO[sector.key]] || STOCK.meeting;
+  // WhizzIT's own photos across the hero, as on the service pages; rotated so
+  // neighbouring sectors do not open on the same shot.
+  const heroPhotos = SECTOR_TRIOS[i % SECTOR_TRIOS.length];
 
   const main = `
 ${pageHero({
@@ -136,7 +144,7 @@ ${pageHero({
     title: m.title,
     lead: m.lead,
     crumbs: breadcrumbs(crumbs),
-    feature: stockPhoto(sectorPhoto, { ratio: "16-9", sizes: "(min-width: 1280px) 1240px, 100vw", loading: "eager" }),
+    photos: heroPhotos,
   })}
 ${renderBlocks(m.blocks, { key: sector.key })}
 
@@ -167,14 +175,14 @@ ${credentialStrip()}
   </div>
 </section>
 
-${ctaBand({
-    title: `IT that fits how ${sector.title} works`,
-    text: "Book a no-obligation conversation and we'll tell you what we would change first.",
-    track: `sector-${sector.key}-cta`,
-  })}
 `;
 
   page({
+    footerCta: {
+      title: `IT that fits how ${sector.title} works`,
+      text: "Book a no-obligation conversation and we'll tell you what we would change first.",
+      track: `sector-${sector.key}-cta`,
+    },
     file: sector.href,
     title: m.title,
     description: first(m.lead, sector.desc),
@@ -252,14 +260,14 @@ ${renderBlocks(m.blocks, { key: `loc-${i}` })}
 </section>
 
 ${reviewStrip(TESTIMONIALS[(i + 2) % TESTIMONIALS.length])}
-${ctaBand({
-    title: `Need IT support in ${loc.title}?`,
-    text: `Call us and you'll speak to an engineer, not a queue. ${SITE.responseLine}.`,
-    track: `loc-${loc.title}-cta`,
-  })}
 `;
 
   page({
+    footerCta: {
+      title: `Need IT support in ${loc.title}?`,
+      text: `Call us and you'll speak to an engineer, not a queue. ${SITE.responseLine}.`,
+      track: `loc-${loc.title}-cta`,
+    },
     file: loc.href,
     title: m.title,
     description: first(m.lead, `Managed IT support in ${loc.title} from WhizzIT. Remote-first support, on-site when it needs hands, rated ${SITE.google.rating} on Google.`),
@@ -300,10 +308,10 @@ ${m ? renderBlocks(m.blocks, { key: "locations" }) : ""}
 </section>
 
 ${credentialStrip()}
-${ctaBand({ title: "Looking for IT support near you?", text: "Tell us where you are and what you need. We'll tell you honestly whether we're the right fit.", track: "locations-cta" })}
 `;
 
   page({
+    footerCta: { title: "Looking for IT support near you?", text: "Tell us where you are and what you need. We'll tell you honestly whether we're the right fit.", track: "locations-cta" },
     file: "locations.html",
     title: "IT Support Locations Across the UK",
     description: "WhizzIT provides managed IT support across London, Hertfordshire and the rest of the UK, with offices in London and Stevenage.",
@@ -370,10 +378,10 @@ ${reviewStrip(TESTIMONIALS.find((t) => t.client === study.slug) || TESTIMONIALS[
   </div>
 </section>
 
-${ctaBand({ title: "Want results like these?", text: "Book a no-obligation conversation about your systems, your team and what to fix first.", track: `case-${study.slug}-final` })}
 `;
 
   page({
+    footerCta: { title: "Want results like these?", text: "Book a no-obligation conversation about your systems, your team and what to fix first.", track: `case-${study.slug}-final` },
     file: href,
     title: m.title,
     description: first(m.lead, study.excerpt),
@@ -406,9 +414,9 @@ ${pageHero({
 ${renderBlocks(m.blocks, { key: "cloud-london" })}
 ${credentialStrip()}
 ${relatedStrip("Managed cloud services", SERVICES[1].children.slice(0, 4).map((c) => ({ title: c.title, href: c.href, icon: "cloud", tone: "cloud", short: "Part of managed cloud services." })))}
-${ctaBand({ title: "Moving to the cloud in London?", text: "We'll plan the move, run the migration and support it afterwards.", track: "cloud-london-cta" })}
 `;
     page({
+      footerCta: { title: "Moving to the cloud in London?", text: "We'll plan the move, run the migration and support it afterwards.", track: "cloud-london-cta" },
       file: "cloud-services-london.html",
       title: m.title,
       description: first(m.lead, "Managed cloud services for London businesses: Microsoft 365, Azure, migration, backup and day-to-day management."),

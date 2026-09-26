@@ -1,7 +1,7 @@
 // Blog index: one large featured article, topic filters and a three-column card
 // grid. The cards are staging's own (BLOG_LISTING): its titles, excerpts, dates,
 // categories and order, including the one card that links to a page.
-import { page, btn, icon, postCover, breadcrumbs, ctaBand, WP_EXPORT, SITE, BLOG, BLOG_LISTING, LISTING_CATEGORIES } from "../lib.mjs";
+import { page, btn, icon, postCover, breadcrumbs, WP_EXPORT, SITE, BLOG, BLOG_LISTING, LISTING_CATEGORIES } from "../lib.mjs";
 import { pageHero } from "../blocks.mjs";
 
 const crumbs = [{ title: "Home", href: "index.html" }, { title: "Blog" }];
@@ -89,14 +89,14 @@ ${pageHero({
   </div>
 </section>
 
-${ctaBand({
-  title: "Rather ask us directly?",
-  text: `Send the question over and an engineer will answer it. ${SITE.responseLine}, no sales pitch.`,
-  track: "blog-final-cta",
-})}
 `;
 
 page({
+  footerCta: {
+    title: "Rather ask us directly?",
+    text: `Send the question over and an engineer will answer it. ${SITE.responseLine}, no sales pitch.`,
+    track: "blog-final-cta",
+  },
   file: "blog.html",
   title: "IT Support & Cyber Security Insights | WhizzIT Blog",
   description: "Practical IT advice from the WhizzIT team: managed IT, cyber security, cloud and networks explained for UK business owners.",

@@ -117,7 +117,7 @@ link cannot be resolved, and `_source/GAPS.md` records the link audit (currently
   heroes: pressed metal lit from the top left, raised things highlighted on their top edge, engraved things
   the reverse. Motion is light and pressure, and every animation is off under reduced motion.
 - **Buttons** are squared (`--radius-sm`): blue primary, heading-ink outline secondary. Cards use 14–28px radii.
-- **Closing CTA** (`ctaBand()` in `lib.mjs`, also used for the footer CTA) is a split card: photo on one side,
+- **Closing CTA** (`ctaCard()` in `lib.mjs`, placed at the top of the footer on every page via `page({ footerCta })`) is a split card: photo on one side,
   a dark panel warmed by orange and ember glows on the other, with a white primary button.
 - **Header** is two rows. The utility strip (desktop only, ≥1100px, collapses on
   scroll) carries the response line, phone and email. The bar below it holds the

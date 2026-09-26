@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 ?>
 </main>
-<?php whizzit_footer(); ?>
+<?php whizzit_footer( $args['cta'] ?? null ); ?>
 <?php whizzit_part( 'mobile-nav' ); ?>
 <?php wp_footer(); ?>
 </body>

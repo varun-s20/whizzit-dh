@@ -1,6 +1,6 @@
 // Cyber Security overview. Signature: the layered-defence stack, with the
 // Cyber Essentials certification pulled out as its own feature.
-import { page, btn, icon, breadcrumbs, ctaBand, service, SITE, TESTIMONIALS, CREDENTIALS } from "../lib.mjs";
+import { page, btn, icon, breadcrumbs, service, SITE, TESTIMONIALS, CREDENTIALS } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
 import { pageHero, heroProof, renderBlocks, subServiceGrid, reviewsBand, pricingPanel } from "../blocks.mjs";
@@ -80,7 +80,7 @@ ${pageHero({
       </div>
     </div>
     <div class="ce-feature__badge">
-      <img src="@/assets/images/partners/cyber-essentials.png" alt="Cyber Essentials certified" width="180" height="120" decoding="async">
+      <img src="@/assets/images/partners/cyber-essentials.webp" alt="Cyber Essentials certified" width="180" height="120" decoding="async">
     </div>
   </div>
 </section>
@@ -123,14 +123,14 @@ ${renderBlocks(rest, { key: "cyber" })}
 ${subServiceGrid(cyber, { title: "Specialist cyber security services", lead: "Ten services that plug into the layers above, on their own or as one managed programme." })}
 ${reviewsBand([TESTIMONIALS[1], TESTIMONIALS[0], TESTIMONIALS[3]], { title: "What our clients say" })}
 ${pricingPanel({ track: "cyber-pricing" })}
-${ctaBand({
-  title: "Not sure where your gaps are?",
-  text: "Book a security review. We will tell you what to fix first, in plain English, with evidence.",
-  track: "cyber-final-cta",
-})}
 `;
 
 page({
+  footerCta: {
+    title: "Not sure where your gaps are?",
+    text: "Book a security review. We will tell you what to fix first, in plain English, with evidence.",
+    track: "cyber-final-cta",
+  },
   file: "cyber-security.html",
   title: "Managed Cyber Security Services for Business",
   description: "Managed cyber security from WhizzIT: layered protection across email, identity, devices and networks, with Cyber Essentials certification support.",

@@ -105,12 +105,13 @@ while ( have_posts() ) :
 <?php endif; ?>
 
 	<?php
-	whizzit_part( 'cta-band', [
-		'{{TITLE}}' => 'Want help putting this into practice?',
-		'{{TEXT}}'  => 'Our engineers can review your setup and tell you what to prioritise.',
-		'{{LABEL}}' => 'Talk to an IT expert',
-		'{{TRACK}}' => esc_attr( 'article-' . $slug . '-final-cta' ),
-	] );
+	// The closing CTA card sits at the top of the footer, as on every page.
+	$footer_cta = [
+		'title' => 'Want help putting this into practice?',
+		'text'  => 'Our engineers can review your setup and tell you what to prioritise.',
+		'cta'   => 'Talk to an IT expert',
+		'track' => 'article-' . $slug . '-final-cta',
+	];
 endwhile;
 
-get_footer();
+get_footer( null, [ 'cta' => $footer_cta ?? null ] );

@@ -1,6 +1,6 @@
 // Managed Cloud Services overview. Signature: platform cards across the top and a
 // four-step migration journey down the middle.
-import { page, btn, icon, photo, breadcrumbs, ctaBand, service, SITE, TESTIMONIALS, PHOTOS, PARTNERS } from "../lib.mjs";
+import { page, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, PARTNERS } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
 import { pageHero, heroProof, renderBlocks, subServiceGrid, reviewsBand, pricingPanel } from "../blocks.mjs";
@@ -129,14 +129,14 @@ ${renderBlocks(rest, { key: "cloud" })}
 ${subServiceGrid(cloud, { title: "Our cloud services" })}
 ${reviewsBand([TESTIMONIALS[3], TESTIMONIALS[1], TESTIMONIALS[2]], { title: "What our cloud clients say" })}
 ${pricingPanel({ track: "cloud-pricing" })}
-${ctaBand({
-  title: "Thinking about a move to the cloud?",
-  text: "We will tell you what to move, what to leave and what it will cost before anything changes.",
-  track: "cloud-final-cta",
-})}
 `;
 
 page({
+  footerCta: {
+    title: "Thinking about a move to the cloud?",
+    text: "We will tell you what to move, what to leave and what it will cost before anything changes.",
+    track: "cloud-final-cta",
+  },
   file: "managed-cloud-services.html",
   title: "Managed Cloud Services | Microsoft 365 & Azure",
   description: "Managed cloud services from WhizzIT: Microsoft 365, Azure and Google Workspace managed end to end, with migration, backup and continuity built in.",

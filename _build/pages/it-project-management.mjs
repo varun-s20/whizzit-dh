@@ -1,6 +1,6 @@
 // IT Project Management overview. Signature: the four-stage delivery method runs
 // down the page as a numbered spine.
-import { page, statValue, btn, icon, photo, breadcrumbs, ctaBand, service, SITE, TESTIMONIALS, PHOTOS, STATS } from "../lib.mjs";
+import { page, statValue, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, STATS } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
 import { pageHero, heroProof, renderBlocks, subServiceGrid, reviewsBand, pricingPanel } from "../blocks.mjs";
@@ -120,14 +120,14 @@ ${renderBlocks(rest, { key: "pm" })}
 ${subServiceGrid(projects, { title: "Strategy, advisory and delivery services" })}
 ${reviewsBand([TESTIMONIALS[5], TESTIMONIALS[1], TESTIMONIALS[4]], { title: "What our project clients say" })}
 ${pricingPanel({ track: "pm-pricing" })}
-${ctaBand({
-  title: "Got a move, migration or upgrade coming?",
-  text: "Tell us the deadline. We will work backwards from it and tell you what has to happen when.",
-  track: "pm-final-cta",
-})}
 `;
 
 page({
+  footerCta: {
+    title: "Got a move, migration or upgrade coming?",
+    text: "Tell us the deadline. We will work backwards from it and tell you what has to happen when.",
+    track: "pm-final-cta",
+  },
   file: "it-project-management.html",
   title: "IT Project Management Services",
   description: "IT project management from WhizzIT: office moves, migrations, upgrades and IT strategy delivered on time, without disrupting your team.",

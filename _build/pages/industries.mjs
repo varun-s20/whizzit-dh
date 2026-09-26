@@ -1,7 +1,7 @@
 // Industries hub. Signature: a sector directory where each card carries its own
 // risk line, paired with the sector-specific case studies.
 import {
-  page, btn, icon, photo, stockPhoto, breadcrumbs, ctaBand, serviceRow, WP_EXPORT,
+  page, btn, icon, photo, stockPhoto, breadcrumbs, serviceRow, WP_EXPORT,
   SITE, SERVICES, INDUSTRIES, CASE_STUDIES, TESTIMONIALS, PHOTOS, CREDENTIALS, STOCK, SECTOR_PHOTO,
 } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
@@ -118,14 +118,14 @@ ${pageHero({
 
 ${reviewsBand([TESTIMONIALS[2], TESTIMONIALS[4], TESTIMONIALS[3]], { title: "What businesses like yours say", eyebrow: "Reviews" })}
 
-${ctaBand({
-  title: "Looking for IT support that understands your industry?",
-  text: `Tell us how your sector works and what it has to prove. ${SITE.responseLine}.`,
-  track: "industries-final-cta",
-})}
 `;
 
 page({
+  footerCta: {
+    title: "Looking for IT support that understands your industry?",
+    text: `Tell us how your sector works and what it has to prove. ${SITE.responseLine}.`,
+    track: "industries-final-cta",
+  },
   file: "industries.html",
   title: "Specialist IT Support by Industry & Sector",
   description: "Specialist managed IT support by sector: business services, construction, healthcare, financial services, legal, education, manufacturing and insurance.",

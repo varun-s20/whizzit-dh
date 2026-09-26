@@ -145,9 +145,9 @@ export const renderEnquiries = (html) => {
 };
 
 // The line under a hero's callback form: the phone for anyone who would rather
-// talk, then proof.
+// talk, then proof, which links to the Google reviews.
 export const heroNote = (tail = "UK-wide coverage", track = "hero") =>
-  `<p class="hero-sky__note">${icon("phone")}<span>Prefer to talk? <a href="${SITE.phoneHref}" data-track="${track}-phone">Call ${SITE.phone}</a> · ${SITE.google.label} · ${tail}</span></p>`;
+  `<p class="hero-sky__note">${icon("phone")}<span>Prefer to talk? <a href="${SITE.phoneHref}" data-track="${track}-phone">Call ${SITE.phone}</a> · <a href="${SITE.google.reviewsUrl}" target="_blank" rel="noopener" data-track="${track}-google">${SITE.google.label}</a> · ${tail}</span></p>`;
 
 export function textLink(label, href, track = "") {
   const t = track ? ` data-track="${track}"` : "";
@@ -321,7 +321,8 @@ export function faq(items, { title = "Questions we hear often", lead = "", id = 
 }
 
 // Closing call to action: a photo of someone on the phone beside a dark panel
-// warmed by the brand orange. One card for every page — the section band and the footer both use it.
+// warmed by the brand orange. Every page carries it at the top of the footer
+// (page({ footerCta })), as the home page always has.
 function ctaCard({ title, text, cta = "Book a consultation", href = "contact.html", track = "cta-band", level = 2 }) {
   return `<div class="cta-band">
         ${photo(PHOTOS.headset, { cls: "cta-band__photo", ratio: "4-3", sizes: "(min-width: 1024px) 34vw, 100vw" })}
@@ -334,14 +335,6 @@ function ctaCard({ title, text, cta = "Book a consultation", href = "contact.htm
           </div>
         </div>
       </div>`;
-}
-
-export function ctaBand({ title, text, cta, href, track = "cta-band" }) {
-  return `<section class="section section--tight" aria-label="${esc(title)}">
-    <div class="container">
-      ${ctaCard({ title, text, cta, href, track })}
-    </div>
-  </section>`;
 }
 
 export function blogCard(p, { featured = false, level = 3 } = {}) {
@@ -472,9 +465,11 @@ function megaFeature(f, track) {
 }
 
 function header(file) {
-  // Every nav entry is a mega trigger except the plain links, which point straight
-  // at a page. The old utility strip above the bar is gone: its links live in the
-  // mega panels, and its phone number is now the header's second action.
+  // Every nav entry links to its overview page. Entries with a mega menu add a
+  // chevron button beside the label: hover opens the panel for mouse users, the
+  // chevron opens it for touch and keyboard. The old utility strip above the bar
+  // is gone: its links live in the mega panels, and its phone number is now the
+  // header's second action.
   const items = NAV.map((item) => {
     if (item.type === "link") {
       return `<li class="primary-nav__item${isCurrent(item, file) ? " is-current" : ""}">
@@ -482,8 +477,8 @@ function header(file) {
     </li>`;
     }
     const panel = item.type === "services" ? megaServices(file) : item.type === "industries" ? megaIndustries(file) : megaCompact(item, file);
-    return `<li class="primary-nav__item${isCurrent(item, file) ? " is-current" : ""}">
-      <button class="primary-nav__trigger" type="button" aria-expanded="false" aria-controls="mega-${item.id}" data-mega-trigger>${item.label}${icon("chevronDown")}</button>
+    return `<li class="primary-nav__item primary-nav__item--mega${isCurrent(item, file) ? " is-current" : ""}">
+      <a class="primary-nav__trigger" href="${at(item.href)}"${cur(item.href, file)} data-mega-link>${item.label}</a><button class="primary-nav__caret" type="button" aria-expanded="false" aria-controls="mega-${item.id}" aria-label="${item.label} menu" data-mega-trigger>${icon("chevronDown")}</button>
       <div class="mega" id="mega-${item.id}">${panel}</div>
     </li>`;
   }).join("");
@@ -568,7 +563,7 @@ function footer(cta) {
     `<div class="footer-col"><h2>${title}</h2><ul>${links.map((l) => `<li><a href="${at(l.href)}">${l.title}</a></li>`).join("")}</ul></div>`;
 
   const ctaBlock = cta
-    ? `<div class="site-footer__cta">${ctaCard({ title: cta.title, text: cta.text, cta: cta.cta, href: cta.href, track: "footer-cta" })}</div>`
+    ? `<div class="site-footer__cta">${ctaCard({ title: cta.title, text: cta.text, cta: cta.cta, href: cta.href, track: cta.track || "footer-cta" })}</div>`
     : "";
   const quick = [
     { title: "Home", href: "index.html" },
@@ -624,7 +619,6 @@ function footer(cta) {
       </ul>
     </div>
   </div>
-  <svg class="site-footer__wordmark" viewBox="0 0 1200 190" aria-hidden="true"><defs><linearGradient id="footer-wordmark-fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3f47"/><stop offset="1" stop-color="#0a0b0d"/></linearGradient></defs><text x="600" y="185" text-anchor="middle" fill="url(#footer-wordmark-fade)" font-family="Urbanist, sans-serif" font-size="250" font-weight="700" letter-spacing="-6">WhizzIT</text></svg>
 </footer>`;
 }
 
@@ -653,16 +647,15 @@ export function page({ file, title, description, bodyClass, crumbs = null, main,
   if (WP_EXPORT) {
     // The chrome is the same on every page (the current menu item is marked in
     // the browser), so it is captured once; the footer CTA varies per page.
-    // Two pages add a CTA card to the footer; it is exported as its own part and
-    // placed at {{FOOTER_CTA}} only on the pages that ask for it.
+    // The closing CTA card is exported as its own part and placed at
+    // {{FOOTER_CTA}} with each page's own copy.
     wpRecords.chrome ??= {
       header: wpUrls(header("")),
       mobileNav: wpUrls(mobileNav("")),
       footer: wpUrls(footer(null)).replace('<div class="container">', '<div class="container">{{FOOTER_CTA}}'),
-      footerCta: wpUrls(`<div class="site-footer__cta">${ctaCard({ title: "{{TITLE}}", text: "{{TEXT}}", cta: "{{LABEL}}", href: "contact.html", track: "footer-cta" })}</div>`),
+      footerCta: wpUrls(`<div class="site-footer__cta">${ctaCard({ title: "{{TITLE}}", text: "{{TEXT}}", cta: "{{LABEL}}", href: "contact.html", track: "{{TRACK}}" })}</div>`),
       // Used by the blog post template.
       callback: wpUrls(callbackForm({ track: "{{TRACK}}", captchaTheme: "{{CAPTCHA_THEME}}" })),
-      ctaBand: wpUrls(ctaBand({ title: "{{TITLE}}", text: "{{TEXT}}", cta: "{{LABEL}}", track: "{{TRACK}}" })),
     };
     wpRecords.pages.push({
       path: wpPath(file),

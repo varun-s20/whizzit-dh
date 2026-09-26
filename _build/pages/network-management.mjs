@@ -1,6 +1,6 @@
 // Network Management overview. Signature: a monitoring panel showing what we watch,
 // paired with the site-by-site coverage list.
-import { page, btn, icon, photo, breadcrumbs, ctaBand, service, SITE, TESTIMONIALS, PHOTOS, LOCATIONS } from "../lib.mjs";
+import { page, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, LOCATIONS } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
 import { pageHero, heroProof, renderBlocks, subServiceGrid, reviewsBand, pricingPanel } from "../blocks.mjs";
@@ -136,14 +136,14 @@ ${subServiceGrid(network, { title: "Network management services" })}
 
 ${reviewsBand([TESTIMONIALS[4], TESTIMONIALS[2], TESTIMONIALS[0]], { title: "What our clients say" })}
 ${pricingPanel({ track: "network-pricing" })}
-${ctaBand({
-  title: "Tired of blaming the Wi-Fi?",
-  text: "We will survey what you have, tell you what is actually wrong and fix it properly.",
-  track: "network-final-cta",
-})}
 `;
 
 page({
+  footerCta: {
+    title: "Tired of blaming the Wi-Fi?",
+    text: "We will survey what you have, tell you what is actually wrong and fix it properly.",
+    track: "network-final-cta",
+  },
   file: "network-management.html",
   title: "Managed Network Services & 24/7 Monitoring",
   description: "Managed network services from WhizzIT: firewalls, business Wi-Fi, structured cabling, SD-WAN and 24/7 network monitoring for UK businesses.",

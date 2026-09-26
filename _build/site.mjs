@@ -16,9 +16,10 @@ export const SITE = {
   recaptchaSiteKey: "6LetGGItAAAAABGoBmlvEaWqFhJNfk97jeH2zaOv",
   // [CLIENT TO SUPPLY] no remote-support portal exists on staging yet.
   remoteSupport: "contact.html",
+  // maps: directions link; coords: where Google Maps pins the address (for the contact page map).
   offices: [
-    { name: "London", label: "Head office", address: "124 City Rd, London, EC1V 2NX", maps: "https://www.google.com/maps/dir/?api=1&destination=124+City+Rd%2C+London+EC1V+2NX" },
-    { name: "Stevenage", label: "Hertfordshire", address: "Caxton Point Business Centre, Caxton Way, Stevenage SG1 2XT", maps: "https://www.google.com/maps/dir/?api=1&destination=Caxton+Point+Business+Centre%2C+Caxton+Way%2C+Stevenage+SG1+2XT" },
+    { name: "London", label: "Head office", address: "124 City Rd, London, EC1V 2NX", maps: "https://www.google.com/maps/dir/?api=1&destination=124+City+Rd%2C+London+EC1V+2NX", coords: [51.5272383, -0.0886724] },
+    { name: "Stevenage", label: "Hertfordshire", address: "Caxton Point Business Centre, Caxton Way, Stevenage SG1 2XT", maps: "https://www.google.com/maps/dir/?api=1&destination=Caxton+Point+Business+Centre%2C+Caxton+Way%2C+Stevenage+SG1+2XT", coords: [51.8999701, -0.217209] },
   ],
   google: {
     rating: "5.0",
@@ -184,13 +185,13 @@ export const LOCATIONS = [
 
 // Vendor accreditations and partner status, with the logo files pulled from staging.
 export const PARTNERS = [
-  { title: "Microsoft Cloud Solution Provider", file: "microsoft-csp.png" },
-  { title: "Cyber Essentials certified", file: "cyber-essentials.png" },
-  { title: "Fortinet Authorized Partner", file: "fortinet.png" },
-  { title: "Dell Technologies Authorized Partner", file: "dell-technologies.png" },
-  { title: "NinjaOne partner", file: "ninjaone.svg" },
-  { title: "Pax8 partner", file: "pax8.png" },
-  { title: "Acronis partner", file: "acronis.png" },
+  { title: "Microsoft Cloud Solution Provider", file: "microsoft-csp.webp" },
+  { title: "Cyber Essentials certified", file: "cyber-essentials.webp" },
+  { title: "Fortinet Authorized Partner", file: "fortinet.webp" },
+  { title: "Dell Technologies Authorized Partner", file: "dell-technologies.webp" },
+  { title: "NinjaOne partner", file: "ninjaone-logo.svg" },
+  { title: "Pax8 partner", file: "pax8.webp" },
+  { title: "Acronis partner", file: "acronis.webp" },
 ];
 
 // Client logos shown on staging (permission already granted for these).
@@ -233,13 +234,13 @@ export const TEAM = [
 export const CREDENTIALS = [
   {
     title: "Cyber Essentials certified",
-    file: "cyber-essentials.png",
+    file: "cyber-essentials.webp",
     text: "Independently assessed against the UK government-backed scheme, so our security fundamentals are verified rather than simply claimed. We help clients certify too.",
     cta: { label: "How Cyber Essentials helps you", href: "cyber-security/cyber-essentials-services.html" },
   },
   {
     title: "Microsoft Cloud Solution Provider",
-    file: "microsoft-csp.png",
+    file: "microsoft-csp.webp",
     text: "A direct partnership with Microsoft. We license, deploy and support Microsoft 365 and Azure for you, with escalation straight to Microsoft when it is needed.",
     cta: { label: "Our Microsoft cloud services", href: "managed-cloud-services.html" },
   },
@@ -310,23 +311,27 @@ export const CATEGORY_PHOTO = {
   careers: "education",
 };
 
-// Header navigation. Groups become mega-menu columns and mobile accordion groups.
+// Header navigation. Each entry links to its overview page (href); groups become
+// mega-menu columns and mobile accordion groups.
 export const NAV = [
   {
     label: "IT Services",
     id: "services",
+    href: "it-services.html",
     match: ["it-services.html", "it-support.html", "managed-cloud-services.html", "cyber-security.html", "network-management.html", "it-project-management.html", "it-support/", "managed-cloud-services/", "cyber-security/", "network-management/", "it-project-management/"],
     type: "services",
   },
   {
     label: "Industries",
     id: "industries",
+    href: "industries.html",
     match: ["industries.html", "it-support-construction.html", "it-support-healthcare.html", "managed-it-services-for-"],
     type: "industries",
   },
   {
     label: "Customers",
     id: "customers",
+    href: "our-customers.html",
     match: ["our-customers.html", "our-customers/"],
     type: "compact",
     groups: [
@@ -349,6 +354,7 @@ export const NAV = [
   {
     label: "Resources",
     id: "resources",
+    href: "blog.html",
     match: ["blog.html", "blog/"],
     type: "compact",
     groups: [
@@ -380,6 +386,7 @@ export const NAV = [
     // and given the Locations group that used to sit in the utility strip.
     label: "About",
     id: "company",
+    href: "about.html",
     match: ["about.html", "locations.html", "locations/", "privacy-policy.html", "cookie-policy.html"],
     type: "compact",
     groups: [

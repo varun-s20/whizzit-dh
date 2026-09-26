@@ -1,8 +1,7 @@
 // IT Services hub. Signature layout: five alternating pillar rows, each one
 // opening out into its sub-services, so the page doubles as the site's index.
 import {
-  page, statValue, reviewAvatar, btn, icon, photo, breadcrumbs, ctaBand,
-  SITE, SERVICES, STATS, PARTNERS, CREDENTIALS, TESTIMONIALS, PHOTOS, CLIENTS,
+  page, statValue, reviewAvatar, btn, icon, photo, breadcrumbs, SITE, SERVICES, STATS, PARTNERS, CREDENTIALS, TESTIMONIALS, PHOTOS, CLIENTS,
 } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
@@ -150,14 +149,14 @@ ${pageHero({
   </div>
 </section>
 
-${ctaBand({
-  title: "Not sure which service you need?",
-  text: "Tell us what is slowing your team down. We will recommend the right mix, not the biggest package.",
-  track: "services-final-cta",
-})}
 `;
 
 page({
+  footerCta: {
+    title: "Not sure which service you need?",
+    text: "Tell us what is slowing your team down. We will recommend the right mix, not the biggest package.",
+    track: "services-final-cta",
+  },
   file: "it-services.html",
   title: "IT Support, Cloud & Cyber Security Services",
   description: "Explore WhizzIT's managed IT services: IT support, managed cloud, cyber security, network management and IT project management for UK businesses.",

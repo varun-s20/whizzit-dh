@@ -1,7 +1,7 @@
 // Renders the parsed staging blocks with the new design system. Each block kind
 // gets its own component. Blocks with a card, tabs or accordion stack: heading and
 // prose across the row, the component below (see .block-split:has in styles.css).
-import { icon, btn, reviewAvatar, stockPhoto, callbackForm, heroNote, WP_EXPORT, SITE, STOCK } from "./lib.mjs";
+import { icon, btn, reviewAvatar, photo, callbackForm, heroNote, WP_EXPORT, SITE, PHOTOS } from "./lib.mjs";
 
 // WordPress export: each structured block carries its data in a marker comment,
 // so the importer builds a WhizzIT Elementor widget with real fields (and
@@ -186,14 +186,25 @@ export function renderBlocks(blocks, { key = "b" } = {}) {
 }
 
 /* ---------- Shared page furniture ---------- */
-// The wide photo that sits across the hero's foot. Pages pass their own
-// (industry, location, case study); service pages get their service's photo.
-const TONE_PHOTO = { support: "supportDesk", cloud: "cloudRacks", cyber: "cyber", network: "serverRoom", projects: "meeting" };
-export const heroFeature = (item) => stockPhoto(item, { ratio: "16-9", sizes: "(min-width: 1280px) 1240px, 100vw", loading: "eager" });
+// The photos across the hero's foot. Pages can pass their own wide photo
+// (location, case study). Every other page gets three smaller tiles of WhizzIT's
+// own photography: its service's photo first, or the PHOTOS keys it passes as
+// `photos`. Phones show the first.
+const TONE_PHOTOS = {
+  support: ["serviceDesk", "team", "office"],
+  cloud: ["office", "serviceDesk", "team"],
+  cyber: ["team", "office", "network"],
+  network: ["network", "serviceDesk", "van"],
+  projects: ["van", "team", "network"],
+  default: ["team", "serviceDesk", "network"],
+};
+const heroTrio = (keys) => `<div class="photo-trio">${keys
+  .map((key, i) => photo(PHOTOS[key], { ratio: "16-9", sizes: "(min-width: 1280px) 400px, (min-width: 640px) 32vw, 100vw", loading: i ? "lazy" : "eager" }))
+  .join("")}</div>`;
 
-export function pageHero({ eyebrow, title, lead, crumbs = "", aside = "", cls = "", feature, note }) {
+export function pageHero({ eyebrow, title, lead, crumbs = "", aside = "", cls = "", feature, photos, note }) {
   const tone = (cls.match(/hero--tone-(\w+)/) || [])[1];
-  const fig = feature === false ? "" : feature || heroFeature(STOCK[TONE_PHOTO[tone]] || STOCK.office);
+  const fig = feature === false ? "" : feature || heroTrio(photos || TONE_PHOTOS[tone] || TONE_PHOTOS.default);
   // One column, top to bottom: the headline gets the full row instead of sharing
   // it with a side panel, then the callback form the live site has on every page,
   // and whatever used to sit beside it runs full width below.

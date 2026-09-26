@@ -1,6 +1,6 @@
 // IT Support overview. Signature: the remote/on-site split as a head-to-head
 // comparison, with the service-desk numbers running underneath it.
-import { page, btn, icon, photo, breadcrumbs, ctaBand, service, SITE, TESTIMONIALS, PHOTOS, CREDENTIALS } from "../lib.mjs";
+import { page, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, CREDENTIALS } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
 import { pageHero, heroProof, renderBlocks, subServiceGrid, reviewsBand, pricingPanel } from "../blocks.mjs";
@@ -102,14 +102,14 @@ ${renderBlocks(rest, { key: "support" })}
 ${subServiceGrid(support, { title: "Specialist support services" })}
 ${reviewsBand([TESTIMONIALS[0], TESTIMONIALS[4], TESTIMONIALS[5]], { title: "What our support clients say" })}
 ${pricingPanel({ track: "support-pricing" })}
-${ctaBand({
-  title: "Want support that answers the phone?",
-  text: `Book a no-obligation conversation. ${SITE.responseLine}, UK-wide coverage.`,
-  track: "support-final-cta",
-})}
 `;
 
 page({
+  footerCta: {
+    title: "Want support that answers the phone?",
+    text: `Book a no-obligation conversation. ${SITE.responseLine}, UK-wide coverage.`,
+    track: "support-final-cta",
+  },
   file: "it-support.html",
   title: "Managed IT Support Services",
   description: "Managed IT support from WhizzIT: unlimited remote service desk, on-site engineers and ITIL-aligned processes. 9 minute average first response.",

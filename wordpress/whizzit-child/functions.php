@@ -98,17 +98,24 @@ function whizzit_part( $name, $tokens = [] ) {
 
 /**
  * The footer, with the CTA card on the pages that carry one. Imported pages keep
- * the card's copy in the _whizzit_footer_cta meta field.
+ * the card's copy in the _whizzit_footer_cta meta field; templates without one
+ * (blog posts) pass their own through get_footer()'s $args.
+ *
+ * @param array|null $fallback Card copy (title, text, cta, track) when the page has none stored.
  */
-function whizzit_footer() {
+function whizzit_footer( $fallback = null ) {
 	$cta  = '';
 	$data = is_singular() ? json_decode( (string) get_post_meta( get_queried_object_id(), '_whizzit_footer_cta', true ), true ) : null;
+	if ( ! is_array( $data ) || empty( $data['title'] ) ) {
+		$data = $fallback;
+	}
 	if ( is_array( $data ) && ! empty( $data['title'] ) ) {
 		ob_start();
 		whizzit_part( 'footer-cta', [
 			'{{TITLE}}' => esc_html( $data['title'] ),
 			'{{TEXT}}'  => esc_html( $data['text'] ?? '' ),
 			'{{LABEL}}' => esc_html( $data['cta'] ?? 'Book a consultation' ),
+			'{{TRACK}}' => esc_attr( $data['track'] ?? 'footer-cta' ),
 		] );
 		$cta = ob_get_clean();
 	}

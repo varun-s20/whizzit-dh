@@ -751,6 +751,56 @@ strong {
   transform: scaleX(1);
 }
 
+/* Mega entries: the label links to the overview page and the chevron beside it
+   opens the panel. The item carries the hover pill so the pair reads as one. */
+.primary-nav__item--mega {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  transition: background-color var(--dur-fast);
+}
+
+.primary-nav__item--mega:hover,
+.primary-nav__item--mega.is-open {
+  background: var(--color-surface);
+}
+
+.primary-nav__item--mega > .primary-nav__trigger {
+  padding-right: 2px;
+  background: none;
+}
+
+.primary-nav__item--mega > .primary-nav__trigger::after {
+  right: 2px;
+}
+
+.primary-nav__caret {
+  display: inline-grid;
+  place-items: center;
+  min-height: 38px;
+  padding: 0 12px 0 4px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color var(--dur-fast);
+}
+
+.primary-nav__caret:hover {
+  color: var(--color-text);
+}
+
+.primary-nav__caret svg {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.primary-nav__caret[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
 .site-header__actions {
   display: flex;
   align-items: center;
@@ -4988,15 +5038,6 @@ select.field__input {
 .social-links svg {
   width: 18px;
   height: 18px;
-}
-
-.site-footer__wordmark {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin-bottom: -3%;
-  color: rgba(255, 255, 255, 0.1);
-  pointer-events: none;
 }
 
 
@@ -12172,4 +12213,314 @@ select.field__input {
 /* The pricing card's heading sat directly on its paragraph. */
 .plan-detail--single h2 + p {
   margin-top: var(--space-4);
+}
+
+
+/* 34. STAGING FEEDBACK, SEPTEMBER 2026
+   Larger client logos, partner logos that fill their tiles, the Google rating
+   as a link, the About photo carousel, WhizzIT's own photos across inner-page
+   heroes, and the contact page's offices on their maps.
+   ========================================================================== */
+
+/* ---- Home: client logos, larger ---- */
+.hero-home__clients .logo-row {
+  gap: var(--space-4) var(--space-6);
+}
+
+.hero-home__clients .logo-row img {
+  max-width: 100%;
+  height: clamp(44px, 4.6vw, 64px);
+  opacity: 0.85;
+}
+
+/* ---- Partner tiles: the logo fills its tile ----
+   The files are trimmed to the mark, so contain scales each one to the tile's
+   full width or height, whichever it meets first. */
+.partner-row li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(84px, 7vw, 104px);
+  padding: 12px 14px;
+}
+
+.partner-row img {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
+}
+
+.partner-row--inline li {
+  height: 72px;
+  padding: 10px;
+}
+
+/* ---- Home: the Google rating links to the reviews ----
+   The link stretches over the whole tile (.card-link). */
+.stat-strip__item--link {
+  position: relative;
+}
+
+.stat-strip__more {
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.stat-strip__more a {
+  color: var(--tile-fg);
+}
+
+/* Inline, so on a narrow tile the arrow wraps with the last word. */
+.stat-strip__more svg {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-left: 6px;
+  vertical-align: -2px;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.stat-strip__item--link:hover .stat-strip__more svg {
+  transform: translateX(3px);
+}
+
+/* ---- Home: About photo carousel ----
+   A scroll-snap track inside the 4:3 frame; controls float on the photo. */
+.photo-carousel {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.photo-carousel__track {
+  display: flex;
+  height: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.photo-carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.photo-carousel__slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.photo-carousel__slide .media {
+  height: 100%;
+  aspect-ratio: auto;
+  border-radius: 0;
+}
+
+/* A soft shade along the foot so the controls read on any photo. */
+.photo-carousel::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 34%;
+  background: linear-gradient(to top, rgba(11, 17, 27, 0.5), rgba(11, 17, 27, 0));
+  pointer-events: none;
+}
+
+.photo-carousel__controls {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 0 14px 14px 20px;
+}
+
+.photo-carousel__dots {
+  display: flex;
+  gap: 6px;
+}
+
+/* Slim bars. The current one fills over the photo's time (--carousel-slide,
+   set by app.js) and holds still while the carousel is paused. */
+.photo-carousel__dot {
+  position: relative;
+  width: 24px;
+  height: 3px;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: background-color var(--dur-fast);
+}
+
+.photo-carousel__dot:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* A finger-sized target around each bar. */
+.photo-carousel__dot::before {
+  content: "";
+  position: absolute;
+  inset: -12px -3px;
+}
+
+.photo-carousel__dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-always-white);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.photo-carousel__dot[aria-current="true"]::after {
+  transform: scaleX(1);
+}
+
+.photo-carousel.is-auto .photo-carousel__dot[aria-current="true"]::after {
+  animation: carousel-fill var(--carousel-slide, 5s) linear both;
+}
+
+.photo-carousel.is-paused .photo-carousel__dot::after {
+  animation-play-state: paused;
+}
+
+@keyframes carousel-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.photo-carousel__arrows {
+  display: flex;
+  gap: 6px;
+}
+
+.photo-carousel__nav {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--color-always-white);
+  cursor: pointer;
+  transition: background-color var(--dur-fast), border-color var(--dur-fast);
+}
+
+.photo-carousel__nav:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* 44px to the finger, 30px to the eye. */
+.photo-carousel__nav::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+}
+
+.photo-carousel__nav svg {
+  width: 14px;
+  height: 14px;
+}
+
+.no-js .photo-carousel__controls {
+  display: none;
+}
+
+/* ---- Inner pages: three photos across the hero's foot ----
+   Replaces the single wide photo with WhizzIT's own photography at a third of
+   the size, still straddling the hero's edge. Phones show the first tile. */
+.photo-trio {
+  display: grid;
+  gap: clamp(12px, 1.6vw, 20px);
+}
+
+.photo-trio .media {
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 30px 60px -34px rgba(10, 22, 40, 0.55);
+}
+
+.photo-trio .media:nth-child(n + 2) {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .photo-trio {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .photo-trio .media:nth-child(n + 2) {
+    display: block;
+  }
+}
+
+/* ---- Contact: each office on its own map ----
+   The map fills the top of the card, pinned on the office; the details sit
+   below it. Google's place card at the top of the embed (a business listing
+   runs to four lines) is cropped off; its logo and attribution along the map's
+   foot stay in view. The crop is matched by PIN_DROP_PX in contact.mjs. */
+.office-card--map {
+  overflow: hidden;
+  padding: 0;
+}
+
+.office-card__map {
+  position: relative;
+  height: clamp(220px, 22vw, 280px);
+  overflow: hidden;
+  background: var(--color-surface);
+  pointer-events: none;
+}
+
+.office-card__map iframe {
+  position: absolute;
+  top: -130px;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 130px);
+  border: 0;
+}
+
+/* Details: the pin tile beside the office name and label, then the address
+   and the actions across the full width. */
+.office-card__body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-content: start;
+  column-gap: var(--space-4);
+  row-gap: var(--space-1);
+  padding: var(--space-6);
+}
+
+.office-card__body .office-card__icon {
+  grid-row: 1 / span 2;
+  align-self: center;
+  margin: 0;
+}
+
+.office-card__body > p:not(.office-card__label),
+.office-card__body > .btn-group {
+  grid-column: 1 / -1;
+}
+
+.office-card__body > p:not(.office-card__label) {
+  margin-top: var(--space-3);
 }

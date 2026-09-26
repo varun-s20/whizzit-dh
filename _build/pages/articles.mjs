@@ -1,6 +1,6 @@
 // Blog article template. Content comes from the WordPress export (_source/wp-posts.json),
 // parsed in content.mjs — titles, dates, authors and prose are the client's own.
-import { page, icon, blogCard, blogArt, ctaBand, breadcrumbs, serviceRow, service, btn, callbackForm, renderEnquiries, SITE, cleanUrl } from "../lib.mjs";
+import { page, icon, blogCard, blogArt, breadcrumbs, serviceRow, service, btn, callbackForm, renderEnquiries, SITE, cleanUrl } from "../lib.mjs";
 import { BLOG } from "../site.mjs";
 
 // Which core service each article category points readers towards.
@@ -80,15 +80,15 @@ BLOG.forEach((post, index) => {
   </div>
 </section>
 
-${ctaBand({
-  title: "Want help putting this into practice?",
-  text: "Our engineers can review your setup and tell you what to prioritise.",
-  cta: "Talk to an IT expert",
-  track: `article-${post.slug}-final-cta`,
-})}
 `;
 
   page({
+    footerCta: {
+      title: "Want help putting this into practice?",
+      text: "Our engineers can review your setup and tell you what to prioritise.",
+      cta: "Talk to an IT expert",
+      track: `article-${post.slug}-final-cta`,
+    },
     file,
     title: post.title,
     description: post.excerpt,

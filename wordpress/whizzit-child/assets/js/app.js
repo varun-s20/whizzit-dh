@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initFilters();
   initRails();
   initQuotes();
+  initCarousels();
   initCounters();
   initRevealAnimations();
   initServiceStage();
@@ -43,7 +44,9 @@ function initHeader() {
 }
 
 
-/* Desktop mega menu: click or keyboard to open, hover intent on mouse */
+/* Desktop mega menu. Each label is a link to its overview page; the chevron
+   button beside it opens the panel on click or keyboard, and mouse users get
+   hover intent on the whole item. */
 function initMegaMenu() {
   const triggers = [...document.querySelectorAll("[data-mega-trigger]")];
   if (!triggers.length) return;
@@ -56,6 +59,7 @@ function initMegaMenu() {
   const close = (trigger = openTrigger, { restoreFocus = false } = {}) => {
     if (!trigger) return;
     trigger.setAttribute("aria-expanded", "false");
+    trigger.closest("li").classList.remove("is-open");
     panelFor(trigger)?.classList.remove("is-open");
     if (restoreFocus) trigger.focus();
     if (openTrigger === trigger) openTrigger = null;
@@ -64,6 +68,7 @@ function initMegaMenu() {
   const open = (trigger) => {
     if (openTrigger && openTrigger !== trigger) close(openTrigger);
     trigger.setAttribute("aria-expanded", "true");
+    trigger.closest("li").classList.add("is-open");
     panelFor(trigger)?.classList.add("is-open");
     openTrigger = trigger;
   };
@@ -71,18 +76,20 @@ function initMegaMenu() {
   triggers.forEach((trigger) => {
     const item = trigger.closest("li");
     const panel = panelFor(trigger);
+    const link = item.querySelector("[data-mega-link]");
 
     trigger.addEventListener("click", () => {
       trigger.getAttribute("aria-expanded") === "true" ? close(trigger) : open(trigger);
     });
 
-    trigger.addEventListener("keydown", (event) => {
+    // Down arrow from the label or the chevron opens the panel at its first link.
+    [trigger, link].forEach((el) => el?.addEventListener("keydown", (event) => {
       if (event.key === "ArrowDown") {
         event.preventDefault();
         open(trigger);
         panel?.querySelector(FOCUSABLE)?.focus();
       }
-    });
+    }));
 
     // Close when focus leaves the whole menu item
     item.addEventListener("focusout", (event) => {
@@ -289,6 +296,114 @@ function initQuotes() {
     slider.querySelector("[data-quote-prev]")?.addEventListener("click", () => show(current - 1));
     slider.querySelector("[data-quote-next]")?.addEventListener("click", () => show(current + 1));
     show(current);
+  });
+}
+
+
+/* Photo carousel: an auto slider on a scroll-snap track, so it also swipes
+   natively. Each photo holds for SLIDE_MS while its bar fills, then the next
+   slides in; after the last it returns to the first. The timer (and the bar,
+   via .is-paused) waits while the mouse is over it, while keyboard focus is in
+   it, while it is off screen or the tab is hidden, and carries on after.
+   Arrows, bars and swipes start the new photo's time afresh. Timing lives
+   here, not in the CSS animation, because reduced motion collapses every
+   animation to nothing; there the photo changes without sliding. */
+const SLIDE_MS = 5000;
+
+function initCarousels() {
+  document.querySelectorAll("[data-carousel]").forEach((carousel) => {
+    const track = carousel.querySelector("[data-carousel-track]");
+    const slides = [...track.children];
+    const dots = [...carousel.querySelectorAll("[data-carousel-dot]")];
+    const holds = new Set();
+    let current = 0;
+    let heading = null;
+    let timer = null;
+    let startedAt = 0;
+    let remaining = SLIDE_MS;
+
+    carousel.style.setProperty("--carousel-slide", `${SLIDE_MS}ms`);
+    carousel.classList.add("is-auto");
+
+    // Re-applied (with a reflow) even on the same bar, so its fill restarts with the timer.
+    const mark = () => dots.forEach((dot, i) => {
+      dot.removeAttribute("aria-current");
+      if (i !== current) return;
+      void dot.offsetWidth;
+      dot.setAttribute("aria-current", "true");
+    });
+
+    const schedule = () => {
+      clearTimeout(timer);
+      timer = null;
+      if (holds.size) return;
+      startedAt = performance.now();
+      timer = setTimeout(() => go(current + 1), remaining);
+    };
+
+    const restart = () => {
+      remaining = SLIDE_MS;
+      schedule();
+    };
+
+    const go = (index) => {
+      current = (index + slides.length) % slides.length;
+      heading = current;
+      track.scrollTo({ left: slides[current].offsetLeft, behavior: prefersReducedMotion.matches ? "auto" : "smooth" });
+      mark();
+      restart();
+    };
+
+    const hold = (reason, on) => {
+      if (on === holds.has(reason)) return;
+      if (on) {
+        holds.add(reason);
+        if (timer) remaining = Math.max(0, remaining - (performance.now() - startedAt));
+      } else holds.delete(reason);
+      carousel.classList.toggle("is-paused", holds.size > 0);
+      schedule();
+    };
+
+    // Swipes and trackpad scrolls move the track directly; follow them. A slide
+    // the carousel is scrolling to itself (heading) is not a swipe, so its
+    // in-between positions are ignored until it arrives or a hand takes over.
+    let frame;
+    track.addEventListener("scroll", () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        if (heading !== null) {
+          if (Math.abs(track.scrollLeft - slides[heading].offsetLeft) < 2) heading = null;
+          return;
+        }
+        const index = Math.round(track.scrollLeft / track.clientWidth);
+        if (index === current) return;
+        current = index;
+        mark();
+        restart();
+      });
+    }, { passive: true });
+    ["pointerdown", "wheel"].forEach((type) => track.addEventListener(type, () => { heading = null; }, { passive: true }));
+
+    carousel.querySelector("[data-carousel-prev]")?.addEventListener("click", () => go(current - 1));
+    carousel.querySelector("[data-carousel-next]")?.addEventListener("click", () => go(current + 1));
+    dots.forEach((dot, i) => dot.addEventListener("click", () => go(i)));
+
+    carousel.addEventListener("mouseenter", () => hold("hover", true));
+    carousel.addEventListener("mouseleave", () => hold("hover", false));
+    // Keyboard focus only: a mouse click on an arrow should not freeze it.
+    carousel.addEventListener("focusin", (event) => hold("focus", event.target.matches(":focus-visible")));
+    carousel.addEventListener("focusout", (event) => {
+      if (!carousel.contains(event.relatedTarget)) hold("focus", false);
+    });
+    document.addEventListener("visibilitychange", () => hold("hidden", document.hidden));
+
+    if (!("IntersectionObserver" in window)) return schedule();
+    hold("offscreen", true);
+    new IntersectionObserver(([entry]) => {
+      // Load the photos still to come, so none arrives blank.
+      if (entry.isIntersecting) slides.forEach((slide) => slide.querySelector("img")?.setAttribute("loading", "eager"));
+      hold("offscreen", !entry.isIntersecting);
+    }, { threshold: 0.35 }).observe(carousel);
   });
 }
 

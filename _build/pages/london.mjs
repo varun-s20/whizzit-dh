@@ -2,7 +2,7 @@
 // (head office, travel time, areas served) runs across the hero's foot, and the page closes
 // with the London-specific service list.
 import {
-  page, reviewAvatar, btn, icon, photo, stockPhoto, breadcrumbs, ctaBand, serviceRow,
+  page, reviewAvatar, btn, icon, photo, stockPhoto, breadcrumbs, serviceRow,
   SITE, SERVICES, LOCATIONS, TESTIMONIALS, PHOTOS, CREDENTIALS, STOCK,
 } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
@@ -117,14 +117,14 @@ ${renderBlocks(blocks, { key: "london" })}
   </div>
 </section>
 
-${ctaBand({
-  title: "Need IT support in London?",
-  text: `Call and you will speak to an engineer, not a queue. ${SITE.responseLine}, on site when it needs hands.`,
-  track: "london-final-cta",
-})}
 `;
 
 page({
+  footerCta: {
+    title: "Need IT support in London?",
+    text: `Call and you will speak to an engineer, not a queue. ${SITE.responseLine}, on site when it needs hands.`,
+    track: "london-final-cta",
+  },
   file: "locations/it-support-london.html",
   title: "Expert IT Support London | 5-Star Rated",
   description: `Managed IT support in London from WhizzIT. Head office on City Road, ${SITE.responseLine.toLowerCase()}, rated ${SITE.google.rating} on Google.`,

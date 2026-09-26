@@ -47,7 +47,7 @@ ${/* Three of WhizzIT's own photos, set as raised plates that fan out from one
         <span>${SITE.google.count} Google reviews</span>
       </p>
       <p class="relief__seal relief__seal--cert">
-        <img src="@/assets/images/partners/cyber-essentials.png" alt="" width="44" height="44" decoding="async">
+        <img src="@/assets/images/partners/cyber-essentials.webp" alt="" width="44" height="44" decoding="async">
         <span><strong>Cyber Essentials</strong>certified, and we certify clients too</span>
       </p>
     </div>

@@ -1,7 +1,7 @@
 // Template families for the wider ~100-page site.
 // Copy an entry below (or call the function with new data) to add a page.
 import {
-  page, btn, icon, sectionHead, features, steps, faq, ctaBand, testimonial, relatedServices, checkList, spotlight,
+  page, btn, icon, sectionHead, features, steps, faq, testimonial, relatedServices, checkList, spotlight,
   serviceRow, breadcrumbs, stats, certBadges, cleanUrl, service, ph, SITE,
 } from "../lib.mjs";
 import { pageByPath, prose, lastUpdated } from "../content.mjs";
@@ -81,10 +81,10 @@ export function serviceDetail(d) {
 
 ${relatedServices(d.related, { title: "Related services" })}
 ${faq(d.faq)}
-${ctaBand({ title: d.ctaTitle, text: d.ctaText, cta: d.cta || "Book a consultation", track: `${d.slug}-final-cta` })}
 `;
 
   page({
+    footerCta: { title: d.ctaTitle, text: d.ctaText, cta: d.cta || "Book a consultation", track: `${d.slug}-final-cta` },
     file: `services/${d.slug}.html`,
     title: d.title,
     description: d.description,
@@ -163,10 +163,10 @@ export function industryPage(d) {
 </section>
 
 ${faq(d.faq)}
-${ctaBand({ title: d.ctaTitle, text: d.ctaText, track: `industry-${d.slug}-final-cta` })}
 `;
 
   page({
+    footerCta: { title: d.ctaTitle, text: d.ctaText, track: `industry-${d.slug}-final-cta` },
     file: `industries/${d.slug}.html`,
     title: d.metaTitle,
     description: d.description,

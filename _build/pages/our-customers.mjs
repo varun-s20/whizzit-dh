@@ -1,7 +1,7 @@
 // Our Customers. Signature: the Google rating headline over a masonry review wall,
 // with the four case studies below it.
 import {
-  page, statValue, reviewAvatar, stars, btn, icon, photo, breadcrumbs, ctaBand, callbackForm, heroNote,
+  page, statValue, reviewAvatar, stars, btn, icon, photo, breadcrumbs, callbackForm, heroNote,
   SITE, CLIENTS, CASE_STUDIES, TESTIMONIALS, PHOTOS, STATS,
 } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
@@ -95,14 +95,14 @@ ${/* Signature layout for this page: the rating is stated once, centred and full
   </div>
 </section>
 
-${ctaBand({
-  title: "Want to be the next story?",
-  text: `Book a no-obligation conversation about your systems and what to fix first. ${SITE.responseLine}.`,
-  track: "customers-final-cta",
-})}
 `;
 
 page({
+  footerCta: {
+    title: "Want to be the next story?",
+    text: `Book a no-obligation conversation about your systems and what to fix first. ${SITE.responseLine}.`,
+    track: "customers-final-cta",
+  },
   file: "our-customers.html",
   title: "Client Reviews & Success Stories",
   description: `WhizzIT is rated ${SITE.google.rating} on Google across ${SITE.google.count} reviews. Read client reviews and case studies from hotels, clinics, construction and professional services.`,
