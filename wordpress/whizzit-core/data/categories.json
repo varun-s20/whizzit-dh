@@ -1,14 +1,6 @@
 {
  "categories": [
   {
-   "slug": "support",
-   "label": "IT Support",
-   "used": true,
-   "tone": "support",
-   "icon": "headset",
-   "photo": "support-desk"
-  },
-  {
    "slug": "managed-it",
    "label": "Managed IT",
    "used": true,
@@ -34,27 +26,11 @@
   },
   {
    "slug": "network",
-   "label": "Network",
-   "used": false,
-   "tone": "support",
-   "icon": "book",
+   "label": "Networks",
+   "used": true,
+   "tone": "network",
+   "icon": "network",
    "photo": "server-room"
-  },
-  {
-   "slug": "strategy",
-   "label": "IT Strategy",
-   "used": true,
-   "tone": "projects",
-   "icon": "compass",
-   "photo": "office"
-  },
-  {
-   "slug": "careers",
-   "label": "Careers",
-   "used": true,
-   "tone": "projects",
-   "icon": "graduation",
-   "photo": "education"
   }
  ]
 }

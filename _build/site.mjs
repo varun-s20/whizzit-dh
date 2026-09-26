@@ -416,7 +416,7 @@ export const NAV = [
 ];
 
 // Blog: the 27 articles published on staging, parsed straight from the WordPress export.
-export { POSTS as BLOG } from "./content.mjs";
+export { POSTS as BLOG, BLOG_LISTING, LISTING_CATEGORIES } from "./content.mjs";
 
 export const BLOG_CATEGORIES = [
   { key: "all", label: "All articles" },

@@ -1,0 +1,226 @@
+[
+ {
+  "cat": "cyber",
+  "href": "/blog/cyber-security-and-resilience-bill/",
+  "label": "Cyber Security",
+  "date": "27 JUL 2026",
+  "title": "The Cyber Security And Resilience Bill: What It Means For Your Business",
+  "excerpt": "The biggest shake-up of UK cyber regulation since 2018 now reaches managed IT providers and data centres. What changes, and how to prepare."
+ },
+ {
+  "cat": "cyber",
+  "href": "/blog/cyber-resiliency-strategy-enterprise-risk-management/",
+  "label": "Cyber Security",
+  "date": "29 JUN 2026",
+  "title": "Cyber Resiliency Strategy As Part Of Enterprise Risk Management",
+  "excerpt": "How a cyber resiliency strategy strengthens enterprise risk management, business continuity and cyber recovery."
+ },
+ {
+  "cat": "managed-it",
+  "href": "/blog/reactive-to-proactive-managed-it/",
+  "label": "Managed IT",
+  "date": "29 JUN 2026",
+  "title": "From Reactive To Proactive: The Power Of Managed IT For Established SMEs",
+  "excerpt": "How moving from break-fix support to proactive managed IT helps established UK SMEs cut downtime and grow."
+ },
+ {
+  "cat": "cloud",
+  "href": "/blog/google-workspace-backup-uk-smes/",
+  "label": "Cloud",
+  "date": "29 JUN 2026",
+  "title": "Google Workspace Backup: Do UK SMEs Really Need One?",
+  "excerpt": "Why built-in recovery tools are not enough, the risks of data loss, and how independent backups protect your business."
+ },
+ {
+  "cat": "cyber",
+  "href": "/blog/what-is-lateral-movement-in-cybersecurity/",
+  "label": "Cyber Security",
+  "date": "13 JUN 2026",
+  "title": "What Is Lateral Movement In Cybersecurity?",
+  "excerpt": "How attackers spread through networks after initial access, and how to detect and prevent major breaches."
+ },
+ {
+  "cat": "cloud",
+  "href": "/blog/cloud-computing-careers-in-the-uk/",
+  "label": "Cloud",
+  "date": "02 JUN 2026",
+  "title": "Cloud Computing Careers in the UK: Skills and Opportunities",
+  "excerpt": "In-demand skills, certifications, salaries and career paths across AWS, Azure and Google Cloud."
+ },
+ {
+  "cat": "managed-it",
+  "href": "/blog/construction-it-problems-and-how-to-overcome-them/",
+  "label": "Managed IT",
+  "date": "02 JUN 2026",
+  "title": "Construction IT Problems And How To Overcome Them",
+  "excerpt": "From cybersecurity risks and poor job site connectivity to outdated systems, and how managed IT support solves them."
+ },
+ {
+  "cat": "cyber",
+  "href": "/blog/ai-automation-cloud-security/",
+  "label": "Cyber Security",
+  "date": "21 MAY 2026",
+  "title": "How to Use AI and Automation to Scale Cloud Security Operations",
+  "excerpt": "How AI and automation enhance cloud security operations, improve threat detection and streamline monitoring."
+ },
+ {
+  "cat": "managed-it",
+  "href": "/blog/managed-it-services-startups/",
+  "label": "Managed IT",
+  "date": "21 MAY 2026",
+  "title": "From Setup to Support: Your Startup’s Guide to Hassle-Free IT",
+  "excerpt": "How a managed IT partner helps startups build secure, scalable and reliable IT systems from day one."
+ },
+ {
+  "cat": "cyber",
+  "href": "/blog/multi-factor-authentication-uk-business/",
+  "label": "Cyber Security",
+  "date": "21 MAY 2026",
+  "title": "Why Multi-Factor Authentication Is a Must for UK Businesses",
+  "excerpt": "How MFA blocks credential theft, supports compliance and secures remote access."
+ },
+ {
+  "cat": "cyber",
+  "href": "/blog/ransomware-and-backup-security/",
+  "label": "Cyber Security",
+  "date": "21 MAY 2026",
+  "title": "How Ransomware Targets Business Backups: What UK Businesses Need to Know",
+  "excerpt": "The vulnerabilities attackers exploit and practical backup security strategies to help you recover."
+ },
+ {
+  "cat": "cloud",
+  "href": "/blog/hybrid-cloud-security-best-practices/",
+  "label": "Cloud",
+  "date": "16 APR 2026",
+  "title": "Hybrid Cloud Security Best Practices",
+  "excerpt": "Zero Trust, identity and access management, encryption and monitoring to protect data across cloud and on-premises."
+ },
+ {
+  "cat": "cloud",
+  "href": "/blog/managed-cloud-services-guide/",
+  "label": "Cloud",
+  "date": "16 APR 2026",
+  "title": "The Pros, Cons and Opportunities for Managed Cloud Services",
+  "excerpt": "The benefits, challenges and opportunities, and how managed cloud improves efficiency, security and scalability."
+ },
+ {
+  "cat": "cloud",
+  "href": "/blog/cloud-data-protection/",
+  "label": "Cloud",
+  "date": "16 APR 2026",
+  "title": "Why Protecting Cloud Data Is Important",
+  "excerpt": "The risks, security threats and best practices that keep business data safe, compliant and recoverable."
+ },
+ {
+  "cat": "managed-it",
+  "href": "/blog/managed-it-services-hybrid-working/",
+  "label": "Managed IT",
+  "date": "16 APR 2026",
+  "title": "How Managed IT Services Support a Hybrid Working Model",
+  "excerpt": "Improve security, productivity and remote IT support for teams working from the office and home."
+ },
+ {
+  "cat": "networks",
+  "href": "/blog/how-to-choose-managed-network-services-provider/",
+  "label": "Networks",
+  "date": "20 MAR 2026",
+  "title": "How to Choose a Managed Network Services Provider",
+  "excerpt": "Key factors, services, SLAs and expert tips to ensure secure, reliable business connectivity."
+ },
+ {
+  "cat": "managed-it",
+  "href": "/blog/why-businesses-are-shifting-to-managed-it-services/",
+  "label": "Managed IT",
+  "date": "20 MAR 2026",
+  "title": "Why Are Businesses Shifting to Managed IT Services",
+  "excerpt": "How outsourcing IT improves security, reduces costs and supports long-term business growth."
+ },
+ {
+  "cat": "managed-it",
+  "href": "/blog/managed-it-services-vs-in-house-it/",
+  "label": "Managed IT",
+  "date": "20 MAR 2026",
+  "title": "Managed IT Services vs In-House IT: Which Is Better for Your Business?",
+  "excerpt": "Costs, scalability, security and compliance compared, to help you decide the right support model."
+ },
+ {
+  "cat": "managed-it",
+  "href": "/blog/signs-outgrown-break-fix-it-support/",
+  "label": "Managed IT",
+  "date": "07 MAR 2026",
+  "title": "Signs Your Business Has Outgrown Break Fix IT Support",
+  "excerpt": "The warning signs, from downtime to security risks, and when to move to managed IT."
+ },
+ {
+  "cat": "cloud",
+  "href": "/cloud-services-london/",
+  "label": "Cloud",
+  "date": "18 FEB 2026",
+  "title": "Cloud Services in London: What They Are & How They Transform Your Business",
+  "excerpt": "Secure cloud migration, Microsoft 365 and managed cloud for London businesses moving off on-site servers."
+ },
+ {
+  "cat": "cyber",
+  "href": "/blog/cyber-security-company-london-protecting-your-digital-future/",
+  "label": "Cyber Security",
+  "date": "18 FEB 2026",
+  "title": "Cyber Security Company London: Protecting Your Digital Future",
+  "excerpt": "Security assessments, managed monitoring and cloud protection from a trusted London cyber security company."
+ },
+ {
+  "cat": "managed-it",
+  "href": "/blog/managed-it-support-small-businesses/",
+  "label": "Managed IT",
+  "date": "18 FEB 2026",
+  "title": "Is Managed IT Support Worth It for Small Businesses?",
+  "excerpt": "How proactive monitoring, predictable costs and stronger security stack up for small businesses."
+ },
+ {
+  "cat": "managed-it",
+  "href": "/blog/managed-it-services-2026/",
+  "label": "Managed IT",
+  "date": "17 FEB 2026",
+  "title": "Managed IT Services in 2026: 5 Reasons Your Business Needs Them",
+  "excerpt": "From stronger security and predictable costs to scalability and expert support."
+ },
+ {
+  "cat": "managed-it",
+  "href": "/blog/top-5-it-challenges-uk-smes-2026/",
+  "label": "Managed IT",
+  "date": "17 FEB 2026",
+  "title": "Top 5 IT Challenges UK SMEs Face in 2026",
+  "excerpt": "The biggest IT challenges facing UK SMEs and how managed IT services help solve them."
+ },
+ {
+  "cat": "managed-it",
+  "href": "/blog/managed-it-services-small-business-growth/",
+  "label": "Managed IT",
+  "date": "17 FEB 2026",
+  "title": "How Managed IT Services Support Small Business Growth",
+  "excerpt": "Strengthening security, controlling costs and improving efficiency to support growth."
+ },
+ {
+  "cat": "managed-it",
+  "href": "/blog/the-ultimate-guide-to-it-support-everything-you-need-to-know/",
+  "label": "Managed IT",
+  "date": "15 OCT 2025",
+  "title": "The Ultimate Guide to IT Support: Everything You Need to Know",
+  "excerpt": "What IT support is, why it matters, the different types and how to choose the right provider."
+ },
+ {
+  "cat": "managed-it",
+  "href": "/blog/why-reliable-it-support-in-london-is-essential-for-small-businesses/",
+  "label": "Managed IT",
+  "date": "13 MAR 2025",
+  "title": "What IT Downtime Costs a London Small Business",
+  "excerpt": "Expert, affordable IT services including cybersecurity, cloud solutions and local support."
+ },
+ {
+  "cat": "managed-it",
+  "href": "/blog/common-it-mistakes-small-businesses-make-and-how-to-avoid-them/",
+  "label": "Managed IT",
+  "date": "04 AUG 2025",
+  "title": "Common IT Mistakes Small Businesses Make and How to Avoid Them",
+  "excerpt": "Outdated tech, neglected backups and underinvestment in cybersecurity, and how to avoid them."
+ }
+]

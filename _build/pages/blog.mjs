@@ -1,30 +1,30 @@
-// Blog index. Signature: one large featured article, topic filters and a
-// three-column card grid over all 27 published articles.
-import { page, btn, icon, stockPhoto, breadcrumbs, ctaBand, WP_EXPORT, SITE, BLOG, STOCK, CATEGORY_PHOTO } from "../lib.mjs";
-import { BLOG_CATEGORIES } from "../site.mjs";
+// Blog index: one large featured article, topic filters and a three-column card
+// grid. The cards are staging's own (BLOG_LISTING): its titles, excerpts, dates,
+// categories and order, including the one card that links to a page.
+import { page, btn, icon, postCover, breadcrumbs, ctaBand, WP_EXPORT, SITE, BLOG, BLOG_LISTING, LISTING_CATEGORIES } from "../lib.mjs";
 import { pageHero } from "../blocks.mjs";
 
 const crumbs = [{ title: "Home", href: "index.html" }, { title: "Blog" }];
-const [featured, ...rest] = BLOG;
+const [featured, ...rest] = BLOG_LISTING;
+const readTime = (c) => BLOG.find((p) => p.slug === c.slug)?.read;
 const fmt = (d) => new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
-const used = new Set(BLOG.map((p) => p.category));
-const categories = BLOG_CATEGORIES.filter((c) => c.key === "all" || used.has(c.key));
+const categories = [{ key: "all", label: "All" }, ...LISTING_CATEGORIES];
 
 // In the WordPress export the post lists are shortcodes (whizzit-core renders
 // them with this same markup), so a newly published post appears everywhere.
 const wp = (shortcode, html) => (WP_EXPORT ? `[${shortcode}]` : html);
 
-const card = (p) => `
-  <article class="post-card" data-category="${p.category}">
-    ${stockPhoto(STOCK[CATEGORY_PHOTO[p.category]] || STOCK.team, { cls: "post-card__art", ratio: "3-2", sizes: "(min-width: 1024px) 30vw, 100vw", alt: "" })}
+const card = (c) => `
+  <article class="post-card" data-category="${c.category}">
+    ${postCover(c, "post-card__art")}
     <div class="post-card__body">
       <p class="post-card__meta">
-        <span class="tag tag--blue">${p.categoryLabel}</span>
-        <time datetime="${p.date}">${fmt(p.date)}</time>
-        <span>${p.read} min read</span>
+        <span class="tag tag--blue">${c.categoryLabel}</span>
+        <time datetime="${c.date}">${fmt(c.date)}</time>
+        ${readTime(c) ? `<span>${readTime(c)} min read</span>` : ""}
       </p>
-      <h3 class="post-card__title"><a class="card-link" href="@/blog/${p.slug}.html">${p.title}</a></h3>
-      <p>${p.excerpt}</p>
+      <h3 class="post-card__title"><a class="card-link" href="@/${c.href}">${c.title}</a></h3>
+      <p>${c.excerpt}</p>
     </div>
   </article>`;
 
@@ -38,8 +38,8 @@ ${pageHero({
   aside: wp("whizzit_blog_featured", `
     <article class="featured-post">
       <p class="featured-post__label">${icon("sparkle")}Latest article</p>
-      <p class="post-card__meta"><span class="tag tag--blue">${featured.categoryLabel}</span><time datetime="${featured.date}">${fmt(featured.date)}</time><span>${featured.read} min read</span></p>
-      <h2 class="featured-post__title"><a class="card-link" href="@/blog/${featured.slug}.html">${featured.title}</a></h2>
+      <p class="post-card__meta"><span class="tag tag--blue">${featured.categoryLabel}</span><time datetime="${featured.date}">${fmt(featured.date)}</time><span>${readTime(featured)} min read</span></p>
+      <h2 class="featured-post__title"><a class="card-link" href="@/${featured.href}">${featured.title}</a></h2>
       <p>${featured.excerpt}</p>
       <span class="read-more" aria-hidden="true">Read the article ${icon("arrow")}</span>
     </article>`),
@@ -74,13 +74,13 @@ ${pageHero({
       ${btn("All IT services", "it-services.html", { variant: "secondary", arrow: false, track: "blog-services" })}
     </div>
     <ul class="topic-links" role="list">
-      ${WP_EXPORT ? "[whizzit_blog_topics]" : BLOG.filter((p) => ["security", "cloud", "support", "managed-it"].includes(p.category)).slice(0, 6).map((p) => `
+      ${WP_EXPORT ? "[whizzit_blog_topics]" : BLOG_LISTING.filter((c) => c.slug && ["security", "cloud", "managed-it"].includes(c.category)).slice(0, 6).map((c) => `
       <li>
-        <a href="@/blog/${p.slug}.html">
-          <span class="topic-links__icon">${icon(p.icon)}</span>
+        <a href="@/${c.href}">
+          <span class="topic-links__icon">${icon(c.icon)}</span>
           <span>
-            <strong>${p.title}</strong>
-            <span>${p.categoryLabel} · ${p.read} min read</span>
+            <strong>${c.title}</strong>
+            <span>${c.categoryLabel} · ${readTime(c)} min read</span>
           </span>
           ${icon("arrow")}
         </a>

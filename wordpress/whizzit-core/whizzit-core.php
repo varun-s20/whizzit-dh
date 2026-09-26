@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       WhizzIT Core
  * Description:       WhizzIT's site tools: the WhizzIT Elementor widgets every page is built from, Sectors, site settings (Settings → WhizzIT), the blog and sector listings, and the import from the design build (Tools → WhizzIT import).
- * Version:           2.0.1
+ * Version:           2.1.0
  * Requires at least: 6.5
  * Requires PHP:      8.1
  * Requires Plugins:  elementor
@@ -15,7 +15,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-const WHIZZIT_CORE_VERSION = '2.0.1';
+const WHIZZIT_CORE_VERSION = '2.1.0';
 const WHIZZIT_CORE_FILE    = __FILE__;
 
 require __DIR__ . '/inc/render.php';

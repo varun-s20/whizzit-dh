@@ -67,7 +67,7 @@ function whizzit_post( $post ) {
 	$words = str_word_count( wp_strip_all_tags( $post->post_content ) );
 	$read  = (int) get_post_meta( $post->ID, '_whizzit_read', true );
 	$by    = (string) get_post_meta( $post->ID, '_whizzit_author', true );
-	return [
+	$data = [
 		'id'        => $post->ID,
 		'url'       => get_permalink( $post ),
 		'title'     => get_the_title( $post ),
@@ -79,6 +79,13 @@ function whizzit_post( $post ) {
 		'cat'       => whizzit_post_category( $post ),
 		'thumb'     => get_post_thumbnail_id( $post ),
 	];
+	// How the blog listing shows it (staging's card wording), and the label the
+	// article itself carries; each falls back to the post's own.
+	$meta                = fn( $key ) => trim( (string) get_post_meta( $post->ID, $key, true ) );
+	$data['card_title']  = $meta( '_whizzit_card_title' ) ?: $data['title'];
+	$data['card_excerpt'] = $meta( '_whizzit_card_excerpt' ) ?: $data['excerpt'];
+	$data['chip']        = $meta( '_whizzit_chip' ) ?: $data['cat']['label'];
+	return $data;
 }
 
 /** Latest published posts. */
@@ -111,20 +118,69 @@ function whizzit_blog_art( $icon ) {
 	return '<svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="currentColor" stroke-width="1" opacity=".35"><circle cx="160" cy="100" r="40"/><circle cx="160" cy="100" r="70"/><circle cx="160" cy="100" r="100"/></g><path d="M0 150 C80 150 100 100 160 100 S260 40 320 40" stroke="currentColor" stroke-width="1.2" fill="none" stroke-dasharray="4 5" opacity=".6"/><rect x="132" y="72" width="56" height="56" rx="16" fill="#fff"/>' . $glyph . '</svg>';
 }
 
-/** Blog index card (card() in pages/blog.mjs). */
-function whizzit_post_card( $post ) {
-	$p = whizzit_post( $post );
+/** A card's cover: the category icon on its tint (postCover() in lib.mjs). Staging's cards have no photos. */
+function whizzit_post_cover( array $look, $cls ) {
+	return sprintf( '<div class="blog-card__art post-cover tone-%s %s" aria-hidden="true">%s</div>', esc_attr( $look['tone'] ?? 'support' ), esc_attr( $cls ), whizzit_blog_art( $look['icon'] ?? 'book' ) );
+}
+
+/**
+ * The blog listing, as staging's blog page has it (data/blog-listing.json): its
+ * cards in its order, including the card that links to a page. A post published
+ * since goes first, newest first; a listed post that is gone is left out.
+ *
+ * @return array<int, WP_Post|array> Posts, or page cards (arrays).
+ */
+function whizzit_blog_listing() {
+	static $list = null;
+	if ( null !== $list ) {
+		return $list;
+	}
+	$by_slug = [];
+	foreach ( whizzit_latest_posts() as $post ) {
+		$by_slug[ $post->post_name ] = $post;
+	}
+	$listed = [];
+	foreach ( whizzit_data( 'blog-listing' )['cards'] ?? [] as $card ) {
+		if ( empty( $card['slug'] ) ) {
+			$listed[] = $card;
+		} elseif ( isset( $by_slug[ $card['slug'] ] ) ) {
+			$listed[] = $by_slug[ $card['slug'] ];
+			unset( $by_slug[ $card['slug'] ] );
+		}
+	}
+	$list = array_merge( array_values( $by_slug ), $listed );
+	return $list;
+}
+
+/** Only the posts in the listing, in its order. */
+function whizzit_listing_posts( $count = -1 ) {
+	$posts = array_values( array_filter( whizzit_blog_listing(), fn( $item ) => $item instanceof WP_Post ) );
+	return $count > 0 ? array_slice( $posts, 0, $count ) : $posts;
+}
+
+/** Blog index card (card() in pages/blog.mjs), for a post or a page card. */
+function whizzit_post_card( $item ) {
+	if ( $item instanceof WP_Post ) {
+		$p     = whizzit_post( $item );
+		$c     = [ 'category' => $p['cat']['slug'], 'label' => $p['cat']['label'], 'date' => $p['date'], 'date_text' => $p['date_text'], 'url' => $p['url'], 'title' => $p['card_title'], 'excerpt' => $p['card_excerpt'] ];
+		$look  = $p['cat'];
+		$read  = sprintf( '<span>%d min read</span>', $p['read'] );
+	} else {
+		$look = whizzit_category_look( $item['category'] ) ?? [];
+		$c    = [ 'category' => $item['category'], 'label' => $look['label'] ?? '', 'date' => $item['date'], 'date_text' => wp_date( 'j F Y', strtotime( $item['date'] . ' 12:00' ) ), 'url' => home_url( $item['href'] ), 'title' => $item['title'], 'excerpt' => $item['excerpt'] ];
+		$read = '';
+	}
 	return sprintf(
-		'<article class="post-card" data-category="%1$s">%2$s<div class="post-card__body"><p class="post-card__meta"><span class="tag tag--blue">%3$s</span><time datetime="%4$s">%5$s</time><span>%6$d min read</span></p><h3 class="post-card__title"><a class="card-link" href="%7$s">%8$s</a></h3><p>%9$s</p></div></article>',
-		esc_attr( $p['cat']['slug'] ),
-		whizzit_post_photo( $p, 'post-card__art', '3-2', '(min-width: 1024px) 30vw, 100vw' ),
-		esc_html( $p['cat']['label'] ),
-		esc_attr( $p['date'] ),
-		esc_html( $p['date_text'] ),
-		$p['read'],
-		esc_url( $p['url'] ),
-		esc_html( $p['title'] ),
-		esc_html( $p['excerpt'] )
+		'<article class="post-card" data-category="%1$s">%2$s<div class="post-card__body"><p class="post-card__meta"><span class="tag tag--blue">%3$s</span><time datetime="%4$s">%5$s</time>%6$s</p><h3 class="post-card__title"><a class="card-link" href="%7$s">%8$s</a></h3><p>%9$s</p></div></article>',
+		esc_attr( $c['category'] ),
+		whizzit_post_cover( $look, 'post-card__art' ),
+		esc_html( $c['label'] ),
+		esc_attr( $c['date'] ),
+		esc_html( $c['date_text'] ),
+		$read,
+		esc_url( $c['url'] ),
+		esc_html( $c['title'] ),
+		esc_html( $c['excerpt'] )
 	);
 }
 
@@ -152,14 +208,14 @@ function whizzit_insight( $post, $variant ) {
 	return sprintf(
 		'<article class="insight insight--%1$s">%2$s<div class="insight__body"><p class="insight__date">%3$s<time datetime="%4$s">%5$s</time><span class="tag tag--blue">%6$s</span></p><h3 class="insight__title"><a class="card-link" href="%7$s">%8$s</a></h3><p>%9$s</p></div></article>',
 		esc_attr( $variant ),
-		whizzit_post_photo( $p, 'insight__art', 'tall' === $variant ? '4-5' : '3-2', '(min-width: 1024px) 32vw, 100vw' ),
+		whizzit_post_cover( $p['cat'], 'insight__art' ),
 		whizzit_icon( 'calendar' ),
 		esc_attr( $p['date'] ),
 		esc_html( $p['date_text'] ),
 		esc_html( $p['cat']['label'] ),
 		esc_url( $p['url'] ),
-		esc_html( $p['title'] ),
-		esc_html( $p['excerpt'] )
+		esc_html( $p['card_title'] ),
+		esc_html( $p['card_excerpt'] )
 	);
 }
 
@@ -168,7 +224,10 @@ function whizzit_insight( $post, $variant ) {
 /** The service a post points readers towards (SERVICE_FOR in pages/articles.mjs). */
 function whizzit_service_for( array $p, $slug = '' ) {
 	$for = [ 'support' => 'support', 'managed-it' => 'support', 'security' => 'cyber', 'cloud' => 'cloud', 'network' => 'network', 'strategy' => 'projects', 'careers' => 'support' ];
-	$key = 'how-to-choose-managed-network-services-provider' === $slug ? 'network' : ( $for[ $p['cat']['slug'] ] ?? 'support' );
+	// The article's own subject (its chip), which is more specific than its listing category.
+	$chip = [ 'IT Support' => 'support', 'Managed IT' => 'managed-it', 'Cyber Security' => 'security', 'Cloud' => 'cloud', 'Network' => 'network', 'Networks' => 'network', 'IT Strategy' => 'strategy', 'Careers' => 'careers' ];
+	$cat  = $chip[ $p['chip'] ?? '' ] ?? $p['cat']['slug'];
+	$key  = 'how-to-choose-managed-network-services-provider' === $slug ? 'network' : ( $for[ $cat ] ?? 'support' );
 	foreach ( whizzit_data( 'services' )['services'] ?? [] as $s ) {
 		if ( $s['key'] === $key ) {
 			return $s;

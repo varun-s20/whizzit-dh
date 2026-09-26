@@ -6,7 +6,7 @@ import { icon, logo, logoMark } from "./icons.mjs";
 import { SITE, SERVICES, SPECIALIST, INDUSTRIES, LOCATIONS, NAV, PHOTOS } from "./site.mjs";
 
 export { icon, logo, logoMark, SITE, SERVICES, SPECIALIST, INDUSTRIES, LOCATIONS };
-export { CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, statValue, PHOTOS, BLOG, TEAM, CREDENTIALS, STOCK, SECTOR_PHOTO, CATEGORY_PHOTO } from "./site.mjs";
+export { CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, statValue, PHOTOS, BLOG, BLOG_LISTING, LISTING_CATEGORIES, TEAM, CREDENTIALS, STOCK, SECTOR_PHOTO, CATEGORY_PHOTO } from "./site.mjs";
 
 const OUT = join(import.meta.dirname, "..");
 // Official WhizzIT artwork pulled from staging: dark wordmark on light surfaces,
@@ -96,6 +96,53 @@ export function callbackForm({ track = "callback", phone = false, captchaTheme =
   </div>
 </div>`;
 }
+
+// The enquiry box staging carries in the middle of four articles: a phone line,
+// a Google review and a short message form that posts as form_name=inline, as
+// staging's does. Articles hold it as [whizzit_enquiry …] (see content.mjs);
+// whizzit-core renders this same markup from data/enquiry.html.
+export function enquiryBox({ eyebrow = "", title = "", text = "", quote = "", by = "", role = "" }, id = "eq") {
+  return `<aside class="cta-mid enquiry" aria-labelledby="${id}-title">
+  <div class="enquiry__intro">
+    <p class="eyebrow">${eyebrow}</p>
+    <p class="cta-mid__title" id="${id}-title">${title}</p>
+    <p>${text}</p>
+    <div class="cta-mid__btns"><a class="btn btn--ghost" href="${SITE.phoneHref}" data-track="article-enquiry-phone">${icon("phone")}<span>${SITE.phone}</span></a></div>
+    <figure class="enquiry__proof">
+      <p class="enquiry__stars" role="img" aria-label="Rated 5 out of 5">★★★★★</p>
+      <blockquote><p>${quote}</p></blockquote>
+      <figcaption><strong>${by}</strong>, ${role} · <a href="${SITE.google.reviewsUrl}" target="_blank" rel="noopener">see all ${SITE.google.count} reviews</a></figcaption>
+    </figure>
+  </div>
+  <div class="enquiry__form">
+    <form action="/api/submit.php" method="post" data-validate${formMode()} data-success="${id}-success" aria-labelledby="${id}-form-title">
+      <input type="hidden" name="form_name" value="inline">
+      <input class="visually-hidden" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="enquiry__head"><strong id="${id}-form-title">Send us a message</strong><span>We respond the same working day.</span></p>
+      ${field({ id: `${id}-name`, name: "name", label: "Name", autocomplete: "name", placeholder: "Jane Smith", msg: "Please enter your name." })}
+      ${field({ id: `${id}-email`, name: "email", label: "Work email", type: "email", autocomplete: "email", placeholder: "jane@company.co.uk", msg: "Please enter a valid email." })}
+      <div class="field">
+        <label class="field__label" for="${id}-message">How can we help?</label>
+        <textarea class="field__input" id="${id}-message" name="message" rows="3" placeholder="A few details about your IT needs…" required data-msg-required="Please let us know how we can help." aria-describedby="${id}-message-error"></textarea>
+        <p class="field__error" id="${id}-message-error"></p>
+      </div>
+      ${captchaRow("light")}
+      <button class="btn btn--primary btn--block" type="submit" data-track="article-enquiry-submit"><span>Send message</span></button>
+    </form>
+    <div class="callback__success" id="${id}-success" tabindex="-1" hidden>
+      ${icon("checkCircle")}
+      <p><strong>Got it, thank you.</strong> Your message is with the team. We’ll respond the same working day. Need it sorted sooner? <a href="${SITE.phoneHref}" data-track="article-enquiry-success-phone">Call ${SITE.phone}</a></p>
+    </div>
+  </div>
+</aside>`;
+}
+
+// Draws each [whizzit_enquiry …] in an article body (the static build; WordPress
+// runs the shortcode itself).
+export const renderEnquiries = (html) => {
+  let n = 0;
+  return html.replace(/\[whizzit_enquiry ([^\]]*)\]/g, (_, atts) => enquiryBox(Object.fromEntries([...atts.matchAll(/(\w+)="([^"]*)"/g)].map((m) => [m[1], m[2]])), `eq${n++}`));
+};
 
 // The line under a hero's callback form: the phone for anyone who would rather
 // talk, then proof.
@@ -308,6 +355,10 @@ export function blogCard(p, { featured = false, level = 3 } = {}) {
     </div>`;
   return `<article class="blog-card${featured ? " blog-card--featured" : ""}" data-category="${p.category}">${art}${body}</article>`;
 }
+
+// A post card's cover: the category icon on its tint. Staging's blog cards carry
+// no photographs, so ours do not either.
+export const postCover = (p, cls = "") => `<div class="blog-card__art post-cover tone-${p.tone}${cls ? " " + cls : ""}" aria-hidden="true">${blogArt(p.icon)}</div>`;
 
 export function blogArt(name) {
   return `<svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="currentColor" stroke-width="1" opacity=".35"><circle cx="160" cy="100" r="40"/><circle cx="160" cy="100" r="70"/><circle cx="160" cy="100" r="100"/></g><path d="M0 150 C80 150 100 100 160 100 S260 40 320 40" stroke="currentColor" stroke-width="1.2" fill="none" stroke-dasharray="4 5" opacity=".6"/><rect x="132" y="72" width="56" height="56" rx="16" fill="#fff"/>${icon(name).replace("<svg", '<svg x="146" y="86" width="28" height="28"')}</svg>`;
@@ -565,10 +616,11 @@ function footer(cta) {
       ${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "outline-light", size: "sm", iconName: "phone", arrow: false, track: "footer-phone-support" })}
     </div>
     <div class="site-footer__bottom">
-      <p>© 2026 ${SITE.company}. All rights reserved. ${ph("Company number — client to supply")}</p>
+      <p>© 2026 ${SITE.company}. All rights reserved.</p>
       <ul class="legal-links" role="list">
         <li><a href="@/privacy-policy.html">Privacy policy</a></li>
         <li><a href="@/cookie-policy.html">Cookie policy</a></li>
+        <li><a href="https://digitalheroesco.com/" target="_blank" rel="noopener" data-track="footer-credit">Created with love by Digital Heroes</a></li>
       </ul>
     </div>
   </div>

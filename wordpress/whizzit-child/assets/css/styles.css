@@ -12055,3 +12055,121 @@ select.field__input {
   color: var(--color-error);
   font-size: var(--fs-small);
 }
+
+
+/* 32. POST COVERS
+   Blog cards show the category icon on its tint instead of a photograph, as the
+   cards on staging do. These follow the photo rules in 28, so they win.
+   ========================================================================== */
+.post-cover.post-card__art,
+.post-cover.insight__art {
+  background: var(--tile-bg);
+  color: var(--tile-fg);
+}
+
+.post-cover.post-card__art {
+  aspect-ratio: 3 / 2;
+}
+
+/* The enquiry box staging has in the middle of four articles: intro, phone and
+   a review on one side, a short message form on the other; stacked when narrow. */
+.enquiry {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.enquiry__intro {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.enquiry__proof {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.prose .enquiry__proof blockquote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.9375rem;
+  font-style: normal;
+}
+
+.enquiry__proof blockquote p {
+  color: var(--color-text);
+}
+
+.prose .enquiry__proof figcaption {
+  margin: 0;
+  color: var(--color-text-soft);
+  font-size: 0.8125rem;
+  text-align: left;
+}
+
+/* .cta-mid p sets every paragraph's size and colour; these two outrank it. */
+.cta-mid p.cta-mid__title {
+  color: var(--color-text);
+  font-size: clamp(1.3rem, 1.15rem + 0.6vw, 1.6rem);
+}
+
+.cta-mid .enquiry__stars {
+  color: var(--brand-orange);
+  letter-spacing: 0.12em;
+}
+
+.enquiry__form {
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.enquiry__form form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.enquiry__head {
+  display: grid;
+  gap: 2px;
+}
+
+.enquiry__head strong {
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+
+/* 33. HOME SPACING
+   Industries, Pricing, Partners and Insights share one background, so each pair
+   of full home paddings (.page--home .section, up to 120px each) read as a
+   200px+ empty band. Where they meet, each side keeps about half.
+   ========================================================================== */
+.page--home .home-sectors {
+  padding-bottom: clamp(36px, 4vw, 60px);
+}
+
+.page--home .home-pricing {
+  padding-block: clamp(36px, 4vw, 60px);
+}
+
+.page--home .home-partners {
+  padding-block: clamp(28px, 3vw, 44px);
+}
+
+.page--home .home-insights {
+  padding-top: clamp(36px, 4vw, 60px);
+}
+
+/* The pricing card's heading sat directly on its paragraph. */
+.plan-detail--single h2 + p {
+  margin-top: var(--space-4);
+}

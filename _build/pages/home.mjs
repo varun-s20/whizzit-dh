@@ -2,8 +2,8 @@
 // (see /_source); the layout is the bold redesign — photo-led hero, a proof strip
 // that overlaps it, an ink services band, and photo tiles for stories and sectors.
 import {
-  page, statValue, btn, textLink, icon, photo, stockPhoto, stars, reviewAvatar, callbackForm, heroNote,
-  WP_EXPORT, SITE, SERVICES, INDUSTRIES, CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, PHOTOS, BLOG, STOCK, CATEGORY_PHOTO, SECTOR_PHOTO,
+  page, statValue, btn, textLink, icon, photo, stockPhoto, postCover, stars, reviewAvatar, callbackForm, heroNote,
+  WP_EXPORT, SITE, SERVICES, INDUSTRIES, CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, PHOTOS, BLOG_LISTING, STOCK, SECTOR_PHOTO,
 } from "../lib.mjs";
 
 /* ---------- About tabs (from /about/) ---------- */
@@ -82,12 +82,14 @@ const faqs = [
 
 /* ---------- Insights ---------- */
 const fmt = (d) => new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+// The latest four articles, as staging's blog cards describe them.
+const latest = BLOG_LISTING.filter((c) => c.slug).slice(0, 4);
 const insight = (p, variant) => `
   <article class="insight insight--${variant}">
-    ${stockPhoto(STOCK[CATEGORY_PHOTO[p.category]] || STOCK.team, { cls: "insight__art", ratio: variant === "tall" ? "4-5" : "3-2", sizes: "(min-width: 1024px) 32vw, 100vw", alt: "" })}
+    ${postCover(p, "insight__art")}
     <div class="insight__body">
       <p class="insight__date">${icon("calendar")}<time datetime="${p.date}">${fmt(p.date)}</time><span class="tag tag--blue">${p.categoryLabel}</span></p>
-      <h3 class="insight__title"><a class="card-link" href="@/blog/${p.slug}.html">${p.title}</a></h3>
+      <h3 class="insight__title"><a class="card-link" href="@/${p.href}">${p.title}</a></h3>
       <p>${p.excerpt}</p>
     </div>
   </article>`;
@@ -272,7 +274,7 @@ const main = `
       ${textLink("View all articles", "blog.html", "home-blog")}
     </div>
     <div class="insight-grid">
-      ${WP_EXPORT ? "[whizzit_insights]" : [insight(BLOG[0], "tall"), insight(BLOG[1], "card"), insight(BLOG[2], "card"), insight(BLOG[3], "wide")].join("")}
+      ${WP_EXPORT ? "[whizzit_insights]" : [insight(latest[0], "tall"), insight(latest[1], "card"), insight(latest[2], "card"), insight(latest[3], "wide")].join("")}
     </div>
   </div>
 </section>

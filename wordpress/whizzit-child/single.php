@@ -23,9 +23,14 @@ while ( have_posts() ) :
 	$slug             = get_post_field( 'post_name' );
 	[ $body, $toc ]   = whizzit_content_with_toc( apply_filters( 'the_content', get_the_content() ) );
 	$svc              = whizzit_service_for( $p, $slug );
-	$older            = get_previous_post();
-	$newer            = get_next_post();
-	$related          = whizzit_latest_posts( 3, [ 'post__not_in' => [ $p['id'] ], 'category__in' => wp_get_post_categories( $p['id'] ) ] );
+	// Previous and next follow the blog listing's order, as the design does.
+	$list  = whizzit_listing_posts();
+	$at    = array_search( $p['id'], array_map( fn( $post ) => $post->ID, $list ), true );
+	$older = false === $at ? get_previous_post() : ( $list[ $at + 1 ] ?? null );
+	$newer = false === $at ? get_next_post() : ( $at > 0 ? $list[ $at - 1 ] : null );
+	// Staging's own picks (set by the import); otherwise the same category.
+	$picked  = array_filter( explode( ',', (string) get_post_meta( $p['id'], '_whizzit_related', true ) ) );
+	$related = $picked ? whizzit_latest_posts( 3, [ 'post_name__in' => $picked, 'orderby' => 'post_name__in' ] ) : whizzit_latest_posts( 3, [ 'post__not_in' => [ $p['id'] ], 'category__in' => wp_get_post_categories( $p['id'] ) ] );
 	if ( count( $related ) < 3 ) {
 		$related = array_merge( $related, whizzit_latest_posts( 3 - count( $related ), [ 'post__not_in' => array_merge( [ $p['id'] ], wp_list_pluck( $related, 'ID' ) ) ] ) );
 	}
@@ -35,7 +40,7 @@ while ( have_posts() ) :
 	<header class="hero hero--article">
 		<div class="container">
 			<?php echo whizzit_breadcrumbs( [ [ 'Home', '/' ], [ 'Blog', '/blog/' ], [ $p['title'] ] ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside. ?>
-			<div class="meta-row"><a class="tag tag--blue" href="<?php echo esc_url( home_url( '/blog/?category=' . $p['cat']['slug'] ) ); ?>"><?php echo esc_html( $p['cat']['label'] ); ?></a><time datetime="<?php echo esc_attr( $p['date'] ); ?>"><?php echo esc_html( $p['date_text'] ); ?></time><span><?php echo (int) $p['read']; ?> min read</span></div>
+			<div class="meta-row"><a class="tag tag--blue" href="<?php echo esc_url( home_url( '/blog/?category=' . $p['cat']['slug'] ) ); ?>"><?php echo esc_html( $p['chip'] ); ?></a><time datetime="<?php echo esc_attr( $p['date'] ); ?>"><?php echo esc_html( $p['date_text'] ); ?></time><span><?php echo (int) $p['read']; ?> min read</span></div>
 			<h1 class="hero__title mt-5"><?php the_title(); ?></h1>
 			<?php if ( $p['excerpt'] ) : ?>
 				<p class="lead hero__lead"><?php echo esc_html( $p['excerpt'] ); ?></p>

@@ -12,7 +12,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-const WHIZZIT_CHILD_VERSION = '2.0.1';
+const WHIZZIT_CHILD_VERSION = '2.1.1';
 
 /* ---------- Hello Elementor: keep it out of the way ---------- */
 add_filter( 'hello_elementor_enqueue_style', '__return_false' );

@@ -139,7 +139,7 @@ export function unwrapBlockAnchors(html) {
 const KEEP_CLASS = new Set(["cta-mid", "cta-mid__btns", "btn", "btn--primary", "btn--ghost", "eyebrow"]);
 
 // Removes an element and everything inside it, counting nested tags of the same name.
-export function dropElement(html, tag, marker) {
+export function dropElement(html, tag, marker, replace = () => "") {
   const open = new RegExp("<" + tag + "\\b[^>]*>", "gi");
   let out = html;
   let match;
@@ -155,16 +155,35 @@ export function dropElement(html, tag, marker) {
       if (depth === 0) { end = scan.lastIndex; break; }
     }
     if (end === -1) break;
-    out = out.slice(0, match.index) + out.slice(end);
-    open.lastIndex = match.index;
+    const swap = replace(out.slice(match.index, end));
+    out = out.slice(0, match.index) + swap + out.slice(end);
+    open.lastIndex = match.index + swap.length;
   }
   return out;
 }
 
+// Staging's mid-article enquiry box ("Straight answers / Prefer to talk it
+// through?", a review and a message form) becomes [whizzit_enquiry], so the
+// article text stays editable; enquiryBox() in lib.mjs (and the shortcode in
+// whizzit-core) draws it in the new design with a live form.
+function enquiryShortcode(el) {
+  const text = (re) => strip((el.match(re) || [])[1] || "").replace(/"/g, "”").replace(/[[\]]/g, "");
+  const atts = {
+    eyebrow: text(/<span class="eyebrow"[^>]*>([\s\S]*?)<\/span>/),
+    // The heading is an <h2> in most posts and a div.h-display-2 in one.
+    title: text(/<(?:h2|div class="h-display-2")[^>]*>([\s\S]*?)<\/(?:h2|div)>/),
+    text: text(/<\/(?:h2|div)>\s*<p[^>]*>([\s\S]*?)<\/p>/),
+    quote: text(/<blockquote[^>]*>\s*<p[^>]*>([\s\S]*?)<\/p>\s*<\/blockquote>/),
+    by: text(/<cite><b>([\s\S]*?)<\/b>/),
+    role: text(/<cite><b>[\s\S]*?<\/b>,\s*([^<·]*?)\s*·/),
+  };
+  return `[whizzit_enquiry ${Object.entries(atts).map(([k, v]) => `${k}="${v}"`).join(" ")}]`;
+}
+
 export function sanitizeBody(html) {
   let out = html;
+  out = dropElement(out, "div", "cta-mid--form", enquiryShortcode);
   out = dropElement(out, "form");
-  out = dropElement(out, "div", "cta-mid--form");
   out = dropElement(out, "svg");
   out = dropElement(out, "canvas");
   out = dropElement(out, "script");
@@ -217,10 +236,48 @@ function parsePost(post) {
   };
 }
 
+// The blog listing exactly as staging's /blog/ page shows it (its theme hard-codes
+// the cards): card titles and excerpts differ from the articles', there are four
+// listing categories, and one card points at a page rather than a post. Captured
+// in _source/staging-blog-cards.json. Articles keep their own title and chip.
+const LISTING_CAT = {
+  "managed-it": CATEGORY["Managed IT"],
+  cyber: CATEGORY["Cyber Security"],
+  cloud: CATEGORY.Cloud,
+  networks: { ...CATEGORY.Network, label: "Networks" },
+};
+const SHORT_MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+const cardDate = (d) => {
+  const [day, mon, year] = d.split(" ");
+  return `${year}-${String(SHORT_MONTHS.indexOf(mon) + 1).padStart(2, "0")}-${day.padStart(2, "0")}`;
+};
+export const BLOG_LISTING = read("staging-blog-cards.json").map((c) => {
+  const cat = LISTING_CAT[c.cat];
+  const slug = (c.href.match(/^\/blog\/([^/]+)\/$/) || [])[1] || null;
+  return {
+    slug,
+    href: slug ? `blog/${slug}.html` : c.href.replace(/^\/(.+)\/$/, "$1.html"),
+    title: c.title,
+    excerpt: c.excerpt,
+    date: cardDate(c.date),
+    category: cat.key,
+    categoryLabel: cat.label,
+    tone: cat.tone,
+    icon: cat.icon,
+  };
+});
+// In staging's filter order.
+export const LISTING_CATEGORIES = Object.values(LISTING_CAT).map(({ key, label, tone, icon }) => ({ key, label, tone, icon }));
+
+const RELATED = read("staging-related.json");
+const order = new Map(BLOG_LISTING.filter((c) => c.slug).map((c, i) => [c.slug, i]));
 export const POSTS = read("wp-posts.json")
   .map(parsePost)
   .filter((p) => p.body)
-  .sort((a, b) => b.date.localeCompare(a.date));
+  // Staging's own "Related articles" picks (_source/staging-related.json).
+  .map((p) => ({ ...p, card: BLOG_LISTING.find((c) => c.slug === p.slug), related: RELATED[p.slug] || null }))
+  // Staging's order; any post it does not list goes first, newest first.
+  .sort((a, b) => (order.get(a.slug) ?? -1) - (order.get(b.slug) ?? -1) || b.date.localeCompare(a.date));
 
 // Page content is kept for reference while the remaining templates are rebuilt.
 export const WP_PAGES = read("wp-pages.json").map((p) => ({

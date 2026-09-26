@@ -217,7 +217,19 @@ function import_posts() {
 		}
 		update_post_meta( $id, '_whizzit_read', (int) $rec['read'] );
 		update_post_meta( $id, '_whizzit_author', $rec['author'] );
+		// Staging's blog card wording, the article's own chip, staging's related picks.
+		update_post_meta( $id, '_whizzit_card_title', wp_slash( $rec['cardTitle'] ?? '' ) );
+		update_post_meta( $id, '_whizzit_card_excerpt', wp_slash( $rec['cardExcerpt'] ?? '' ) );
+		update_post_meta( $id, '_whizzit_chip', wp_slash( $rec['chip'] ?? '' ) );
+		update_post_meta( $id, '_whizzit_related', implode( ',', $rec['related'] ?? [] ) );
 		$report[] = [ 'path' => $path, 'status' => 'imported', 'id' => $id ];
+	}
+	// Categories an earlier import made that staging's four replaced.
+	foreach ( [ 'support', 'strategy', 'careers' ] as $old ) {
+		$term = get_term_by( 'slug', $old, 'category' );
+		if ( $term && 0 === (int) $term->count ) {
+			wp_delete_term( $term->term_id, 'category' );
+		}
 	}
 	return $report;
 }
@@ -237,7 +249,7 @@ function revert_posts() {
 			'post_excerpt' => get_post_meta( $post->ID, '_whizzit_old_excerpt', true ),
 		] ) );
 		wp_set_post_categories( $post->ID, [ (int) get_option( 'default_category' ) ] );
-		foreach ( [ '_whizzit_old_content', '_whizzit_old_excerpt', '_whizzit_old_title', '_whizzit_read', '_whizzit_author' ] as $key ) {
+		foreach ( [ '_whizzit_old_content', '_whizzit_old_excerpt', '_whizzit_old_title', '_whizzit_read', '_whizzit_author', '_whizzit_card_title', '_whizzit_card_excerpt', '_whizzit_chip', '_whizzit_related' ] as $key ) {
 			delete_post_meta( $post->ID, $key );
 		}
 		$report[] = [ 'path' => '/blog/' . $rec['slug'] . '/', 'status' => 'reverted', 'id' => $post->ID ];

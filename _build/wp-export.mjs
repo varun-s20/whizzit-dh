@@ -90,24 +90,32 @@ console.log(`Sections: ${templates.size} templates (${fields} fields), ${structu
 // Blog posts: the clean article body (hero, forms and layout come from the
 // theme's single.php), flattened onto one line so WordPress's wpautop cannot
 // scatter <br> tags through it.
-const { BLOG, SERVICES, STOCK, CATEGORY_PHOTO, wpUrls } = await import("./lib.mjs");
-const { BLOG_CATEGORIES } = await import("./site.mjs");
+const { BLOG, BLOG_LISTING, LISTING_CATEGORIES, SERVICES, STOCK, CATEGORY_PHOTO, wpUrls, enquiryBox } = await import("./lib.mjs");
 const { icon, iconNames } = await import("./icons.mjs");
 const flat = (html) => html.replace(/\s*\n\s*/g, " ").trim();
+// category: the blog-listing category (staging's four); chip: the label the
+// article itself shows; card*: how staging's blog page lists it; related: the
+// three articles staging shows under it.
 const posts = BLOG.map((p) => ({
   slug: p.slug, title: p.title, excerpt: p.excerpt, author: p.author, date: p.date, read: p.read,
-  category: p.category, body: flat(wpUrls(p.body)),
+  category: p.card?.category || p.category, chip: p.categoryLabel,
+  cardTitle: p.card?.title || "", cardExcerpt: p.card?.excerpt || "", related: p.related || [],
+  body: flat(wpUrls(p.body)),
 }));
 writeFileSync(join(plugin, "data", "posts.json"), JSON.stringify({ posts }, null, 1));
 
-// Blog categories: label, tone and icon (from the posts that use them) and the
-// stock photo that stands in for a missing featured image.
-const look = Object.fromEntries(BLOG.map((p) => [p.category, { tone: p.tone, icon: p.icon }]));
-const categories = BLOG_CATEGORIES.filter((c) => c.key !== "all").map((c) => {
-  const stock = STOCK[CATEGORY_PHOTO[c.key]] || STOCK.team;
-  return { slug: c.key, label: c.label, used: c.key in look, ...(look[c.key] || { tone: "support", icon: "book" }), photo: stock.slug };
-});
+// Blog categories: staging's four listing categories, in its filter order, with
+// the tone and icon their cards use (and a stock photo for a featured image stand-in).
+const categories = LISTING_CATEGORIES.map((c) => ({ slug: c.key, label: c.label, used: true, tone: c.tone, icon: c.icon, photo: (STOCK[CATEGORY_PHOTO[c.key]] || STOCK.team).slug }));
 writeFileSync(join(plugin, "data", "categories.json"), JSON.stringify({ categories }, null, 1));
+
+// The blog listing in staging's order. Post cards take their words from the post
+// (card title and excerpt fields); a card that links to a page carries its own.
+const listing = BLOG_LISTING.map((c) => (c.slug ? { slug: c.slug } : { href: wpUrls(`@/${c.href}`), title: c.title, excerpt: c.excerpt, date: c.date, category: c.category }));
+writeFileSync(join(plugin, "data", "blog-listing.json"), JSON.stringify({ cards: listing }, null, 1));
+
+// The mid-article enquiry box, for [whizzit_enquiry] (tokens filled per use).
+writeFileSync(join(plugin, "data", "enquiry.html"), wpUrls(enquiryBox({ eyebrow: "{{EYEBROW}}", title: "{{TITLE}}", text: "{{TEXT}}", quote: "{{QUOTE}}", by: "{{BY}}", role: "{{ROLE}}" }, "{{ID}}")));
 
 // Services, for the "Related service" card on each post.
 const services = SERVICES.map((s) => ({ key: s.key, title: s.title, url: wpUrls(`@/${s.href}`), short: s.short, icon: s.icon, tone: s.tone }));
@@ -126,7 +134,7 @@ writeFileSync(join(plugin, "data", "sectors.json"), JSON.stringify({ sectors }, 
 // The icon set, so PHP prints exactly the same SVGs.
 writeFileSync(join(plugin, "data", "icons.json"), JSON.stringify(Object.fromEntries(iconNames().map((n) => [n, icon(n)]))));
 
-console.log(`Posts: ${posts.length}, categories: ${categories.filter((c) => c.used).length} used of ${categories.length}, services: ${services.length}, icons: ${iconNames().length}.`);
+console.log(`Posts: ${posts.length}, listing cards: ${listing.length}, categories: ${categories.length}, enquiry boxes: ${posts.filter((p) => p.body.includes("[whizzit_enquiry")).length}, services: ${services.length}, icons: ${iconNames().length}.`);
 
 const kinds = pages.reduce((n, p) => ((n[p.path.startsWith("/blog/") && p.path !== "/blog/" ? "posts" : "pages"] += 1), n), { pages: 0, posts: 0 });
 console.log(`Exported ${pages.length} records (${kinds.pages} pages, ${kinds.posts} posts), chrome, and assets.`);

@@ -1,0 +1,46 @@
+<aside class="cta-mid enquiry" aria-labelledby="{{ID}}-title">
+  <div class="enquiry__intro">
+    <p class="eyebrow">{{EYEBROW}}</p>
+    <p class="cta-mid__title" id="{{ID}}-title">{{TITLE}}</p>
+    <p>{{TEXT}}</p>
+    <div class="cta-mid__btns"><a class="btn btn--ghost" href="tel:02046342518" data-track="article-enquiry-phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>020 4634 2518</span></a></div>
+    <figure class="enquiry__proof">
+      <p class="enquiry__stars" role="img" aria-label="Rated 5 out of 5">★★★★★</p>
+      <blockquote><p>{{QUOTE}}</p></blockquote>
+      <figcaption><strong>{{BY}}</strong>, {{ROLE}} · <a href="https://www.google.com/maps?cid=17055157413191665489" target="_blank" rel="noopener">see all 15 reviews</a></figcaption>
+    </figure>
+  </div>
+  <div class="enquiry__form">
+    <form action="/api/submit.php" method="post" data-validate data-success="{{ID}}-success" aria-labelledby="{{ID}}-form-title">
+      <input type="hidden" name="form_name" value="inline">
+      <input class="visually-hidden" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="enquiry__head"><strong id="{{ID}}-form-title">Send us a message</strong><span>We respond the same working day.</span></p>
+      
+  <div class="field">
+    <label class="field__label" for="{{ID}}-name">Name</label>
+    
+    <input class="field__input" id="{{ID}}-name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" required data-msg-required="Please enter your name." aria-describedby="{{ID}}-name-error">
+    <p class="field__error" id="{{ID}}-name-error"></p>
+  </div>
+      
+  <div class="field">
+    <label class="field__label" for="{{ID}}-email">Work email</label>
+    
+    <input class="field__input" id="{{ID}}-email" name="email" type="email" autocomplete="email" placeholder="jane@company.co.uk" required data-msg-required="Please enter a valid email." aria-describedby="{{ID}}-email-error">
+    <p class="field__error" id="{{ID}}-email-error"></p>
+  </div>
+      <div class="field">
+        <label class="field__label" for="{{ID}}-message">How can we help?</label>
+        <textarea class="field__input" id="{{ID}}-message" name="message" rows="3" placeholder="A few details about your IT needs…" required data-msg-required="Please let us know how we can help." aria-describedby="{{ID}}-message-error"></textarea>
+        <p class="field__error" id="{{ID}}-message-error"></p>
+      </div>
+      <div class="captcha-row"><div class="g-recaptcha" data-sitekey="6LetGGItAAAAABGoBmlvEaWqFhJNfk97jeH2zaOv" data-theme="light"></div><p class="field__error">Please complete the reCAPTCHA to continue.</p></div>
+    <p class="form-error" role="alert" hidden>Sorry, something went wrong. Please call 020 4634 2518 or email info@whizzit.co.uk.</p>
+      <button class="btn btn--primary btn--block" type="submit" data-track="article-enquiry-submit"><span>Send message</span></button>
+    </form>
+    <div class="callback__success" id="{{ID}}-success" tabindex="-1" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+      <p><strong>Got it, thank you.</strong> Your message is with the team. We’ll respond the same working day. Need it sorted sooner? <a href="tel:02046342518" data-track="article-enquiry-success-phone">Call 020 4634 2518</a></p>
+    </div>
+  </div>
+</aside>
