@@ -1,6 +1,6 @@
 // IT Support overview. Signature: the remote/on-site split as a head-to-head
 // comparison, with the service-desk numbers running underneath it.
-import { page, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, CREDENTIALS } from "../lib.mjs";
+import { page, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, CREDENTIALS, credBadges } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
 import { pageHero, heroProof, renderBlocks, subServiceGrid, reviewsBand, pricingPanel } from "../blocks.mjs";
@@ -93,9 +93,7 @@ ${renderBlocks(rest, { key: "support" })}
       <h2 class="grad-head" id="why-title">${why.title || "Why work with us?"}</h2>
     </div>
     ${why.html ? `<div class="prose-cols">${why.html}</div>` : ""}
-    <ul class="cred-inline" role="list">
-      ${CREDENTIALS.map((c) => `<li><img src="@/assets/images/partners/${c.file}" alt="${c.title}" decoding="async"><span>${c.title}</span></li>`).join("")}
-    </ul>
+    ${credBadges()}
   </div>
 </section>
 

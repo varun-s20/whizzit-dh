@@ -7,6 +7,7 @@
 import { cpSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
+import { createHash } from "node:crypto";
 import { pathToFileURL } from "node:url";
 
 process.env.WHIZZIT_EXPORT = "wp";
@@ -63,6 +64,14 @@ const pages = wpRecords.pages
     return { ...page, widgets };
   });
 writeFileSync(join(plugin, "data", "pages.json"), JSON.stringify({ generated: new Date().toISOString(), pages }));
+
+// A fingerprint of the page content (not the timestamp), so WordPress can tell
+// when the installed plugin carries pages that have not been imported yet. Pages
+// that still point at section types this plugin no longer has render empty, so
+// whizzit-core warns in wp-admin until Tools -> WhizzIT import is run. A release
+// that only changes styles keeps the same fingerprint and asks for nothing.
+const build = createHash("sha1").update(JSON.stringify(pages)).digest("hex").slice(0, 12);
+writeFileSync(join(plugin, "data", "build.json"), JSON.stringify({ build, generated: new Date().toISOString() }));
 
 // Section templates: one file each (loaded only when that widget renders), an
 // index for registration, and a named PHP class per template, since Elementor
@@ -137,4 +146,5 @@ writeFileSync(join(plugin, "data", "icons.json"), JSON.stringify(Object.fromEntr
 console.log(`Posts: ${posts.length}, listing cards: ${listing.length}, categories: ${categories.length}, enquiry boxes: ${posts.filter((p) => p.body.includes("[whizzit_enquiry")).length}, services: ${services.length}, icons: ${iconNames().length}.`);
 
 const kinds = pages.reduce((n, p) => ((n[p.path.startsWith("/blog/") && p.path !== "/blog/" ? "posts" : "pages"] += 1), n), { pages: 0, posts: 0 });
+console.log(`Content build ${build}.`);
 console.log(`Exported ${pages.length} records (${kinds.pages} pages, ${kinds.posts} posts), chrome, and assets.`);

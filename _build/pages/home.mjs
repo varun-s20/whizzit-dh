@@ -2,7 +2,7 @@
 // (see /_source); the layout is the bold redesign — photo-led hero, a proof strip
 // that overlaps it, an ink services band, and photo tiles for stories and sectors.
 import {
-  page, statValue, btn, textLink, icon, photo, stockPhoto, postCover, stars, reviewAvatar, callbackForm, heroNote,
+  page, statValue, btn, textLink, icon, photo, stockPhoto, postCover, stars, reviewAvatar, callbackForm, heroNote, caseTile,
   WP_EXPORT, SITE, SERVICES, INDUSTRIES, CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, PHOTOS, BLOG_LISTING, STOCK, SECTOR_PHOTO,
 } from "../lib.mjs";
 
@@ -83,23 +83,7 @@ const aboutCarousel = `
       </div>`;
 
 /* ---------- Case studies ---------- */
-const CASE_PHOTO = {
-  "the-portland-hotel-group": PHOTOS.van,
-  "ixia-clinical": PHOTOS.serviceDesk,
-  "gh-building-and-landscaping": PHOTOS.network,
-  "mbkb-group": PHOTOS.team,
-};
-
-const cases = CASE_STUDIES.map((c) => `
-  <article class="case-tile">
-    ${photo(CASE_PHOTO[c.slug], { cls: "case-tile__art", ratio: "4-5", sizes: "(min-width: 1024px) 24vw, (min-width: 640px) 46vw, 92vw" })}
-    <div class="case-tile__body">
-      <span class="case-tile__tag">${c.sector}</span>
-      <h3 class="case-tile__title"><a class="card-link" href="@/our-customers/${c.slug}.html">${c.title}</a></h3>
-      <p>${c.excerpt}</p>
-      <span class="case-tile__more" aria-hidden="true">Read the story ${icon("arrow")}</span>
-    </div>
-  </article>`).join("");
+const cases = CASE_STUDIES.map((c) => caseTile(c)).join("");
 
 const START = 2;
 
@@ -138,10 +122,21 @@ const main = `
          live site, on frosted glass so the van still reads through it. */""}
     <div class="hero-home__form reveal-up" style="--delay:180ms">${callbackForm({ track: "home-hero", phone: true })}</div>
     <div class="hero-home__clients">
-      <p class="hero-home__clients-label">Trusted by the businesses we look after</p>
-      <ul class="logo-row" role="list">
-        ${CLIENTS.slice(0, 6).map((c) => `<li><img src="@/assets/images/clients/${c.file}" alt="${c.title}" decoding="async"></li>`).join("")}
-      </ul>
+      <p class="hero-home__clients-label" id="clients-label">Trusted by the businesses we look after</p>
+      ${/* Every client logo on an endless loop. The list is written twice and each
+           copy slides its own width, so the join never shows; the second copy is
+           hidden from assistive tech. Hover pauses it, and under reduced
+           motion it is a still row that scrolls sideways. */""}
+      <div class="marquee" data-marquee>
+        <div class="marquee__viewport">
+          <ul class="marquee__track" role="list" aria-labelledby="clients-label">
+            ${CLIENTS.map((c) => `<li><img src="@/assets/images/clients/${c.file}" alt="${c.title}" decoding="async"></li>`).join("")}
+          </ul>
+          <ul class="marquee__track" role="list" aria-hidden="true">
+            ${CLIENTS.map((c) => `<li><img src="@/assets/images/clients/${c.file}" alt="" decoding="async"></li>`).join("")}
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </section>

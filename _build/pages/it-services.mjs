@@ -1,11 +1,13 @@
-// IT Services hub. Signature layout: five alternating pillar rows, each one
-// opening out into its sub-services, so the page doubles as the site's index.
+// IT Services hub. Signature: "everything under one roof". The five services open
+// as a photo mosaic straight out of the hero, each tile with the photograph of
+// that service being done; below it one explorer panel (a vertical tab list)
+// replaces the five long alternating rows, and the proof sits in one bento.
 import {
-  page, statValue, reviewAvatar, btn, icon, photo, breadcrumbs, SITE, SERVICES, STATS, PARTNERS, CREDENTIALS, TESTIMONIALS, PHOTOS, CLIENTS,
+  page, statValue, reviewAvatar, stars, btn, icon, photo, stockPhoto, breadcrumbs, callbackForm, heroNote, credBadges,
+  SITE, SERVICES, STATS, PARTNERS, CREDENTIALS, TESTIMONIALS, PHOTOS, STOCK,
 } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
-import { pageHero } from "../blocks.mjs";
 
 const m = parsePage(pageByPath("/it-services/").html);
 const crumbs = [{ title: "Home", href: "index.html" }, { title: "IT Services" }];
@@ -22,133 +24,139 @@ const pillarCopy = (service) => {
   return { title: block.title, html: paragraphs.slice(0, 2).map((x) => `<p>${x}</p>`).join("") || `<p>${service.desc}</p>`, list: block.list };
 };
 
-const pillarPhoto = [PHOTOS.headset, PHOTOS.serviceDesk, PHOTOS.office, PHOTOS.network, PHOTOS.van];
+// Each service's tile shows that service being done, not a general office shot.
+const tilePhoto = {
+  support: (o) => photo(PHOTOS.headset, o),
+  cloud: (o) => stockPhoto(STOCK.cloudRacks, o),
+  cyber: (o) => stockPhoto(STOCK.cyber, o),
+  network: (o) => photo(PHOTOS.network, o),
+  projects: (o) => stockPhoto(STOCK.meeting, o),
+};
 
-const pillars = SERVICES.map((s, i) => {
+const num = (i) => String(i + 1).padStart(2, "0");
+
+const tiles = SERVICES.map((s, i) => `
+    <article class="svc-tile${i === 0 ? " svc-tile--lead" : ""}" style="--i:${i}">
+      ${tilePhoto[s.key]({ cls: "svc-tile__photo", ratio: i === 0 ? "4-3" : "3-2", sizes: i === 0 ? "(min-width: 1024px) 620px, 100vw" : "(min-width: 1024px) 310px, (min-width: 640px) 50vw, 100vw", loading: "eager" })}
+      <span class="svc-tile__num" aria-hidden="true">${num(i)}</span>
+      <div class="svc-tile__body">
+        <span class="svc-tile__icon" aria-hidden="true">${icon(s.icon)}</span>
+        <h2 class="svc-tile__title"><a class="card-link" href="@/${s.href}">${s.title}</a></h2>
+        <p>${s.short}</p>
+        <span class="svc-tile__meta" aria-hidden="true">${s.children.length} specialist services ${icon("arrow")}</span>
+      </div>
+    </article>`).join("");
+
+const tabs = SERVICES.map((s, i) => `
+          <button class="explorer__tab" type="button" role="tab" id="tab-${s.key}" aria-controls="${s.key}" aria-selected="${i === 0}">
+            <span class="explorer__num">${num(i)}</span>
+            <span class="explorer__icon" aria-hidden="true">${icon(s.icon)}</span>
+            <span class="explorer__label"><strong>${s.title}</strong><span>${s.short}</span></span>
+          </button>`).join("");
+
+const panels = SERVICES.map((s, i) => {
   const copy = pillarCopy(s);
   return `
-  <article class="pillar${i % 2 ? " pillar--flip" : ""}" id="${s.key}">
-    <div class="pillar__body">
-      <p class="pillar__index">${String(i + 1).padStart(2, "0")} · ${s.title}</p>
-      <h3 class="grad-head">${copy.title}</h3>
-      <div class="block-prose">${copy.html || `<p>${s.desc}</p>`}</div>
-      ${copy.list.length ? `<ul class="tick-list tick-list--compact" role="list">${copy.list.slice(0, 5).map((x) => `<li>${x}</li>`).join("")}</ul>` : ""}
-      <div class="btn-group mt-6">
-        ${btn(`Explore ${s.title}`, s.href, { arrow: false, track: `services-${s.key}` })}
+        <div class="explorer__panel" role="tabpanel" id="${s.key}" aria-labelledby="tab-${s.key}" tabindex="0">
+          <div class="explorer__copy">
+            <p class="explorer__kicker">${num(i)} · ${s.title}</p>
+            <h3 class="grad-head">${copy.title}</h3>
+            <div class="block-prose">${copy.html}</div>
+            ${copy.list.length ? `<ul class="tick-list tick-list--compact" role="list">${copy.list.slice(0, 5).map((x) => `<li>${x}</li>`).join("")}</ul>` : ""}
+            <div class="btn-group mt-6">${btn(`Explore ${s.title}`, s.href, { track: `services-${s.key}` })}</div>
+          </div>
+          <div class="explorer__subs">
+            <p class="explorer__subs-label">${s.children.length} specialist services</p>
+            <ul role="list">
+              ${s.children.map((c, n) => `<li style="--n:${n}"><a href="@/${c.href}"><span>${c.title}</span>${icon("arrow")}</a></li>`).join("")}
+            </ul>
+          </div>
+        </div>`;
+}).join("");
+
+const quote = TESTIMONIALS[0];
+
+const main = `
+<section class="hero hero--sky svc-hero" aria-labelledby="page-hero-title">
+  <div class="container">
+    ${breadcrumbs(crumbs)}
+    <div class="svc-hero__grid">
+      <div class="svc-hero__copy">
+        <p class="eyebrow">IT services</p>
+        <h1 class="hero-sky__title svc-hero__title" id="page-hero-title">${m.title}</h1>
+        <p class="hero-sky__lead">${m.lead}</p>
+        ${heroNote("UK-wide coverage", "services-hero")}
+      </div>
+      <div class="svc-hero__form">${callbackForm({ track: "services-hero" })}</div>
+    </div>
+  </div>
+</section>
+
+${/* The five services as a mosaic lifted out of the hero: IT Support leads at
+     double size, the other four around it. Each tile is one link. */""}
+<section class="svc-mosaic" aria-label="Our five core services" data-no-reveal>
+  <div class="container">
+    <div class="svc-mosaic__grid">${tiles}
+    </div>
+  </div>
+</section>
+
+<section class="section svc-explore" aria-labelledby="explore-title">
+  <div class="container">
+    <div class="svc-explore__head">
+      <p class="eyebrow">Our services</p>
+      <h2 class="grad-head" id="explore-title">Five core services, one accountable team</h2>
+      <p>Pick a service to see how it works, what it includes and the specialist services inside it.</p>
+    </div>
+    <div class="explorer" data-tabs>
+      <div class="explorer__rail">
+        <div class="explorer__list" role="tablist" aria-orientation="vertical" aria-label="IT services">${tabs}
+          <span class="explorer__indicator" aria-hidden="true"></span>
+        </div>
+        <aside class="explorer__else">
+          <span class="explorer__else-icon" aria-hidden="true">${icon("message")}</span>
+          <h3>Something else?</h3>
+          <p>Not sure what you need? Tell us what you're wrestling with and we'll point you in the right direction, even if the answer turns out not to be us.</p>
+          ${btn("Get in touch", "contact.html", { variant: "secondary", arrow: false, track: "services-something-else" })}
+        </aside>
+      </div>
+      <div class="explorer__stage">${panels}
       </div>
     </div>
-    <div class="pillar__aside">
-      ${photo(pillarPhoto[i], { cls: "pillar__photo", ratio: "3-2", sizes: "(min-width: 1024px) 40vw, 100vw" })}
-      <div class="pillar__links">
-        <p>${s.children.length} specialist services</p>
-        <ul role="list">
-          ${s.children.map((c) => `<li><a href="@/${c.href}">${icon(s.icon)}<span>${c.title}</span>${icon("arrow")}</a></li>`).join("")}
+  </div>
+</section>
+
+<section class="section section--mist svc-proof" aria-labelledby="services-proof-title">
+  <div class="container">
+    <div class="svc-proof__head">
+      <p class="eyebrow">Why work with us</p>
+      <h2 class="grad-head" id="services-proof-title">Proof, not promises</h2>
+    </div>
+    <div class="proof-bento">
+      <div class="proof-bento__creds">${credBadges()}</div>
+      <dl class="proof-bento__stats">
+        ${STATS.map((s) => `
+        <div class="proof-stat">
+          <dd>${statValue(s)}</dd>
+          <dt>${s.label}</dt>
+        </div>`).join("")}
+      </dl>
+      <figure class="proof-bento__quote">
+        ${stars(`Rated ${SITE.google.rating} out of 5`)}
+        <blockquote><p>“${quote.quote}”</p></blockquote>
+        <figcaption>${reviewAvatar(quote, { badge: true })}<span><strong>${quote.name}</strong>${quote.role}</span></figcaption>
+        <a class="text-link" href="${SITE.google.reviewsUrl}" rel="noopener"><span>All ${SITE.google.count} Google reviews</span>${icon("arrow")}</a>
+      </figure>
+      <div class="proof-bento__partners">
+        <p class="proof-bento__label">The partners behind the work</p>
+        <ul class="partner-row partner-row--badges" role="list">
+          ${PARTNERS.filter((p) => !CREDENTIALS.some((c) => c.file === p.file)).map((p) => `<li><img src="@/assets/images/partners/${p.file}" alt="${p.title}" loading="lazy" decoding="async"></li>`).join("")}
         </ul>
       </div>
     </div>
-  </article>`;
-}).join("");
-
-const main = `
-${pageHero({
-  eyebrow: "IT services",
-  title: m.title,
-  lead: m.lead,
-  crumbs: breadcrumbs(crumbs),
-  aside: `
-    <nav class="service-index" aria-label="Jump to a service">
-      <p class="service-index__label">Five core services</p>
-      <ul role="list">
-        ${SERVICES.map((s, i) => `<li><a href="#${s.key}"><span class="service-index__num">${String(i + 1).padStart(2, "0")}</span><span class="service-index__icon">${icon(s.icon)}</span><span><strong>${s.title}</strong>${s.short}</span>${icon("arrow")}</a></li>`).join("")}
-      </ul>
-    </nav>`,
-})}
-
-<section class="section section--tight" aria-label="Clients">
-  <div class="container">
-    <div class="client-band client-band--slim">
-      <p class="client-band__label">Trusted by the businesses we look after</p>
-      <ul class="logo-row" role="list">
-        ${CLIENTS.slice(0, 6).map((c) => `<li><img src="@/assets/images/clients/${c.file}" alt="${c.title}" decoding="async"></li>`).join("")}
-      </ul>
-    </div>
+    <p class="svc-proof__note">Figures published by WhizzIT. Response and resolution times measured across every ticket in 2025.</p>
   </div>
 </section>
-
-<section class="section pillars" aria-labelledby="pillars-title">
-  <div class="container">
-    <div class="center-head">
-      <p class="eyebrow">Our services</p>
-      <h2 class="grad-head" id="pillars-title">Five core services, one accountable team</h2>
-      <p>Pick a service to see how it works, what it includes and the results our clients see.</p>
-    </div>
-    ${pillars}
-    <article class="route-wide">
-      <span class="route-wide__icon">${icon("message")}</span>
-      <div>
-        <h3>Something else?</h3>
-        <p>Not sure what you need? Tell us what you're wrestling with and we'll point you in the right direction, even if the answer turns out not to be us.</p>
-      </div>
-      ${btn("Get in touch", "contact.html", { arrow: false, track: "services-something-else" })}
-    </article>
-  </div>
-</section>
-
-<section class="section stat-band" aria-labelledby="services-stats-title">
-  <div class="container">
-    <div class="stat-band__head">
-      <p class="eyebrow">By the numbers</p>
-      <h2 class="grad-head grad-head--dark" id="services-stats-title">Proof, not promises</h2>
-    </div>
-    <dl class="stat-band__grid">
-      ${STATS.map((s) => `<div><dd>${statValue(s)}</dd><dt>${s.label}</dt><p>${s.note}</p></div>`).join("")}
-    </dl>
-    <p class="stat-band__note">Figures published by WhizzIT. Response and resolution times measured across every ticket in 2025.</p>
-  </div>
-</section>
-
-<section class="section" aria-labelledby="services-cred-title">
-  <div class="container">
-    <div class="bar-head">
-      <div>
-        <p class="eyebrow">Certified &amp; accredited</p>
-        <h2 class="grad-head" id="services-cred-title">Credentials you can check</h2>
-      </div>
-      <p class="bar-head__aside">Verified rather than claimed, so you can check both before you commit.</p>
-    </div>
-    <div class="cred-grid">
-      ${CREDENTIALS.map((c) => `
-      <article class="cred-card">
-        <img src="@/assets/images/partners/${c.file}" alt="${c.title}" width="120" height="72" decoding="async">
-        <h3>${c.title}</h3>
-        <p>${c.text}</p>
-        <a class="text-link" href="@/${c.cta.href}"><span>${c.cta.label}</span>${icon("arrow")}</a>
-      </article>`).join("")}
-    </div>
-    <ul class="partner-row mt-7" role="list">
-      ${PARTNERS.map((p) => `<li><img src="@/assets/images/partners/${p.file}" alt="${p.title}" decoding="async"></li>`).join("")}
-    </ul>
-  </div>
-</section>
-
-<section class="section section--mist" aria-labelledby="services-reviews-title">
-  <div class="container">
-    <div class="center-head">
-      <p class="eyebrow">Customer stories</p>
-      <h2 class="grad-head" id="services-reviews-title">What our clients say</h2>
-      <p>Rated ${SITE.google.rating} on Google across ${SITE.google.count} reviews.</p>
-    </div>
-    <div class="review-grid">
-      ${TESTIMONIALS.slice(0, 3).map((t) => `
-      <figure class="review-card">
-        <span class="review-card__stars" aria-hidden="true">${icon("star").repeat(5)}</span>
-        <blockquote><p>“${t.quote}”</p></blockquote>
-        <figcaption>${reviewAvatar(t, { badge: true })}<span><strong>${t.name}</strong>${t.role}</span></figcaption>
-      </figure>`).join("")}
-    </div>
-  </div>
-</section>
-
 `;
 
 page({

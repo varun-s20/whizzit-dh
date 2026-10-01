@@ -1,9 +1,9 @@
-// Every sub-page of the site: 30 sub-services, 8 industries, 14 locations plus the
+// Every sub-page of the site: 30 sub-services, 14 locations plus the
 // locations index, 4 case studies and the two standalone pages. Content is parsed
 // from the staging export, so the copy and URLs stay exactly as the client has them.
 import {
-  page, reviewAvatar, btn, icon, photo, stockPhoto, breadcrumbs, serviceRow, textLink, WP_EXPORT,
-  SITE, SERVICES, INDUSTRIES, LOCATIONS, CASE_STUDIES, PARTNERS, PHOTOS, TESTIMONIALS, CREDENTIALS, STOCK,
+  page, reviewAvatar, btn, icon, photo, stockPhoto, casePhoto, breadcrumbs, serviceRow, textLink, credBadges, WP_EXPORT,
+  SITE, SERVICES, INDUSTRIES, LOCATIONS, CASE_STUDIES, PARTNERS, PHOTOS, TESTIMONIALS, CREDENTIALS, STOCK, SECTOR_PHOTO,
 } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
@@ -17,15 +17,15 @@ const model = (href) => {
 const first = (s, fallback) => (s && s.length > 40 ? s : fallback);
 
 /* ---------- Standard trailing sections ---------- */
+// "Why WhizzIT": the two credentials as large badges, the partner logos below.
 const credentialStrip = () => `
-<section class="section section--tight cred-strip" aria-label="Accreditations">
+<section class="section section--tight cred-why" aria-labelledby="cred-why-title">
   <div class="container">
-    <ul class="cred-strip__list" role="list">
-      ${CREDENTIALS.map((c) => `<li><img src="@/assets/images/partners/${c.file}" alt="${c.title}" decoding="async"><span><strong>${c.title}</strong>${c.text.split(".")[0]}.</span></li>`).join("")}
-    </ul>
-    <ul class="partner-row" role="list">
-      ${PARTNERS.filter((p) => !CREDENTIALS.some((c) => c.file === p.file)).map((p) => `<li><img src="@/assets/images/partners/${p.file}" alt="${p.title}" decoding="async"></li>`).join("")}
-    </ul>
+    <div class="cred-why__head">
+      <p class="eyebrow">Why WhizzIT</p>
+      <h2 class="grad-head" id="cred-why-title">Credentials you can check</h2>
+    </div>
+    ${credBadges({ partners: true })}
   </div>
 </section>`;
 
@@ -116,84 +116,10 @@ ${relatedStrip(`More ${parent.title}`, siblings)}
   });
 });
 
-/* ==========================================================================
-   2. INDUSTRY PAGES (8)
-   ========================================================================== */
-const SECTOR_TRIOS = [
-  ["team", "serviceDesk", "office"],
-  ["serviceDesk", "network", "team"],
-  ["office", "team", "van"],
-  ["network", "office", "serviceDesk"],
-];
-INDUSTRIES.forEach((sector, i) => {
-  const m = model(sector.href);
-  if (!m) return;
-
-  const crumbs = [
-    { title: "Home", href: "index.html" },
-    { title: "Industries", href: "industries.html" },
-    { title: sector.title },
-  ];
-  // WhizzIT's own photos across the hero, as on the service pages; rotated so
-  // neighbouring sectors do not open on the same shot.
-  const heroPhotos = SECTOR_TRIOS[i % SECTOR_TRIOS.length];
-
-  const main = `
-${pageHero({
-    eyebrow: "Industry",
-    title: m.title,
-    lead: m.lead,
-    crumbs: breadcrumbs(crumbs),
-    photos: heroPhotos,
-  })}
-${renderBlocks(m.blocks, { key: sector.key })}
-
-<section class="section section--mist" aria-labelledby="sector-services-title">
-  <div class="container">
-    <div class="bar-head">
-      <div>
-        <p class="eyebrow">What we cover</p>
-        <h2 class="grad-head" id="sector-services-title">Everything ${sector.title} teams need from IT</h2>
-      </div>
-      ${btn("All IT services", "it-services.html", { variant: "secondary", arrow: false, track: `sector-${sector.key}-services` })}
-    </div>
-    <div class="related-grid">${SERVICES.map((s) => serviceRow(s)).join("")}</div>
-  </div>
-</section>
-
-${reviewStrip(TESTIMONIALS.find((t) => (t.sectors || []).includes(sector.key)) || TESTIMONIALS[i % TESTIMONIALS.length])}
-${credentialStrip()}
-
-<section class="section" aria-labelledby="other-sectors-title">
-  <div class="container">
-    <div class="center-head">
-      <h2 class="grad-head" id="other-sectors-title">Other industries we support</h2>
-    </div>
-    <ul class="sector-grid" role="list">
-      ${WP_EXPORT ? '[whizzit_sectors view="grid" exclude="current" limit="4"]' : INDUSTRIES.filter((s) => s.key !== sector.key).slice(0, 4).map((s) => `<li><a href="@/${s.href}"><span class="sector-grid__icon">${icon(s.icon)}</span><strong>${s.title}</strong><span>${s.desc}</span></a></li>`).join("")}
-    </ul>
-  </div>
-</section>
-
-`;
-
-  page({
-    footerCta: {
-      title: `IT that fits how ${sector.title} works`,
-      text: "Book a no-obligation conversation and we'll tell you what we would change first.",
-      track: `sector-${sector.key}-cta`,
-    },
-    file: sector.href,
-    title: m.title,
-    description: first(m.lead, sector.desc),
-    bodyClass: "page--industry page--sky",
-    crumbs,
-    main,
-  });
-});
+/* Industry pages (8) are built by sectors.mjs, with their own design. */
 
 /* ==========================================================================
-   3. LOCATION PAGES (14) + INDEX
+   3. LOCATION PAGES (14) (the index is locations.mjs)
    ========================================================================== */
 LOCATIONS.forEach((loc, i) => {
   // London is built by london.mjs with its own layout.
@@ -277,49 +203,7 @@ ${reviewStrip(TESTIMONIALS[(i + 2) % TESTIMONIALS.length])}
   });
 });
 
-// Locations index
-{
-  const m = model("locations.html");
-  const crumbs = [{ title: "Home", href: "index.html" }, { title: "Locations" }];
-  const main = `
-${pageHero({
-    eyebrow: "Locations",
-    title: m ? m.title : "IT support across the UK",
-    lead: m ? m.lead : "Remote-first support wherever your team works, with engineers on site when a job needs hands.",
-    crumbs: breadcrumbs(crumbs),
-    aside: heroProof([
-      { icon: "mapPin", value: `${LOCATIONS.length}`, label: "Areas covered" },
-      { icon: "building", value: "2", label: "Offices: London & Stevenage" },
-      { icon: "clock", value: "9 min", label: "Average first response" },
-    ]),
-  })}
-${m ? renderBlocks(m.blocks, { key: "locations" }) : ""}
-
-<section class="section" aria-labelledby="all-locations-title">
-  <div class="container">
-    <div class="center-head">
-      <h2 class="grad-head" id="all-locations-title">Areas we cover</h2>
-      <p>Every location gets the same service desk, the same response times and the same engineers.</p>
-    </div>
-    <ul class="location-grid" role="list">
-      ${LOCATIONS.map((l) => `<li><a href="@/${l.href}"><span class="location-grid__icon">${icon("mapPin")}</span><strong>IT support in ${l.title}</strong><span>Remote first, on-site when needed${icon("arrow")}</span></a></li>`).join("")}
-    </ul>
-  </div>
-</section>
-
-${credentialStrip()}
-`;
-
-  page({
-    footerCta: { title: "Looking for IT support near you?", text: "Tell us where you are and what you need. We'll tell you honestly whether we're the right fit.", track: "locations-cta" },
-    file: "locations.html",
-    title: "IT Support Locations Across the UK",
-    description: "WhizzIT provides managed IT support across London, Hertfordshire and the rest of the UK, with offices in London and Stevenage.",
-    bodyClass: "page--locations page--sky",
-    crumbs,
-    main,
-  });
-}
+// The locations index is built by locations.mjs, with its own design.
 
 /* ==========================================================================
    4. CASE STUDIES (4)
@@ -334,7 +218,6 @@ CASE_STUDIES.forEach((study, i) => {
     { title: "Our Customers", href: "our-customers.html" },
     { title: study.title },
   ];
-  const studyPhoto = [PHOTOS.van, PHOTOS.serviceDesk, PHOTOS.network, PHOTOS.team][i % 4];
 
   const main = `
 ${pageHero({
@@ -343,7 +226,7 @@ ${pageHero({
     lead: m.lead,
     crumbs: breadcrumbs(crumbs),
     cls: "hero--case",
-    feature: photo(studyPhoto, { ratio: "16-9", sizes: "(min-width: 1280px) 1240px, 100vw", loading: "eager" }),
+    feature: casePhoto(study, { ratio: "16-9", sizes: "(min-width: 1280px) 1240px, 100vw", loading: "eager" }),
   })}
 
 <section class="section section--tight" aria-label="Customer summary">

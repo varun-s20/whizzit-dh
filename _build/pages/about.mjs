@@ -1,7 +1,7 @@
 // About page. Content is WhizzIT's own, taken from /about/ on staging (see _source/content/about.md).
 import {
-  page, statValue, reviewAvatar, stars, btn, icon, photo, breadcrumbs, callbackForm, heroNote,
-  SITE, STATS, TEAM, CREDENTIALS, PARTNERS, PHOTOS, TESTIMONIALS,
+  page, statValue, reviewAvatar, stars, btn, icon, photo, breadcrumbs, callbackForm, heroNote, credBadges,
+  SITE, STATS, TEAM, PHOTOS, TESTIMONIALS,
 } from "../lib.mjs";
 
 const values = [
@@ -45,10 +45,6 @@ ${/* Three of WhizzIT's own photos, set as raised plates that fan out from one
         <strong>${SITE.google.rating}</strong>
         ${stars(`Rated ${SITE.google.rating} out of 5 on Google`)}
         <span>${SITE.google.count} Google reviews</span>
-      </p>
-      <p class="relief__seal relief__seal--cert">
-        <img src="@/assets/images/partners/cyber-essentials.webp" alt="" width="44" height="44" decoding="async">
-        <span><strong>Cyber Essentials</strong>certified, and we certify clients too</span>
       </p>
     </div>
   </div>
@@ -166,19 +162,8 @@ ${/* Three of WhizzIT's own photos, set as raised plates that fan out from one
       <p class="eyebrow">Certified &amp; accredited</p>
       <h2 class="grad-head" id="credentials-title">Credentials you can check</h2>
     </div>
-    <div class="cred-grid">
-      ${CREDENTIALS.map((c) => `
-      <article class="cred-card">
-        <img src="@/assets/images/partners/${c.file}" alt="${c.title}" width="120" height="72" loading="lazy" decoding="async">
-        <h3>${c.title}</h3>
-        <p>${c.text}</p>
-        <a class="text-link" href="@/${c.cta.href}"><span>${c.cta.label}</span>${icon("arrow")}</a>
-      </article>`).join("")}
-    </div>
+    ${credBadges({ partners: true })}
     <p class="cred-note">Cyber Essentials is a UK government scheme run by the <a href="https://www.ncsc.gov.uk/cyberessentials/overview" rel="noopener">National Cyber Security Centre</a>, delivered by <a href="https://iasme.co.uk/cyber-essentials/" rel="noopener">IASME</a>. You can verify what the certification covers at source.</p>
-    <ul class="partner-row mt-7" role="list">
-      ${PARTNERS.map((p) => `<li><img src="@/assets/images/partners/${p.file}" alt="${p.title}" decoding="async"></li>`).join("")}
-    </ul>
   </div>
 </section>
 `;

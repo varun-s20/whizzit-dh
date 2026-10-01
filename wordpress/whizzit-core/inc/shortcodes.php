@@ -9,7 +9,7 @@
  *   [whizzit_blog_featured]  first card, large (blog page hero)
  *   [whizzit_blog_count]     number of published posts
  *   [whizzit_blog_filters]   topic filter buttons
- *   [whizzit_blog_grid]      every other card
+ *   [whizzit_blog_grid]      every other card (all="1": every card)
  *   [whizzit_blog_topics]    "The guides people read first" links
  *   [whizzit_insights]       first four articles (home page)
  *   [whizzit_enquiry …]      the enquiry box inside an article
@@ -56,11 +56,16 @@ add_shortcode( 'whizzit_blog_filters', function () {
 	return implode( '', $chips );
 } );
 
-add_shortcode( 'whizzit_blog_grid', function () {
+// all="1": every card, the latest included (the blog page's library, where the
+// latest article leads the grid). Without it the first post is left out because
+// a featured card shows it above the grid.
+add_shortcode( 'whizzit_blog_grid', function ( $atts ) {
+	$atts  = shortcode_atts( [ 'all' => '' ], $atts, 'whizzit_blog_grid' );
 	$items = whizzit_blog_listing();
-	// The first post is the featured card above the grid.
-	$first = whizzit_listing_posts( 1 );
-	$items = array_filter( $items, fn( $item ) => ! ( $first && $item === $first[0] ) );
+	if ( ! $atts['all'] ) {
+		$first = whizzit_listing_posts( 1 );
+		$items = array_filter( $items, fn( $item ) => ! ( $first && $item === $first[0] ) );
+	}
 	return implode( '', array_map( 'whizzit_post_card', $items ) );
 } );
 

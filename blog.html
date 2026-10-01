@@ -91,76 +91,122 @@
 </header>
 <main id="main" tabindex="-1">
 
-
-<section class="hero hero--sky hero--page hero-stack " aria-labelledby="page-hero-title">
-  <div class="container">
-    <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><span aria-current="page">Blog</span></li></ol></nav>
-    <p class="eyebrow">Insights</p>
-    <h1 class="hero-sky__title hero-stack__title" id="page-hero-title">IT advice for the people who run the business</h1>
-    <p class="hero-sky__lead">Practical, jargon-free guidance from our engineers on IT support, cyber security, cloud and getting more from the technology you already pay for.</p>
-    
-<div class="callback">
-  <form class="callback__form" action="/api/submit.php" method="post" data-validate data-demo data-success="callback-success" aria-labelledby="callback-title">
-    <input type="hidden" name="form_name" value="callback">
-    <input class="visually-hidden" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <p class="callback__head"><strong id="callback-title">Request a callback</strong><span>We respond the same working day.</span></p>
-    <div class="callback__row">
-      
-  <div class="field">
-    <label class="field__label" for="cb-name">Name</label>
-    
-    <input class="field__input" id="cb-name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" required aria-describedby="cb-name-error">
-    <p class="field__error" id="cb-name-error"></p>
-  </div>
-      
-  <div class="field">
-    <label class="field__label" for="cb-email">Email</label>
-    
-    <input class="field__input" id="cb-email" name="email" type="email" autocomplete="email" placeholder="jane@company.co.uk" required aria-describedby="cb-email-error">
-    <p class="field__error" id="cb-email-error"></p>
-  </div>
-      
-      <div class="field callback__message">
-        <label class="field__label" for="cb-message">How can we help? <span class="field__optional">(optional)</span></label>
-        <textarea class="field__input" id="cb-message" name="message" rows="1" placeholder="A quick note about your IT…" aria-describedby="cb-message-error"></textarea>
-        <p class="field__error" id="cb-message-error"></p>
-      </div>
-      <button class="btn btn--primary callback__submit" type="submit" data-track="page-hero-submit"><span>Request a callback</span></button>
+<section class="hero hero--sky lib-hero" aria-labelledby="page-hero-title">
+  <div class="lib-hero__titles" aria-hidden="true" data-lib-titles></div>
+  <div class="container lib-hero__grid">
+    <div class="lib-hero__copy">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><span aria-current="page">Blog</span></li></ol></nav>
+      <p class="eyebrow">Insights</p>
+      <h1 class="hero-sky__title lib-hero__title" id="page-hero-title">IT advice for the people who run the business</h1>
+      <p class="hero-sky__lead">Practical, jargon-free guidance from our engineers on IT support, cyber security, cloud and getting more from the technology you already pay for.</p>
+      <p class="lib-hero__byline">Written by Billy Carey and the WhizzIT engineering team.</p>
     </div>
-    
-  </form>
-  <div class="callback__success" id="callback-success" tabindex="-1" hidden>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
-    <p><strong>Got it, thank you.</strong> Your callback request is with the team. We’ll respond the same working day. Need it sorted sooner? <a href="tel:02046342518" data-track="page-hero-success-phone">Call 020 4634 2518</a></p>
-  </div>
-</div>
-    <p class="hero-sky__note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Prefer to talk? <a href="tel:02046342518" data-track="page-hero-phone">Call 020 4634 2518</a> · <a href="https://www.google.com/maps?cid=17055157413191665489" target="_blank" rel="noopener" data-track="page-hero-google">Rated 5.0 on Google</a> · UK-wide coverage</span></p>
-    <div class="hero-stack__aside">
-    <article class="featured-post">
-      <p class="featured-post__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></svg>Latest article</p>
-      <p class="post-card__meta"><span class="tag tag--blue">Cyber Security</span><time datetime="2026-07-27">27 July 2026</time><span>9 min read</span></p>
-      <h2 class="featured-post__title"><a class="card-link" href="blog/cyber-security-and-resilience-bill.html">The Cyber Security And Resilience Bill: What It Means For Your Business</a></h2>
-      <p>The biggest shake-up of UK cyber regulation since 2018 now reaches managed IT providers and data centres. What changes, and how to prepare.</p>
-      <span class="read-more" aria-hidden="true">Read the article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
-    </article></div>
+    <aside class="lib-path" aria-labelledby="path-title">
+      <p class="lib-path__kicker">Start here</p>
+      <h2 class="lib-path__title" id="path-title">The guides people read first</h2>
+      <ol class="topic-links lib-path__list" role="list">
+        
+        <li>
+          <a href="blog/cyber-security-and-resilience-bill.html">
+            <span class="topic-links__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <span>
+              <strong>The Cyber Security And Resilience Bill: What It Means For Your Business</strong>
+              <span>Cyber Security · 9 min read</span>
+            </span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a>
+        </li>
+        <li>
+          <a href="blog/cyber-resiliency-strategy-enterprise-risk-management.html">
+            <span class="topic-links__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <span>
+              <strong>Cyber Resiliency Strategy As Part Of Enterprise Risk Management</strong>
+              <span>Cyber Security · 7 min read</span>
+            </span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a>
+        </li>
+        <li>
+          <a href="blog/reactive-to-proactive-managed-it.html">
+            <span class="topic-links__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+            <span>
+              <strong>From Reactive To Proactive: The Power Of Managed IT For Established SMEs</strong>
+              <span>Managed IT · 9 min read</span>
+            </span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a>
+        </li>
+        <li>
+          <a href="blog/google-workspace-backup-uk-smes.html">
+            <span class="topic-links__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17.5 19H8a6 6 0 1 1 5.7-7.9A4.5 4.5 0 1 1 17.5 19Z"/></svg></span>
+            <span>
+              <strong>Google Workspace Backup: Do UK SMEs Really Need One?</strong>
+              <span>Cloud · 5 min read</span>
+            </span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a>
+        </li>
+        <li>
+          <a href="blog/what-is-lateral-movement-in-cybersecurity.html">
+            <span class="topic-links__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <span>
+              <strong>What Is Lateral Movement In Cybersecurity?</strong>
+              <span>Cyber Security · 6 min read</span>
+            </span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a>
+        </li>
+        <li>
+          <a href="blog/cloud-computing-careers-in-the-uk.html">
+            <span class="topic-links__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17.5 19H8a6 6 0 1 1 5.7-7.9A4.5 4.5 0 1 1 17.5 19Z"/></svg></span>
+            <span>
+              <strong>Cloud Computing Careers in the UK: Skills and Opportunities</strong>
+              <span>Cloud · 6 min read</span>
+            </span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a>
+        </li>
+      </ol>
+    </aside>
   </div>
 </section>
 
-<section class="section" aria-labelledby="articles-title">
+<section class="lib" id="library" aria-labelledby="library-title" data-library>
   <div class="container">
-    <div class="bar-head">
-      <div>
-        <p class="eyebrow">27 articles</p>
-        <h2 class="grad-head" id="articles-title">Browse by topic</h2>
+    <h2 class="visually-hidden" id="library-title">All articles</h2>
+    <div class="lib-bar" data-lib-bar>
+      <div class="lib-bar__row">
+        <div class="lib-search" data-lib-searchbox>
+          <label class="visually-hidden" for="lib-q">Search articles</label>
+          <span class="lib-search__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+          <input class="lib-search__input" id="lib-q" type="search" placeholder="Search articles" autocomplete="off" spellcheck="false" enterkeyhint="search" data-lib-search>
+          <kbd class="lib-search__key" aria-hidden="true">/</kbd>
+          <button class="lib-search__clear" type="button" aria-label="Clear search" data-lib-clear><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        </div>
+        <div class="lib-topics" role="group" aria-label="Filter articles by topic" data-lib-topics>
+          <button class="filter-chip" type="button" data-filter="all" aria-pressed="true">All</button><button class="filter-chip" type="button" data-filter="managed-it" aria-pressed="false">Managed IT</button><button class="filter-chip" type="button" data-filter="security" aria-pressed="false">Cyber Security</button><button class="filter-chip" type="button" data-filter="cloud" aria-pressed="false">Cloud</button><button class="filter-chip" type="button" data-filter="network" aria-pressed="false">Networks</button>
+        </div>
+        <div class="lib-sort" role="group" aria-label="Sort articles">
+          <button class="lib-sort__btn" type="button" data-sort="new" aria-pressed="true">Newest</button>
+          <button class="lib-sort__btn" type="button" data-sort="quick" aria-pressed="false">Quick reads</button>
+        </div>
       </div>
-      <p class="bar-head__aside">Written by Billy Carey and the WhizzIT engineering team.</p>
+      <p class="lib-bar__status" role="status" aria-live="polite" data-lib-status>Showing all 28 articles</p>
     </div>
 
-    <div class="filter-bar" role="group" aria-label="Filter articles by topic" data-filter-group data-filter-target="#article-grid .post-card" data-filter-status="#filter-status">
-      <button class="filter-chip" type="button" data-filter="all" aria-pressed="true">All</button><button class="filter-chip" type="button" data-filter="managed-it" aria-pressed="false">Managed IT</button><button class="filter-chip" type="button" data-filter="security" aria-pressed="false">Cyber Security</button><button class="filter-chip" type="button" data-filter="cloud" aria-pressed="false">Cloud</button><button class="filter-chip" type="button" data-filter="network" aria-pressed="false">Networks</button>
+    <div class="lib-grid is-default" id="article-grid" data-lib-grid>
+  <article class="post-card" data-category="security">
+    <div class="blog-card__art post-cover tone-cyber post-card__art" aria-hidden="true"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="currentColor" stroke-width="1" opacity=".35"><circle cx="160" cy="100" r="40"/><circle cx="160" cy="100" r="70"/><circle cx="160" cy="100" r="100"/></g><path d="M0 150 C80 150 100 100 160 100 S260 40 320 40" stroke="currentColor" stroke-width="1.2" fill="none" stroke-dasharray="4 5" opacity=".6"/><rect x="132" y="72" width="56" height="56" rx="16" fill="#fff"/><svg x="146" y="86" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></svg></div>
+    <div class="post-card__body">
+      <p class="post-card__meta">
+        <span class="tag tag--blue">Cyber Security</span>
+        <time datetime="2026-07-27">27 July 2026</time>
+        <span>9 min read</span>
+      </p>
+      <h3 class="post-card__title"><a class="card-link" href="blog/cyber-security-and-resilience-bill.html">The Cyber Security And Resilience Bill: What It Means For Your Business</a></h3>
+      <p>The biggest shake-up of UK cyber regulation since 2018 now reaches managed IT providers and data centres. What changes, and how to prepare.</p>
     </div>
-
-    <div class="post-grid" id="article-grid">
+  </article>
   <article class="post-card" data-category="security">
     <div class="blog-card__art post-cover tone-cyber post-card__art" aria-hidden="true"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="currentColor" stroke-width="1" opacity=".35"><circle cx="160" cy="100" r="40"/><circle cx="160" cy="100" r="70"/><circle cx="160" cy="100" r="100"/></g><path d="M0 150 C80 150 100 100 160 100 S260 40 320 40" stroke="currentColor" stroke-width="1.2" fill="none" stroke-dasharray="4 5" opacity=".6"/><rect x="132" y="72" width="56" height="56" rx="16" fill="#fff"/><svg x="146" y="86" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></svg></div>
     <div class="post-card__body">
@@ -485,103 +531,90 @@
       <p>Outdated tech, neglected backups and underinvestment in cybersecurity, and how to avoid them.</p>
     </div>
   </article></div>
-    <p class="filter-status" id="filter-status" role="status" aria-live="polite"></p>
-  </div>
-</section>
 
-<section class="section section--mist" aria-labelledby="topics-title">
-  <div class="container">
-    <div class="bar-head">
-      <div>
-        <p class="eyebrow">Start here</p>
-        <h2 class="grad-head" id="topics-title">The guides people read first</h2>
+    <div class="lib-empty" data-lib-empty hidden>
+      <span class="lib-empty__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+      <p class="lib-empty__title">No articles match <span data-lib-empty-q></span></p>
+      <div class="lib-empty__actions">
+        <button class="btn btn--primary" type="button" data-lib-reset><span>Clear search</span></button>
+        <a class="btn btn--secondary" href="#ask"><span>Rather ask us directly?</span></a>
       </div>
-      <a class="btn btn--secondary" href="it-services.html" data-track="blog-services"><span>All IT services</span></a>
     </div>
-    <ul class="topic-links" role="list">
-      
-      <li>
-        <a href="blog/cyber-security-and-resilience-bill.html">
-          <span class="topic-links__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></span>
-          <span>
-            <strong>The Cyber Security And Resilience Bill: What It Means For Your Business</strong>
-            <span>Cyber Security · 9 min read</span>
-          </span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="blog/cyber-resiliency-strategy-enterprise-risk-management.html">
-          <span class="topic-links__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></span>
-          <span>
-            <strong>Cyber Resiliency Strategy As Part Of Enterprise Risk Management</strong>
-            <span>Cyber Security · 7 min read</span>
-          </span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="blog/reactive-to-proactive-managed-it.html">
-          <span class="topic-links__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
-          <span>
-            <strong>From Reactive To Proactive: The Power Of Managed IT For Established SMEs</strong>
-            <span>Managed IT · 9 min read</span>
-          </span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="blog/google-workspace-backup-uk-smes.html">
-          <span class="topic-links__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17.5 19H8a6 6 0 1 1 5.7-7.9A4.5 4.5 0 1 1 17.5 19Z"/></svg></span>
-          <span>
-            <strong>Google Workspace Backup: Do UK SMEs Really Need One?</strong>
-            <span>Cloud · 5 min read</span>
-          </span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="blog/what-is-lateral-movement-in-cybersecurity.html">
-          <span class="topic-links__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></span>
-          <span>
-            <strong>What Is Lateral Movement In Cybersecurity?</strong>
-            <span>Cyber Security · 6 min read</span>
-          </span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="blog/cloud-computing-careers-in-the-uk.html">
-          <span class="topic-links__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17.5 19H8a6 6 0 1 1 5.7-7.9A4.5 4.5 0 1 1 17.5 19Z"/></svg></span>
-          <span>
-            <strong>Cloud Computing Careers in the UK: Skills and Opportunities</strong>
-            <span>Cloud · 6 min read</span>
-          </span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
-        </a>
-      </li>
-    </ul>
   </div>
 </section>
 
+<section class="section lib-ask" id="ask" aria-labelledby="ask-title">
+  <div class="container">
+    <div class="lib-ask__box section--ink">
+      <div class="lib-ask__copy">
+        <p class="eyebrow">Insights</p>
+        <h2 class="lib-ask__title" id="ask-title">Rather ask us directly?</h2>
+        <p>Send the question over and an engineer will answer it. Same working day response, no sales pitch.</p>
+        <p class="hero-sky__note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Prefer to talk? <a href="tel:02046342518" data-track="blog-ask-phone">Call 020 4634 2518</a> · <a href="https://www.google.com/maps?cid=17055157413191665489" target="_blank" rel="noopener" data-track="blog-ask-google">Rated 5.0 on Google</a> · UK-wide coverage</span></p>
+      </div>
+      <div class="lib-ask__form">
+<div class="callback">
+  <form class="callback__form" action="/api/submit.php" method="post" data-validate data-demo data-success="callback-success" aria-labelledby="callback-title">
+    <input type="hidden" name="form_name" value="callback">
+    <input class="visually-hidden" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p class="callback__head"><strong id="callback-title">Request a callback</strong><span>We respond the same working day.</span></p>
+    <div class="callback__row">
+      
+  <div class="field">
+    <label class="field__label" for="cb-name">Name</label>
+    
+    <input class="field__input" id="cb-name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" required aria-describedby="cb-name-error">
+    <p class="field__error" id="cb-name-error"></p>
+  </div>
+      
+  <div class="field">
+    <label class="field__label" for="cb-email">Email</label>
+    
+    <input class="field__input" id="cb-email" name="email" type="email" autocomplete="email" placeholder="jane@company.co.uk" required aria-describedby="cb-email-error">
+    <p class="field__error" id="cb-email-error"></p>
+  </div>
+      
+      <div class="field callback__message">
+        <label class="field__label" for="cb-message">How can we help? <span class="field__optional">(optional)</span></label>
+        <textarea class="field__input" id="cb-message" name="message" rows="1" placeholder="A quick note about your IT…" aria-describedby="cb-message-error"></textarea>
+        <p class="field__error" id="cb-message-error"></p>
+      </div>
+      <button class="btn btn--primary callback__submit" type="submit" data-track="blog-ask-submit"><span>Request a callback</span></button>
+    </div>
+    
+  </form>
+  <div class="callback__success" id="callback-success" tabindex="-1" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+    <p><strong>Got it, thank you.</strong> Your callback request is with the team. We’ll respond the same working day. Need it sorted sooner? <a href="tel:02046342518" data-track="blog-ask-success-phone">Call 020 4634 2518</a></p>
+  </div>
+</div></div>
+    </div>
+  </div>
+</section>
 
 </main>
 <footer class="site-footer" id="footer-nav">
   <div class="container">
-    <div class="site-footer__cta"><div class="cta-band">
-        <figure class="media ratio-4-3 cta-band__photo">
+    <div class="site-footer__cta"><div class="cta-box">
+        <div class="cta-box__ask">
+          <h2>Ready to take IT off your plate?</h2>
+          <p>Book a free consultation and see what five-star, jargon-free IT support feels like.</p>
+          <div class="cta-box__actions">
+            <a class="btn btn--light btn--lg" href="contact.html" data-track="blog-final-cta"><span>Book a consultation</span><svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+          </div>
+        </div>
+        <div class="cta-box__call">
+          <figure class="media ratio-4-3 cta-box__photo">
     <picture>
-      <source type="image/avif" srcset="assets/images/photos/it-support-engineer-headset-480.avif 480w, assets/images/photos/it-support-engineer-headset-768.avif 768w, assets/images/photos/it-support-engineer-headset-1024.avif 1024w, assets/images/photos/it-support-engineer-headset-1280.avif 1280w" sizes="(min-width: 1024px) 34vw, 100vw">
-      <source type="image/webp" srcset="assets/images/photos/it-support-engineer-headset-480.webp 480w, assets/images/photos/it-support-engineer-headset-768.webp 768w, assets/images/photos/it-support-engineer-headset-1024.webp 1024w, assets/images/photos/it-support-engineer-headset-1280.webp 1280w" sizes="(min-width: 1024px) 34vw, 100vw">
+      <source type="image/avif" srcset="assets/images/photos/it-support-engineer-headset-480.avif 480w, assets/images/photos/it-support-engineer-headset-768.avif 768w, assets/images/photos/it-support-engineer-headset-1024.avif 1024w, assets/images/photos/it-support-engineer-headset-1280.avif 1280w" sizes="(min-width: 1024px) 460px, 100vw">
+      <source type="image/webp" srcset="assets/images/photos/it-support-engineer-headset-480.webp 480w, assets/images/photos/it-support-engineer-headset-768.webp 768w, assets/images/photos/it-support-engineer-headset-1024.webp 1024w, assets/images/photos/it-support-engineer-headset-1280.webp 1280w" sizes="(min-width: 1024px) 460px, 100vw">
       <img src="assets/images/photos/it-support-engineer-headset-1280.webp" alt="IT support engineer wearing a headset taking a customer call" width="1280" height="720" loading="lazy" decoding="async">
     </picture>
   </figure>
-        <div class="cta-band__body">
-          <h2>Rather ask us directly?</h2>
-          <p>Send the question over and an engineer will answer it. Same working day response, no sales pitch.</p>
-          <div class="cta-band__actions">
-            <a class="btn btn--light btn--lg" href="contact.html" data-track="blog-final-cta"><span>Book a consultation</span><svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
-            <a class="btn btn--outline-light btn--lg" href="tel:02046342518" data-track="blog-final-cta-phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Call 020 4634 2518</span></a>
+          <div class="cta-box__line">
+            <p class="cta-box__label">Prefer to talk?</p>
+            <a class="cta-box__phone" href="tel:02046342518" data-track="blog-final-cta-phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>020 4634 2518</span></a>
+            <p class="cta-box__note">We answer the phone, no call queues.</p>
           </div>
         </div>
       </div></div>
@@ -601,6 +634,10 @@
           <li><a href="mailto:info@whizzit.co.uk" data-track="footer-email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 7 9 6 9-6"/></svg>info@whizzit.co.uk</a></li>
           <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>124 City Rd, London, EC1V 2NX</span></li><li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Caxton Point Business Centre, Caxton Way, Stevenage SG1 2XT</span></li>
         </ul>
+        <div class="footer-help">
+          <p><strong>Existing customer?</strong>Need help right now? We answer the phone, no call queues.</p>
+          <a class="btn btn--outline-light btn--sm" href="tel:02046342518" data-track="footer-phone-support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Call 020 4634 2518</span></a>
+        </div>
       </div>
       <nav class="site-footer__nav" aria-label="Footer">
         <div class="footer-col"><h2>IT services</h2><ul><li><a href="it-services.html">All IT services</a></li><li><a href="it-support.html">IT Support</a></li><li><a href="managed-cloud-services.html">Managed Cloud Services</a></li><li><a href="cyber-security.html">Cyber Security</a></li><li><a href="network-management.html">Network Management</a></li><li><a href="it-project-management.html">IT Project Management</a></li></ul></div>
@@ -609,16 +646,11 @@
         <div class="footer-col"><h2>Areas we cover</h2><ul><li><a href="locations/it-support-london.html">London</a></li><li><a href="locations/it-support-hertfordshire.html">Hertfordshire</a></li><li><a href="locations/it-support-stevenage.html">Stevenage</a></li><li><a href="locations/it-support-birmingham.html">Birmingham</a></li><li><a href="locations/it-support-bradford.html">Bradford</a></li><li><a href="locations/it-support-cardiff.html">Cardiff</a></li><li><a href="locations/it-support-coventry.html">Coventry</a></li></ul></div>
       </nav>
     </div>
-    <div class="site-footer__support">
-      <p>Existing customer and need help right now? We answer the phone, no call queues.</p>
-      <a class="btn btn--outline-light btn--sm" href="tel:02046342518" data-track="footer-phone-support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Call 020 4634 2518</span></a>
-    </div>
     <div class="site-footer__bottom">
       <p>© 2026 Whizz Solutions Ltd. All rights reserved.</p>
       <ul class="legal-links" role="list">
         <li><a href="privacy-policy.html">Privacy policy</a></li>
         <li><a href="cookie-policy.html">Cookie policy</a></li>
-        <li><a href="https://digitalheroesco.com/" target="_blank" rel="noopener" data-track="footer-credit">Created with love by Digital Heroes</a></li>
       </ul>
     </div>
   </div>
@@ -637,19 +669,19 @@
     </div>
     <div class="mobile-nav__body">
       <a class="mobile-nav__support" href="tel:02046342518" data-track="mobile-phone-support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span><strong>Need help now?</strong>Call 020 4634 2518 — we answer the phone</span></a>
-      <ul class="mobile-nav__list"><li>
+      <ul class="mobile-nav__list"><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="false" aria-controls="mnav-services" data-accordion-trigger>IT Services<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-services" hidden><p class="mobile-nav__group-title">Core services</p><ul><li><a href="it-services.html">All IT services</a></li><li><a href="it-support.html">IT Support</a></li><li><a href="managed-cloud-services.html">Managed Cloud Services</a></li><li><a href="cyber-security.html">Cyber Security</a></li><li><a href="network-management.html">Network Management</a></li><li><a href="it-project-management.html">IT Project Management</a></li></ul><p class="mobile-nav__group-title">Specialist services</p><ul><li><a href="it-support/managed-it-support-services.html">Managed IT Support</a></li><li><a href="cyber-security/cyber-essentials-services.html">Cyber Essentials</a></li><li><a href="managed-cloud-services/cloud-migration-services.html">Cloud Migration</a></li><li><a href="managed-cloud-services/microsoft-365-backup-services.html">Microsoft 365 Backup</a></li><li><a href="network-management/managed-firewall-services.html">Managed Firewall</a></li><li><a href="it-project-management/it-strategy-services.html">IT Strategy</a></li></ul></div>
-    </li><li>
+    </li><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="false" aria-controls="mnav-industries" data-accordion-trigger>Industries<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-industries" hidden><p class="mobile-nav__group-title">Sectors</p><ul><li><a href="industries.html">All industries</a></li><li><a href="managed-it-services-for-business-services-organisations.html">Business Services</a></li><li><a href="it-support-construction.html">Construction</a></li><li><a href="it-support-healthcare.html">Healthcare</a></li><li><a href="managed-it-services-for-financial-services-business.html">Financial Services</a></li><li><a href="managed-it-services-for-legal-firms.html">Legal</a></li><li><a href="managed-it-services-for-education-organisations.html">Education</a></li><li><a href="managed-it-services-for-manufacturing-businesses.html">Manufacturing</a></li><li><a href="managed-it-services-for-insurance-services-businesses.html">Insurance</a></li></ul></div>
-    </li><li>
+    </li><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="false" aria-controls="mnav-customers" data-accordion-trigger>Customers<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-customers" hidden><p class="mobile-nav__group-title">Proof</p><ul><li><a href="our-customers.html">Our customers</a></li><li><a href="our-customers.html#stories">Success stories</a></li><li><a href="our-customers.html#reviews">Google reviews</a></li></ul></div>
-    </li><li>
+    </li><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="true" aria-controls="mnav-resources" data-accordion-trigger>Resources<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-resources"><p class="mobile-nav__group-title">Insights</p><ul><li><a href="blog.html" aria-current="page">Blog</a></li><li><a href="blog.html?category=security">Cyber security articles</a></li><li><a href="blog.html?category=cloud">Cloud & Microsoft 365</a></li></ul><p class="mobile-nav__group-title">Support</p><ul><li><a href="contact.html">Book a consultation</a></li><li><a href="tel:02046342518">Call 020 4634 2518</a></li></ul></div>
-    </li><li>
+    </li><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="false" aria-controls="mnav-company" data-accordion-trigger>About<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-company" hidden><p class="mobile-nav__group-title">WhizzIT</p><ul><li><a href="about.html">About us</a></li><li><a href="about.html#team">Meet the team</a></li></ul><p class="mobile-nav__group-title">Locations</p><ul><li><a href="locations.html">All locations</a></li><li><a href="locations/it-support-london.html">IT support in London</a></li><li><a href="locations/it-support-hertfordshire.html">IT support in Hertfordshire</a></li></ul></div>
     </li><li><a class="mobile-nav__direct" href="contact.html">Contact</a></li></ul>

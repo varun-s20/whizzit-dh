@@ -91,127 +91,329 @@
 </header>
 <main id="main" tabindex="-1">
 
+<section class="hero hero--sky cov-hero" aria-labelledby="page-hero-title">
+  <div class="container cov-hero__grid">
+    <div class="cov-hero__copy">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><span aria-current="page">Locations</span></li></ol></nav>
+      <p class="eyebrow">Locations</p>
+      <h1 class="hero-sky__title cov-hero__title" id="page-hero-title">IT support wherever your business is based</h1>
+      <p class="hero-sky__lead">WhizzIT provides IT support and managed services nationwide from our bases in London and Stevenage, offering both remote and onsite assistance. Find your area below.</p>
+      <dl class="cov-facts">
+        <div><dt>Areas covered</dt><dd>14</dd></div>
+        <div><dt>Offices: London &amp; Stevenage</dt><dd>2</dd></div>
+        <div><dt>Average first response</dt><dd>9 min</dd></div>
+      </dl>
 
-<section class="hero hero--sky hero--page hero-stack has-feature " aria-labelledby="page-hero-title">
-  <div class="container">
-    <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><span aria-current="page">Locations</span></li></ol></nav>
-    <p class="eyebrow">Locations</p>
-    <h1 class="hero-sky__title hero-stack__title" id="page-hero-title">IT support wherever your business is based</h1>
-    <p class="hero-sky__lead">WhizzIT provides IT support and managed services nationwide from our bases in London and Stevenage, offering both remote and onsite assistance. Find your area below.</p>
-    
-<div class="callback">
-  <form class="callback__form" action="/api/submit.php" method="post" data-validate data-demo data-success="callback-success" aria-labelledby="callback-title">
-    <input type="hidden" name="form_name" value="callback">
-    <input class="visually-hidden" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <p class="callback__head"><strong id="callback-title">Request a callback</strong><span>We respond the same working day.</span></p>
-    <div class="callback__row">
-      
-  <div class="field">
-    <label class="field__label" for="cb-name">Name</label>
-    
-    <input class="field__input" id="cb-name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" required aria-describedby="cb-name-error">
-    <p class="field__error" id="cb-name-error"></p>
-  </div>
-      
-  <div class="field">
-    <label class="field__label" for="cb-email">Email</label>
-    
-    <input class="field__input" id="cb-email" name="email" type="email" autocomplete="email" placeholder="jane@company.co.uk" required aria-describedby="cb-email-error">
-    <p class="field__error" id="cb-email-error"></p>
-  </div>
-      
-      <div class="field callback__message">
-        <label class="field__label" for="cb-message">How can we help? <span class="field__optional">(optional)</span></label>
-        <textarea class="field__input" id="cb-message" name="message" rows="1" placeholder="A quick note about your IT…" aria-describedby="cb-message-error"></textarea>
-        <p class="field__error" id="cb-message-error"></p>
-      </div>
-      <button class="btn btn--primary callback__submit" type="submit" data-track="page-hero-submit"><span>Request a callback</span></button>
+      <nav class="cov-list" aria-labelledby="areas-title" data-cov-list>
+        <p class="cov-list__eyebrow">Areas we cover</p>
+        <h2 class="cov-list__title" id="areas-title">Local IT support, wherever you are</h2>
+        <ul role="list">
+          
+          <li><a href="locations/it-support-london.html" data-loc="london">
+            <span class="cov-list__dot cov-list__dot--office" aria-hidden="true"></span>
+            <span class="cov-list__name">London</span>
+            <span class="cov-list__tag">Head office</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a></li>
+          <li><a href="locations/it-support-hertfordshire.html" data-loc="hertfordshire">
+            <span class="cov-list__dot" aria-hidden="true"></span>
+            <span class="cov-list__name">Hertfordshire</span>
+            
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a></li>
+          <li><a href="locations/it-support-stevenage.html" data-loc="stevenage">
+            <span class="cov-list__dot cov-list__dot--office" aria-hidden="true"></span>
+            <span class="cov-list__name">Stevenage</span>
+            <span class="cov-list__tag">Office</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a></li>
+          <li><a href="locations/it-support-birmingham.html" data-loc="birmingham">
+            <span class="cov-list__dot" aria-hidden="true"></span>
+            <span class="cov-list__name">Birmingham</span>
+            
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a></li>
+          <li><a href="locations/it-support-bradford.html" data-loc="bradford">
+            <span class="cov-list__dot" aria-hidden="true"></span>
+            <span class="cov-list__name">Bradford</span>
+            
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a></li>
+          <li><a href="locations/it-support-cardiff.html" data-loc="cardiff">
+            <span class="cov-list__dot" aria-hidden="true"></span>
+            <span class="cov-list__name">Cardiff</span>
+            
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a></li>
+          <li><a href="locations/it-support-coventry.html" data-loc="coventry">
+            <span class="cov-list__dot" aria-hidden="true"></span>
+            <span class="cov-list__name">Coventry</span>
+            
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a></li>
+          <li><a href="locations/it-support-edinburgh.html" data-loc="edinburgh">
+            <span class="cov-list__dot" aria-hidden="true"></span>
+            <span class="cov-list__name">Edinburgh</span>
+            
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a></li>
+          <li><a href="locations/it-support-leeds.html" data-loc="leeds">
+            <span class="cov-list__dot" aria-hidden="true"></span>
+            <span class="cov-list__name">Leeds</span>
+            
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a></li>
+          <li><a href="locations/it-support-leicester.html" data-loc="leicester">
+            <span class="cov-list__dot" aria-hidden="true"></span>
+            <span class="cov-list__name">Leicester</span>
+            
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a></li>
+          <li><a href="locations/it-support-manchester.html" data-loc="manchester">
+            <span class="cov-list__dot" aria-hidden="true"></span>
+            <span class="cov-list__name">Manchester</span>
+            
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a></li>
+          <li><a href="locations/it-support-newcastle.html" data-loc="newcastle">
+            <span class="cov-list__dot" aria-hidden="true"></span>
+            <span class="cov-list__name">Newcastle</span>
+            
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a></li>
+          <li><a href="locations/it-support-south-wales.html" data-loc="south-wales">
+            <span class="cov-list__dot" aria-hidden="true"></span>
+            <span class="cov-list__name">South Wales</span>
+            
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a></li>
+          <li><a href="locations/it-support-wales.html" data-loc="wales">
+            <span class="cov-list__dot" aria-hidden="true"></span>
+            <span class="cov-list__name">Wales</span>
+            
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a></li>
+        </ul>
+      </nav>
     </div>
-    
-  </form>
-  <div class="callback__success" id="callback-success" tabindex="-1" hidden>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
-    <p><strong>Got it, thank you.</strong> Your callback request is with the team. We’ll respond the same working day. Need it sorted sooner? <a href="tel:02046342518" data-track="page-hero-success-phone">Call 020 4634 2518</a></p>
-  </div>
-</div>
-    <p class="hero-sky__note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Prefer to talk? <a href="tel:02046342518" data-track="page-hero-phone">Call 020 4634 2518</a> · <a href="https://www.google.com/maps?cid=17055157413191665489" target="_blank" rel="noopener" data-track="page-hero-google">Rated 5.0 on Google</a> · UK-wide coverage</span></p>
-    <div class="hero-stack__aside">
-<ul class="faceplate" role="list">
-  <li class="faceplate__unit" style="--i:0"><span class="faceplate__led" aria-hidden="true"></span><span class="faceplate__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>14</strong><span>Areas covered</span></li><li class="faceplate__unit" style="--i:1"><span class="faceplate__led" aria-hidden="true"></span><span class="faceplate__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></svg></span><strong>2</strong><span>Offices: London & Stevenage</span></li><li class="faceplate__unit" style="--i:2"><span class="faceplate__led" aria-hidden="true"></span><span class="faceplate__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><strong>9 min</strong><span>Average first response</span></li>
-</ul></div>
-  </div>
-</section>
-<div class="hero-feature"><div class="container"><div class="photo-trio"><figure class="media ratio-16-9 ">
-    <picture>
-      <source type="image/avif" srcset="assets/images/photos/whizzit-team-collaborating-480.avif 480w, assets/images/photos/whizzit-team-collaborating-768.avif 768w, assets/images/photos/whizzit-team-collaborating-1024.avif 1024w, assets/images/photos/whizzit-team-collaborating-1280.avif 1280w" sizes="(min-width: 1280px) 400px, (min-width: 640px) 32vw, 100vw">
-      <source type="image/webp" srcset="assets/images/photos/whizzit-team-collaborating-480.webp 480w, assets/images/photos/whizzit-team-collaborating-768.webp 768w, assets/images/photos/whizzit-team-collaborating-1024.webp 1024w, assets/images/photos/whizzit-team-collaborating-1280.webp 1280w" sizes="(min-width: 1280px) 400px, (min-width: 640px) 32vw, 100vw">
-      <img src="assets/images/photos/whizzit-team-collaborating-1280.webp" alt="WhizzIT team members in branded tops reviewing IT support work together at a desk" width="1280" height="720" loading="eager" decoding="async">
-    </picture>
-  </figure><figure class="media ratio-16-9 ">
-    <picture>
-      <source type="image/avif" srcset="assets/images/photos/service-desk-engineer-480.avif 480w, assets/images/photos/service-desk-engineer-768.avif 768w, assets/images/photos/service-desk-engineer-1024.avif 1024w" sizes="(min-width: 1280px) 400px, (min-width: 640px) 32vw, 100vw">
-      <source type="image/webp" srcset="assets/images/photos/service-desk-engineer-480.webp 480w, assets/images/photos/service-desk-engineer-768.webp 768w, assets/images/photos/service-desk-engineer-1024.webp 1024w" sizes="(min-width: 1280px) 400px, (min-width: 640px) 32vw, 100vw">
-      <img src="assets/images/photos/service-desk-engineer-1024.webp" alt="WhizzIT service desk engineer helping a client from the office" width="1024" height="576" loading="lazy" decoding="async">
-    </picture>
-  </figure><figure class="media ratio-16-9 ">
-    <picture>
-      <source type="image/avif" srcset="assets/images/photos/network-engineer-patching-rack-480.avif 480w, assets/images/photos/network-engineer-patching-rack-768.avif 768w, assets/images/photos/network-engineer-patching-rack-1024.avif 1024w, assets/images/photos/network-engineer-patching-rack-1280.avif 1280w" sizes="(min-width: 1280px) 400px, (min-width: 640px) 32vw, 100vw">
-      <source type="image/webp" srcset="assets/images/photos/network-engineer-patching-rack-480.webp 480w, assets/images/photos/network-engineer-patching-rack-768.webp 768w, assets/images/photos/network-engineer-patching-rack-1024.webp 1024w, assets/images/photos/network-engineer-patching-rack-1280.webp 1280w" sizes="(min-width: 1280px) 400px, (min-width: 640px) 32vw, 100vw">
-      <img src="assets/images/photos/network-engineer-patching-rack-1280.webp" alt="Network engineer patching a cabinet in a server rack" width="1280" height="720" loading="lazy" decoding="async">
-    </picture>
-  </figure></div></div></div>
 
-  <section class="section block block--statement" aria-labelledby="locations-block-0">
-    <div class="container statement-wide">
+    <figure class="cov-map" data-cov-map>
       
-  <div class="center-head">
-    <p class="eyebrow">Areas we cover</p>
-    <h2 class="grad-head" id="locations-block-0">Local IT support, wherever you are</h2>
-    
-  </div>
-      <div class="prose-cols"><p>Most issues are resolved remotely and fast, and where you need an engineer in the room, our teams in London and Stevenage travel to you.</p></div>
-    </div>
-  </section>
-
-  <section class="section block" aria-labelledby="locations-block-1">
-    <div class="container block-split">
-      <div>
+  <svg class="cov-map__svg" viewBox="0 0 520 851" role="img" aria-labelledby="cov-title">
+    <title id="cov-title">Map of the UK showing WhizzIT's offices in London and Stevenage and the areas they cover</title>
+    <defs>
+      <pattern id="cov-dots" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="0.85"></circle></pattern>
+    </defs>
+    <g class="cov-map__land">
+      <path class="cov-map__fill" d="M287.4,693.9L283.6,697.7L271.4,701.4L266.2,705.2L257.0,713.8L255.2,714.6L241.3,712.5L231.0,701.3L224.4,696.7L221.7,696.2L218.9,697.6L212.9,699.0L206.7,698.7L209.9,693.6L214.1,690.7L204.6,688.7L201.9,687.1L198.9,683.5L191.4,682.9L187.9,683.8L181.9,688.6L172.4,693.7L160.9,686.6L158.7,683.5L158.7,677.5L157.0,672.8L153.8,671.1L157.9,665.0L162.8,660.9L173.6,656.8L189.9,647.1L199.1,643.0L207.6,635.9L211.1,631.6L216.2,618.4L219.8,612.5L216.3,611.1L214.7,606.6L215.2,602.1L216.8,598.1L215.3,593.1L212.8,587.8L213.6,579.4L207.0,579.6L200.5,581.0L194.5,584.1L188.8,588.3L183.6,589.0L183.7,585.7L185.9,581.5L191.7,575.6L198.0,570.6L201.9,562.5L205.0,559.0L213.1,552.4L228.6,545.0L231.0,544.6L237.0,545.4L243.0,544.3L248.3,541.7L253.5,541.1L265.3,548.8L261.8,536.9L267.0,534.0L274.5,544.8L277.3,545.9L283.2,544.4L280.9,542.5L278.3,542.4L274.8,540.8L271.8,537.3L267.0,526.4L267.2,519.9L274.2,506.9L271.1,505.7L268.7,503.3L268.0,497.0L268.9,491.5L275.5,486.7L277.4,479.3L278.2,471.2L277.1,467.5L270.6,468.1L267.5,469.6L264.7,472.0L261.8,471.9L253.7,462.9L241.0,441.7L239.8,433.2L246.4,414.7L256.5,402.8L268.4,398.7L266.1,397.9L247.9,397.7L242.0,399.2L236.4,404.0L233.3,405.5L230.0,406.1L221.0,414.0L214.9,413.4L212.0,414.1L209.9,412.2L208.1,409.0L205.8,408.1L203.2,409.1L197.7,413.4L192.2,416.0L185.5,413.2L176.7,408.2L175.0,410.0L173.0,414.7L171.9,422.1L165.7,415.7L160.4,407.2L158.6,401.8L158.4,395.8L161.3,393.5L164.5,395.6L169.1,381.3L181.7,357.2L184.0,350.1L183.6,345.4L181.5,341.5L172.9,332.6L173.9,317.1L177.3,311.2L188.7,311.3L184.3,308.8L175.4,301.3L175.5,298.7L177.6,291.8L174.7,295.7L171.1,303.4L168.9,305.2L162.5,307.0L161.4,310.8L160.4,311.8L157.2,312.2L156.3,315.7L155.6,316.0L154.7,312.2L154.6,305.8L155.8,300.0L158.2,295.5L167.5,285.2L163.0,288.4L152.8,297.9L146.2,306.3L145.8,310.1L148.1,321.2L147.5,326.3L138.7,360.0L135.5,365.2L134.0,365.6L129.7,364.9L127.8,362.4L127.8,359.5L132.2,339.2L136.2,330.6L141.4,323.4L141.2,322.9L137.8,324.3L136.3,323.9L135.3,322.4L135.9,301.0L138.7,293.9L139.8,283.6L147.1,260.2L150.4,256.6L151.2,251.0L157.6,238.7L156.1,239.3L138.3,255.7L133.7,258.7L127.5,257.9L122.8,256.1L119.1,252.2L117.4,244.7L112.9,244.5L109.0,243.2L109.0,242.2L114.1,238.1L122.1,236.8L129.7,230.2L123.0,225.8L123.5,224.5L129.4,220.7L136.9,208.1L138.4,196.6L134.8,191.2L133.5,187.6L126.4,183.6L125.2,178.6L126.0,175.7L128.4,173.0L131.9,170.8L137.4,168.7L132.4,166.5L130.5,163.9L129.0,158.0L131.6,148.2L136.0,139.1L149.4,139.4L150.9,137.1L152.4,137.0L159.2,139.1L158.2,136.9L147.1,124.7L146.1,122.4L149.2,115.8L149.0,109.8L149.9,107.4L153.4,106.3L164.2,106.4L166.9,105.3L163.2,98.0L162.7,94.5L163.9,82.4L166.5,78.3L171.2,76.4L177.1,77.8L179.4,79.4L182.0,83.3L183.9,83.0L191.3,78.8L193.5,78.2L196.5,83.1L209.1,79.2L226.0,77.4L236.2,74.8L246.9,73.9L257.0,70.9L267.6,72.3L267.9,74.0L264.7,82.9L265.1,90.1L264.5,92.3L263.3,95.0L259.4,100.1L249.1,107.3L230.4,123.9L219.3,132.2L217.8,136.2L217.0,141.7L223.6,142.8L226.2,144.6L224.6,147.4L214.8,157.2L211.9,166.0L219.4,165.7L225.6,164.0L238.0,158.5L249.6,154.4L255.1,154.3L266.0,157.5L268.4,157.6L273.0,156.1L277.7,155.8L309.2,156.9L318.0,154.9L323.8,157.2L328.6,162.9L333.2,173.4L333.1,175.2L330.3,180.0L325.2,186.0L320.7,194.3L317.2,208.1L308.4,229.3L299.8,241.1L296.0,249.4L291.3,256.1L286.7,260.3L281.9,263.1L267.9,266.0L259.3,271.8L254.3,273.7L260.1,273.4L265.8,271.4L276.2,270.6L288.2,277.7L287.1,283.4L282.3,288.0L271.3,288.7L261.1,298.8L256.5,301.9L251.6,303.4L245.6,303.0L234.5,300.3L229.7,297.4L234.0,302.1L239.0,304.5L267.8,310.1L278.7,303.5L290.9,303.5L314.2,314.5L330.5,335.0L339.5,344.0L341.9,350.4L351.5,392.2L358.2,414.6L361.3,420.8L365.3,425.2L385.7,435.2L390.2,438.5L405.7,458.4L412.8,466.3L420.4,472.7L416.7,476.0L414.2,481.3L416.1,488.4L430.7,517.8L426.6,515.1L421.0,514.8L410.9,506.5L401.0,508.4L390.8,507.7L399.8,510.3L409.6,510.5L431.4,530.3L438.7,542.1L443.1,557.7L440.1,564.7L435.5,569.2L427.1,580.2L439.2,588.8L444.4,587.4L453.5,574.8L461.0,573.9L467.3,574.4L473.6,576.0L479.1,575.5L490.2,578.5L495.9,581.3L510.0,593.7L513.1,600.5L514.5,609.2L514.7,618.9L509.6,635.8L506.7,649.9L505.0,652.8L497.5,661.0L492.5,664.3L490.4,662.9L488.2,663.1L488.0,665.0L490.3,669.2L490.4,674.2L485.9,678.0L481.4,679.5L473.9,677.6L463.5,684.5L471.0,688.1L472.5,691.8L470.6,698.5L465.9,701.5L460.7,702.8L455.3,703.1L450.9,704.8L446.6,707.9L452.0,706.2L455.7,707.7L458.0,713.3L460.1,714.9L470.5,717.3L477.0,717.3L489.5,715.9L495.5,716.0L497.6,717.0L496.7,733.0L495.1,735.4L478.5,745.0L475.1,751.7L474.2,755.7L464.5,755.0L460.0,759.3L452.2,762.2L440.2,769.0L435.3,770.2L414.3,765.6L401.5,766.0L384.3,770.0L379.9,769.3L373.2,765.5L366.4,763.0L358.6,761.8L351.8,758.3L356.0,765.1L346.7,771.6L342.3,772.9L337.9,772.7L328.7,774.4L320.2,773.5L321.5,778.1L323.7,782.2L321.9,783.9L319.9,784.4L303.8,781.3L301.5,781.9L299.5,784.7L293.6,783.2L287.9,778.5L281.8,775.3L275.4,773.8L270.3,774.3L249.5,781.8L245.3,789.3L243.2,799.9L240.2,809.3L235.3,816.6L229.5,817.5L224.0,812.5L213.5,806.9L209.9,803.2L208.8,803.0L207.6,804.3L203.5,806.0L199.3,806.1L192.7,807.6L181.3,812.1L176.7,815.1L166.8,823.6L164.8,825.9L161.2,834.4L155.7,835.9L150.7,830.5L145.0,828.6L138.9,830.4L135.3,833.3L133.6,831.0L133.5,826.1L137.9,820.4L149.7,816.0L160.0,804.7L167.1,793.9L169.6,791.5L172.8,790.5L174.5,786.2L188.8,769.0L190.0,765.1L191.9,751.2L203.5,746.8L209.1,732.5L210.7,731.3L226.9,728.7L239.0,728.9L251.0,731.7L257.1,732.0L263.3,731.0L268.1,727.1L276.4,713.2L291.4,695.2L299.5,683.5L294.0,687.5L287.4,693.9ZM208.7,543.4L210.8,545.0L216.3,544.7L214.5,548.4L199.6,560.0L197.2,556.1L194.5,556.2L190.3,548.8L189.6,537.6L195.0,534.7L202.6,534.9L208.7,543.4ZM293.5,19.4L287.7,19.5L290.7,14.2L294.2,12.9L300.8,13.5L299.7,15.9L293.5,19.4ZM261.8,58.1L258.9,59.3L255.9,59.2L251.4,54.1L249.7,50.4L250.0,47.9L251.9,47.1L256.3,48.3L258.6,52.6L259.4,56.4L262.1,57.5L261.8,58.1ZM273.9,62.8L273.4,63.1L271.6,61.4L268.5,55.6L273.3,54.5L275.6,55.2L273.9,62.8ZM267.3,37.3L266.7,39.5L270.6,39.4L276.2,41.3L279.7,41.5L282.5,43.8L281.0,48.1L279.2,49.4L277.3,49.6L270.6,45.3L261.7,47.1L260.0,46.5L258.3,43.8L258.3,40.8L257.8,39.9L254.6,42.8L253.2,42.4L252.4,41.1L252.4,34.1L254.3,28.3L257.5,27.1L262.2,27.8L267.7,31.1L269.3,33.2L269.3,34.8L267.3,37.3ZM284.2,23.3L279.8,25.5L277.9,23.7L277.4,18.0L269.6,14.1L267.6,11.2L268.1,10.3L271.6,9.1L277.4,14.3L279.8,18.5L284.2,19.8L284.7,20.4L284.2,23.3ZM84.6,254.0L81.6,254.5L81.4,253.2L86.5,247.3L89.8,246.3L90.9,246.8L88.6,250.3L84.6,254.0ZM161.9,354.7L155.4,354.8L153.1,354.0L150.3,351.9L147.1,339.7L148.2,335.4L150.9,331.7L154.4,331.0L157.8,333.3L159.1,335.4L161.9,343.6L162.4,350.7L161.9,354.7ZM127.3,275.3L106.8,280.3L99.7,279.8L99.1,277.4L100.5,275.8L106.3,274.2L108.7,262.4L99.8,256.9L99.4,255.4L100.1,252.8L101.1,251.6L106.5,248.9L108.7,248.3L110.6,248.6L114.3,251.8L118.6,258.5L124.3,259.5L128.2,262.4L127.3,275.3ZM109.2,312.0L112.9,330.5L113.0,332.9L111.3,336.2L102.8,340.7L100.1,340.7L101.9,335.1L100.3,330.0L101.1,326.0L100.3,325.3L98.7,325.9L92.6,332.1L90.5,332.7L92.0,322.9L92.9,320.7L96.5,317.3L98.1,317.1L99.8,318.6L104.7,314.3L109.2,312.0ZM117.4,322.3L116.3,323.3L113.7,323.0L112.2,319.4L112.1,315.4L113.7,312.5L120.4,308.1L117.4,306.6L117.2,305.5L119.0,301.9L126.2,296.2L128.1,295.2L130.0,295.4L126.3,305.4L117.4,322.3ZM105.6,96.3L99.1,111.8L96.5,112.2L94.3,116.1L87.3,120.3L93.4,120.4L95.1,121.8L95.1,124.9L94.0,126.7L86.1,133.8L80.7,136.4L74.8,143.8L71.9,143.9L69.0,148.6L66.6,150.7L65.2,150.7L63.7,149.7L60.1,145.1L66.6,140.5L67.2,138.0L71.7,135.3L71.4,134.5L64.2,130.8L61.4,128.3L61.7,127.0L65.1,124.1L60.4,121.6L59.8,120.1L60.0,112.4L62.0,110.7L62.9,108.8L63.7,108.3L67.0,109.3L70.2,112.4L74.0,111.2L78.4,111.8L75.3,103.4L75.9,101.8L77.6,100.0L87.8,94.6L100.5,85.4L103.6,84.0L105.8,90.0L105.6,96.3ZM101.5,220.3L99.9,221.5L98.0,221.3L96.1,219.8L93.6,215.6L99.2,212.7L101.5,214.4L102.4,216.4L102.4,218.5L101.5,220.3ZM108.4,172.4L107.4,181.0L108.9,189.4L111.0,190.5L112.4,192.1L122.0,193.9L131.0,193.4L132.7,194.8L132.9,197.1L131.5,199.6L126.4,204.2L118.5,213.2L115.1,212.6L114.1,199.4L107.5,201.1L102.1,200.9L99.2,199.3L93.1,188.2L81.1,185.0L77.7,180.6L76.7,178.0L77.1,176.5L79.6,173.3L82.7,174.4L84.6,173.7L85.8,172.3L84.1,167.3L96.4,163.7L97.4,158.1L100.1,157.6L103.1,159.5L107.3,165.3L108.4,172.4ZM53.8,156.7L59.6,161.7L55.0,169.9L47.9,169.9L37.9,163.8L38.6,160.8L40.1,159.4L41.7,159.0L44.2,160.0L47.6,158.4L50.4,158.9L53.8,156.7ZM51.5,207.0L49.3,207.5L46.5,207.0L44.7,205.6L42.6,196.9L43.4,190.8L43.2,183.4L49.1,183.2L50.6,184.3L51.5,207.0ZM42.9,220.3L38.4,221.5L36.7,220.8L36.4,219.7L37.4,216.6L40.9,215.5L43.4,217.2L43.8,218.7L42.9,220.3ZM104.6,475.3L100.2,474.8L95.1,477.8L82.4,478.0L81.6,475.7L82.5,468.7L81.4,466.8L76.4,465.9L74.5,464.2L71.6,459.4L70.7,454.0L67.6,450.0L64.0,447.1L61.8,447.0L53.9,456.4L56.4,462.0L46.1,472.4L43.3,471.0L36.3,471.4L33.1,470.4L29.4,466.6L20.3,464.1L18.8,458.0L6.8,446.5L5.4,443.0L6.7,440.9L10.6,437.8L23.5,432.6L25.5,430.5L25.9,428.6L18.7,424.1L17.5,421.3L19.4,419.6L23.3,419.4L26.4,420.2L36.0,415.1L41.1,405.4L43.7,394.2L45.0,392.1L53.1,386.4L55.2,389.5L59.2,390.3L62.8,387.4L67.1,378.4L70.1,377.8L73.4,378.5L79.9,377.4L91.4,373.2L96.5,373.1L103.8,375.3L109.2,375.3L114.0,381.7L116.6,391.9L122.6,402.0L130.4,410.7L130.7,416.1L127.9,418.9L122.1,422.5L122.1,426.3L129.3,423.5L137.3,424.4L140.1,428.3L143.1,438.8L142.4,444.0L140.3,442.4L138.1,437.8L135.6,435.6L132.8,434.5L134.1,440.8L133.6,449.4L134.8,450.2L138.6,450.3L136.1,459.0L130.9,461.4L124.8,462.3L122.2,469.4L119.0,475.3L114.9,478.7L109.7,478.0L104.6,475.3ZM369.9,776.6L365.6,779.7L363.2,784.7L360.3,785.6L357.5,785.7L346.7,778.5L344.3,778.8L346.7,775.5L353.4,772.8L357.2,769.3L365.8,772.7L369.9,776.6Z"></path>
+      <path class="cov-map__dots" d="M287.4,693.9L283.6,697.7L271.4,701.4L266.2,705.2L257.0,713.8L255.2,714.6L241.3,712.5L231.0,701.3L224.4,696.7L221.7,696.2L218.9,697.6L212.9,699.0L206.7,698.7L209.9,693.6L214.1,690.7L204.6,688.7L201.9,687.1L198.9,683.5L191.4,682.9L187.9,683.8L181.9,688.6L172.4,693.7L160.9,686.6L158.7,683.5L158.7,677.5L157.0,672.8L153.8,671.1L157.9,665.0L162.8,660.9L173.6,656.8L189.9,647.1L199.1,643.0L207.6,635.9L211.1,631.6L216.2,618.4L219.8,612.5L216.3,611.1L214.7,606.6L215.2,602.1L216.8,598.1L215.3,593.1L212.8,587.8L213.6,579.4L207.0,579.6L200.5,581.0L194.5,584.1L188.8,588.3L183.6,589.0L183.7,585.7L185.9,581.5L191.7,575.6L198.0,570.6L201.9,562.5L205.0,559.0L213.1,552.4L228.6,545.0L231.0,544.6L237.0,545.4L243.0,544.3L248.3,541.7L253.5,541.1L265.3,548.8L261.8,536.9L267.0,534.0L274.5,544.8L277.3,545.9L283.2,544.4L280.9,542.5L278.3,542.4L274.8,540.8L271.8,537.3L267.0,526.4L267.2,519.9L274.2,506.9L271.1,505.7L268.7,503.3L268.0,497.0L268.9,491.5L275.5,486.7L277.4,479.3L278.2,471.2L277.1,467.5L270.6,468.1L267.5,469.6L264.7,472.0L261.8,471.9L253.7,462.9L241.0,441.7L239.8,433.2L246.4,414.7L256.5,402.8L268.4,398.7L266.1,397.9L247.9,397.7L242.0,399.2L236.4,404.0L233.3,405.5L230.0,406.1L221.0,414.0L214.9,413.4L212.0,414.1L209.9,412.2L208.1,409.0L205.8,408.1L203.2,409.1L197.7,413.4L192.2,416.0L185.5,413.2L176.7,408.2L175.0,410.0L173.0,414.7L171.9,422.1L165.7,415.7L160.4,407.2L158.6,401.8L158.4,395.8L161.3,393.5L164.5,395.6L169.1,381.3L181.7,357.2L184.0,350.1L183.6,345.4L181.5,341.5L172.9,332.6L173.9,317.1L177.3,311.2L188.7,311.3L184.3,308.8L175.4,301.3L175.5,298.7L177.6,291.8L174.7,295.7L171.1,303.4L168.9,305.2L162.5,307.0L161.4,310.8L160.4,311.8L157.2,312.2L156.3,315.7L155.6,316.0L154.7,312.2L154.6,305.8L155.8,300.0L158.2,295.5L167.5,285.2L163.0,288.4L152.8,297.9L146.2,306.3L145.8,310.1L148.1,321.2L147.5,326.3L138.7,360.0L135.5,365.2L134.0,365.6L129.7,364.9L127.8,362.4L127.8,359.5L132.2,339.2L136.2,330.6L141.4,323.4L141.2,322.9L137.8,324.3L136.3,323.9L135.3,322.4L135.9,301.0L138.7,293.9L139.8,283.6L147.1,260.2L150.4,256.6L151.2,251.0L157.6,238.7L156.1,239.3L138.3,255.7L133.7,258.7L127.5,257.9L122.8,256.1L119.1,252.2L117.4,244.7L112.9,244.5L109.0,243.2L109.0,242.2L114.1,238.1L122.1,236.8L129.7,230.2L123.0,225.8L123.5,224.5L129.4,220.7L136.9,208.1L138.4,196.6L134.8,191.2L133.5,187.6L126.4,183.6L125.2,178.6L126.0,175.7L128.4,173.0L131.9,170.8L137.4,168.7L132.4,166.5L130.5,163.9L129.0,158.0L131.6,148.2L136.0,139.1L149.4,139.4L150.9,137.1L152.4,137.0L159.2,139.1L158.2,136.9L147.1,124.7L146.1,122.4L149.2,115.8L149.0,109.8L149.9,107.4L153.4,106.3L164.2,106.4L166.9,105.3L163.2,98.0L162.7,94.5L163.9,82.4L166.5,78.3L171.2,76.4L177.1,77.8L179.4,79.4L182.0,83.3L183.9,83.0L191.3,78.8L193.5,78.2L196.5,83.1L209.1,79.2L226.0,77.4L236.2,74.8L246.9,73.9L257.0,70.9L267.6,72.3L267.9,74.0L264.7,82.9L265.1,90.1L264.5,92.3L263.3,95.0L259.4,100.1L249.1,107.3L230.4,123.9L219.3,132.2L217.8,136.2L217.0,141.7L223.6,142.8L226.2,144.6L224.6,147.4L214.8,157.2L211.9,166.0L219.4,165.7L225.6,164.0L238.0,158.5L249.6,154.4L255.1,154.3L266.0,157.5L268.4,157.6L273.0,156.1L277.7,155.8L309.2,156.9L318.0,154.9L323.8,157.2L328.6,162.9L333.2,173.4L333.1,175.2L330.3,180.0L325.2,186.0L320.7,194.3L317.2,208.1L308.4,229.3L299.8,241.1L296.0,249.4L291.3,256.1L286.7,260.3L281.9,263.1L267.9,266.0L259.3,271.8L254.3,273.7L260.1,273.4L265.8,271.4L276.2,270.6L288.2,277.7L287.1,283.4L282.3,288.0L271.3,288.7L261.1,298.8L256.5,301.9L251.6,303.4L245.6,303.0L234.5,300.3L229.7,297.4L234.0,302.1L239.0,304.5L267.8,310.1L278.7,303.5L290.9,303.5L314.2,314.5L330.5,335.0L339.5,344.0L341.9,350.4L351.5,392.2L358.2,414.6L361.3,420.8L365.3,425.2L385.7,435.2L390.2,438.5L405.7,458.4L412.8,466.3L420.4,472.7L416.7,476.0L414.2,481.3L416.1,488.4L430.7,517.8L426.6,515.1L421.0,514.8L410.9,506.5L401.0,508.4L390.8,507.7L399.8,510.3L409.6,510.5L431.4,530.3L438.7,542.1L443.1,557.7L440.1,564.7L435.5,569.2L427.1,580.2L439.2,588.8L444.4,587.4L453.5,574.8L461.0,573.9L467.3,574.4L473.6,576.0L479.1,575.5L490.2,578.5L495.9,581.3L510.0,593.7L513.1,600.5L514.5,609.2L514.7,618.9L509.6,635.8L506.7,649.9L505.0,652.8L497.5,661.0L492.5,664.3L490.4,662.9L488.2,663.1L488.0,665.0L490.3,669.2L490.4,674.2L485.9,678.0L481.4,679.5L473.9,677.6L463.5,684.5L471.0,688.1L472.5,691.8L470.6,698.5L465.9,701.5L460.7,702.8L455.3,703.1L450.9,704.8L446.6,707.9L452.0,706.2L455.7,707.7L458.0,713.3L460.1,714.9L470.5,717.3L477.0,717.3L489.5,715.9L495.5,716.0L497.6,717.0L496.7,733.0L495.1,735.4L478.5,745.0L475.1,751.7L474.2,755.7L464.5,755.0L460.0,759.3L452.2,762.2L440.2,769.0L435.3,770.2L414.3,765.6L401.5,766.0L384.3,770.0L379.9,769.3L373.2,765.5L366.4,763.0L358.6,761.8L351.8,758.3L356.0,765.1L346.7,771.6L342.3,772.9L337.9,772.7L328.7,774.4L320.2,773.5L321.5,778.1L323.7,782.2L321.9,783.9L319.9,784.4L303.8,781.3L301.5,781.9L299.5,784.7L293.6,783.2L287.9,778.5L281.8,775.3L275.4,773.8L270.3,774.3L249.5,781.8L245.3,789.3L243.2,799.9L240.2,809.3L235.3,816.6L229.5,817.5L224.0,812.5L213.5,806.9L209.9,803.2L208.8,803.0L207.6,804.3L203.5,806.0L199.3,806.1L192.7,807.6L181.3,812.1L176.7,815.1L166.8,823.6L164.8,825.9L161.2,834.4L155.7,835.9L150.7,830.5L145.0,828.6L138.9,830.4L135.3,833.3L133.6,831.0L133.5,826.1L137.9,820.4L149.7,816.0L160.0,804.7L167.1,793.9L169.6,791.5L172.8,790.5L174.5,786.2L188.8,769.0L190.0,765.1L191.9,751.2L203.5,746.8L209.1,732.5L210.7,731.3L226.9,728.7L239.0,728.9L251.0,731.7L257.1,732.0L263.3,731.0L268.1,727.1L276.4,713.2L291.4,695.2L299.5,683.5L294.0,687.5L287.4,693.9ZM208.7,543.4L210.8,545.0L216.3,544.7L214.5,548.4L199.6,560.0L197.2,556.1L194.5,556.2L190.3,548.8L189.6,537.6L195.0,534.7L202.6,534.9L208.7,543.4ZM293.5,19.4L287.7,19.5L290.7,14.2L294.2,12.9L300.8,13.5L299.7,15.9L293.5,19.4ZM261.8,58.1L258.9,59.3L255.9,59.2L251.4,54.1L249.7,50.4L250.0,47.9L251.9,47.1L256.3,48.3L258.6,52.6L259.4,56.4L262.1,57.5L261.8,58.1ZM273.9,62.8L273.4,63.1L271.6,61.4L268.5,55.6L273.3,54.5L275.6,55.2L273.9,62.8ZM267.3,37.3L266.7,39.5L270.6,39.4L276.2,41.3L279.7,41.5L282.5,43.8L281.0,48.1L279.2,49.4L277.3,49.6L270.6,45.3L261.7,47.1L260.0,46.5L258.3,43.8L258.3,40.8L257.8,39.9L254.6,42.8L253.2,42.4L252.4,41.1L252.4,34.1L254.3,28.3L257.5,27.1L262.2,27.8L267.7,31.1L269.3,33.2L269.3,34.8L267.3,37.3ZM284.2,23.3L279.8,25.5L277.9,23.7L277.4,18.0L269.6,14.1L267.6,11.2L268.1,10.3L271.6,9.1L277.4,14.3L279.8,18.5L284.2,19.8L284.7,20.4L284.2,23.3ZM84.6,254.0L81.6,254.5L81.4,253.2L86.5,247.3L89.8,246.3L90.9,246.8L88.6,250.3L84.6,254.0ZM161.9,354.7L155.4,354.8L153.1,354.0L150.3,351.9L147.1,339.7L148.2,335.4L150.9,331.7L154.4,331.0L157.8,333.3L159.1,335.4L161.9,343.6L162.4,350.7L161.9,354.7ZM127.3,275.3L106.8,280.3L99.7,279.8L99.1,277.4L100.5,275.8L106.3,274.2L108.7,262.4L99.8,256.9L99.4,255.4L100.1,252.8L101.1,251.6L106.5,248.9L108.7,248.3L110.6,248.6L114.3,251.8L118.6,258.5L124.3,259.5L128.2,262.4L127.3,275.3ZM109.2,312.0L112.9,330.5L113.0,332.9L111.3,336.2L102.8,340.7L100.1,340.7L101.9,335.1L100.3,330.0L101.1,326.0L100.3,325.3L98.7,325.9L92.6,332.1L90.5,332.7L92.0,322.9L92.9,320.7L96.5,317.3L98.1,317.1L99.8,318.6L104.7,314.3L109.2,312.0ZM117.4,322.3L116.3,323.3L113.7,323.0L112.2,319.4L112.1,315.4L113.7,312.5L120.4,308.1L117.4,306.6L117.2,305.5L119.0,301.9L126.2,296.2L128.1,295.2L130.0,295.4L126.3,305.4L117.4,322.3ZM105.6,96.3L99.1,111.8L96.5,112.2L94.3,116.1L87.3,120.3L93.4,120.4L95.1,121.8L95.1,124.9L94.0,126.7L86.1,133.8L80.7,136.4L74.8,143.8L71.9,143.9L69.0,148.6L66.6,150.7L65.2,150.7L63.7,149.7L60.1,145.1L66.6,140.5L67.2,138.0L71.7,135.3L71.4,134.5L64.2,130.8L61.4,128.3L61.7,127.0L65.1,124.1L60.4,121.6L59.8,120.1L60.0,112.4L62.0,110.7L62.9,108.8L63.7,108.3L67.0,109.3L70.2,112.4L74.0,111.2L78.4,111.8L75.3,103.4L75.9,101.8L77.6,100.0L87.8,94.6L100.5,85.4L103.6,84.0L105.8,90.0L105.6,96.3ZM101.5,220.3L99.9,221.5L98.0,221.3L96.1,219.8L93.6,215.6L99.2,212.7L101.5,214.4L102.4,216.4L102.4,218.5L101.5,220.3ZM108.4,172.4L107.4,181.0L108.9,189.4L111.0,190.5L112.4,192.1L122.0,193.9L131.0,193.4L132.7,194.8L132.9,197.1L131.5,199.6L126.4,204.2L118.5,213.2L115.1,212.6L114.1,199.4L107.5,201.1L102.1,200.9L99.2,199.3L93.1,188.2L81.1,185.0L77.7,180.6L76.7,178.0L77.1,176.5L79.6,173.3L82.7,174.4L84.6,173.7L85.8,172.3L84.1,167.3L96.4,163.7L97.4,158.1L100.1,157.6L103.1,159.5L107.3,165.3L108.4,172.4ZM53.8,156.7L59.6,161.7L55.0,169.9L47.9,169.9L37.9,163.8L38.6,160.8L40.1,159.4L41.7,159.0L44.2,160.0L47.6,158.4L50.4,158.9L53.8,156.7ZM51.5,207.0L49.3,207.5L46.5,207.0L44.7,205.6L42.6,196.9L43.4,190.8L43.2,183.4L49.1,183.2L50.6,184.3L51.5,207.0ZM42.9,220.3L38.4,221.5L36.7,220.8L36.4,219.7L37.4,216.6L40.9,215.5L43.4,217.2L43.8,218.7L42.9,220.3ZM104.6,475.3L100.2,474.8L95.1,477.8L82.4,478.0L81.6,475.7L82.5,468.7L81.4,466.8L76.4,465.9L74.5,464.2L71.6,459.4L70.7,454.0L67.6,450.0L64.0,447.1L61.8,447.0L53.9,456.4L56.4,462.0L46.1,472.4L43.3,471.0L36.3,471.4L33.1,470.4L29.4,466.6L20.3,464.1L18.8,458.0L6.8,446.5L5.4,443.0L6.7,440.9L10.6,437.8L23.5,432.6L25.5,430.5L25.9,428.6L18.7,424.1L17.5,421.3L19.4,419.6L23.3,419.4L26.4,420.2L36.0,415.1L41.1,405.4L43.7,394.2L45.0,392.1L53.1,386.4L55.2,389.5L59.2,390.3L62.8,387.4L67.1,378.4L70.1,377.8L73.4,378.5L79.9,377.4L91.4,373.2L96.5,373.1L103.8,375.3L109.2,375.3L114.0,381.7L116.6,391.9L122.6,402.0L130.4,410.7L130.7,416.1L127.9,418.9L122.1,422.5L122.1,426.3L129.3,423.5L137.3,424.4L140.1,428.3L143.1,438.8L142.4,444.0L140.3,442.4L138.1,437.8L135.6,435.6L132.8,434.5L134.1,440.8L133.6,449.4L134.8,450.2L138.6,450.3L136.1,459.0L130.9,461.4L124.8,462.3L122.2,469.4L119.0,475.3L114.9,478.7L109.7,478.0L104.6,475.3ZM369.9,776.6L365.6,779.7L363.2,784.7L360.3,785.6L357.5,785.7L346.7,778.5L344.3,778.8L346.7,775.5L353.4,772.8L357.2,769.3L365.8,772.7L369.9,776.6Z" fill="url(#cov-dots)"></path>
+      <path class="cov-map__coast" d="M287.4,693.9L283.6,697.7L271.4,701.4L266.2,705.2L257.0,713.8L255.2,714.6L241.3,712.5L231.0,701.3L224.4,696.7L221.7,696.2L218.9,697.6L212.9,699.0L206.7,698.7L209.9,693.6L214.1,690.7L204.6,688.7L201.9,687.1L198.9,683.5L191.4,682.9L187.9,683.8L181.9,688.6L172.4,693.7L160.9,686.6L158.7,683.5L158.7,677.5L157.0,672.8L153.8,671.1L157.9,665.0L162.8,660.9L173.6,656.8L189.9,647.1L199.1,643.0L207.6,635.9L211.1,631.6L216.2,618.4L219.8,612.5L216.3,611.1L214.7,606.6L215.2,602.1L216.8,598.1L215.3,593.1L212.8,587.8L213.6,579.4L207.0,579.6L200.5,581.0L194.5,584.1L188.8,588.3L183.6,589.0L183.7,585.7L185.9,581.5L191.7,575.6L198.0,570.6L201.9,562.5L205.0,559.0L213.1,552.4L228.6,545.0L231.0,544.6L237.0,545.4L243.0,544.3L248.3,541.7L253.5,541.1L265.3,548.8L261.8,536.9L267.0,534.0L274.5,544.8L277.3,545.9L283.2,544.4L280.9,542.5L278.3,542.4L274.8,540.8L271.8,537.3L267.0,526.4L267.2,519.9L274.2,506.9L271.1,505.7L268.7,503.3L268.0,497.0L268.9,491.5L275.5,486.7L277.4,479.3L278.2,471.2L277.1,467.5L270.6,468.1L267.5,469.6L264.7,472.0L261.8,471.9L253.7,462.9L241.0,441.7L239.8,433.2L246.4,414.7L256.5,402.8L268.4,398.7L266.1,397.9L247.9,397.7L242.0,399.2L236.4,404.0L233.3,405.5L230.0,406.1L221.0,414.0L214.9,413.4L212.0,414.1L209.9,412.2L208.1,409.0L205.8,408.1L203.2,409.1L197.7,413.4L192.2,416.0L185.5,413.2L176.7,408.2L175.0,410.0L173.0,414.7L171.9,422.1L165.7,415.7L160.4,407.2L158.6,401.8L158.4,395.8L161.3,393.5L164.5,395.6L169.1,381.3L181.7,357.2L184.0,350.1L183.6,345.4L181.5,341.5L172.9,332.6L173.9,317.1L177.3,311.2L188.7,311.3L184.3,308.8L175.4,301.3L175.5,298.7L177.6,291.8L174.7,295.7L171.1,303.4L168.9,305.2L162.5,307.0L161.4,310.8L160.4,311.8L157.2,312.2L156.3,315.7L155.6,316.0L154.7,312.2L154.6,305.8L155.8,300.0L158.2,295.5L167.5,285.2L163.0,288.4L152.8,297.9L146.2,306.3L145.8,310.1L148.1,321.2L147.5,326.3L138.7,360.0L135.5,365.2L134.0,365.6L129.7,364.9L127.8,362.4L127.8,359.5L132.2,339.2L136.2,330.6L141.4,323.4L141.2,322.9L137.8,324.3L136.3,323.9L135.3,322.4L135.9,301.0L138.7,293.9L139.8,283.6L147.1,260.2L150.4,256.6L151.2,251.0L157.6,238.7L156.1,239.3L138.3,255.7L133.7,258.7L127.5,257.9L122.8,256.1L119.1,252.2L117.4,244.7L112.9,244.5L109.0,243.2L109.0,242.2L114.1,238.1L122.1,236.8L129.7,230.2L123.0,225.8L123.5,224.5L129.4,220.7L136.9,208.1L138.4,196.6L134.8,191.2L133.5,187.6L126.4,183.6L125.2,178.6L126.0,175.7L128.4,173.0L131.9,170.8L137.4,168.7L132.4,166.5L130.5,163.9L129.0,158.0L131.6,148.2L136.0,139.1L149.4,139.4L150.9,137.1L152.4,137.0L159.2,139.1L158.2,136.9L147.1,124.7L146.1,122.4L149.2,115.8L149.0,109.8L149.9,107.4L153.4,106.3L164.2,106.4L166.9,105.3L163.2,98.0L162.7,94.5L163.9,82.4L166.5,78.3L171.2,76.4L177.1,77.8L179.4,79.4L182.0,83.3L183.9,83.0L191.3,78.8L193.5,78.2L196.5,83.1L209.1,79.2L226.0,77.4L236.2,74.8L246.9,73.9L257.0,70.9L267.6,72.3L267.9,74.0L264.7,82.9L265.1,90.1L264.5,92.3L263.3,95.0L259.4,100.1L249.1,107.3L230.4,123.9L219.3,132.2L217.8,136.2L217.0,141.7L223.6,142.8L226.2,144.6L224.6,147.4L214.8,157.2L211.9,166.0L219.4,165.7L225.6,164.0L238.0,158.5L249.6,154.4L255.1,154.3L266.0,157.5L268.4,157.6L273.0,156.1L277.7,155.8L309.2,156.9L318.0,154.9L323.8,157.2L328.6,162.9L333.2,173.4L333.1,175.2L330.3,180.0L325.2,186.0L320.7,194.3L317.2,208.1L308.4,229.3L299.8,241.1L296.0,249.4L291.3,256.1L286.7,260.3L281.9,263.1L267.9,266.0L259.3,271.8L254.3,273.7L260.1,273.4L265.8,271.4L276.2,270.6L288.2,277.7L287.1,283.4L282.3,288.0L271.3,288.7L261.1,298.8L256.5,301.9L251.6,303.4L245.6,303.0L234.5,300.3L229.7,297.4L234.0,302.1L239.0,304.5L267.8,310.1L278.7,303.5L290.9,303.5L314.2,314.5L330.5,335.0L339.5,344.0L341.9,350.4L351.5,392.2L358.2,414.6L361.3,420.8L365.3,425.2L385.7,435.2L390.2,438.5L405.7,458.4L412.8,466.3L420.4,472.7L416.7,476.0L414.2,481.3L416.1,488.4L430.7,517.8L426.6,515.1L421.0,514.8L410.9,506.5L401.0,508.4L390.8,507.7L399.8,510.3L409.6,510.5L431.4,530.3L438.7,542.1L443.1,557.7L440.1,564.7L435.5,569.2L427.1,580.2L439.2,588.8L444.4,587.4L453.5,574.8L461.0,573.9L467.3,574.4L473.6,576.0L479.1,575.5L490.2,578.5L495.9,581.3L510.0,593.7L513.1,600.5L514.5,609.2L514.7,618.9L509.6,635.8L506.7,649.9L505.0,652.8L497.5,661.0L492.5,664.3L490.4,662.9L488.2,663.1L488.0,665.0L490.3,669.2L490.4,674.2L485.9,678.0L481.4,679.5L473.9,677.6L463.5,684.5L471.0,688.1L472.5,691.8L470.6,698.5L465.9,701.5L460.7,702.8L455.3,703.1L450.9,704.8L446.6,707.9L452.0,706.2L455.7,707.7L458.0,713.3L460.1,714.9L470.5,717.3L477.0,717.3L489.5,715.9L495.5,716.0L497.6,717.0L496.7,733.0L495.1,735.4L478.5,745.0L475.1,751.7L474.2,755.7L464.5,755.0L460.0,759.3L452.2,762.2L440.2,769.0L435.3,770.2L414.3,765.6L401.5,766.0L384.3,770.0L379.9,769.3L373.2,765.5L366.4,763.0L358.6,761.8L351.8,758.3L356.0,765.1L346.7,771.6L342.3,772.9L337.9,772.7L328.7,774.4L320.2,773.5L321.5,778.1L323.7,782.2L321.9,783.9L319.9,784.4L303.8,781.3L301.5,781.9L299.5,784.7L293.6,783.2L287.9,778.5L281.8,775.3L275.4,773.8L270.3,774.3L249.5,781.8L245.3,789.3L243.2,799.9L240.2,809.3L235.3,816.6L229.5,817.5L224.0,812.5L213.5,806.9L209.9,803.2L208.8,803.0L207.6,804.3L203.5,806.0L199.3,806.1L192.7,807.6L181.3,812.1L176.7,815.1L166.8,823.6L164.8,825.9L161.2,834.4L155.7,835.9L150.7,830.5L145.0,828.6L138.9,830.4L135.3,833.3L133.6,831.0L133.5,826.1L137.9,820.4L149.7,816.0L160.0,804.7L167.1,793.9L169.6,791.5L172.8,790.5L174.5,786.2L188.8,769.0L190.0,765.1L191.9,751.2L203.5,746.8L209.1,732.5L210.7,731.3L226.9,728.7L239.0,728.9L251.0,731.7L257.1,732.0L263.3,731.0L268.1,727.1L276.4,713.2L291.4,695.2L299.5,683.5L294.0,687.5L287.4,693.9ZM208.7,543.4L210.8,545.0L216.3,544.7L214.5,548.4L199.6,560.0L197.2,556.1L194.5,556.2L190.3,548.8L189.6,537.6L195.0,534.7L202.6,534.9L208.7,543.4ZM293.5,19.4L287.7,19.5L290.7,14.2L294.2,12.9L300.8,13.5L299.7,15.9L293.5,19.4ZM261.8,58.1L258.9,59.3L255.9,59.2L251.4,54.1L249.7,50.4L250.0,47.9L251.9,47.1L256.3,48.3L258.6,52.6L259.4,56.4L262.1,57.5L261.8,58.1ZM273.9,62.8L273.4,63.1L271.6,61.4L268.5,55.6L273.3,54.5L275.6,55.2L273.9,62.8ZM267.3,37.3L266.7,39.5L270.6,39.4L276.2,41.3L279.7,41.5L282.5,43.8L281.0,48.1L279.2,49.4L277.3,49.6L270.6,45.3L261.7,47.1L260.0,46.5L258.3,43.8L258.3,40.8L257.8,39.9L254.6,42.8L253.2,42.4L252.4,41.1L252.4,34.1L254.3,28.3L257.5,27.1L262.2,27.8L267.7,31.1L269.3,33.2L269.3,34.8L267.3,37.3ZM284.2,23.3L279.8,25.5L277.9,23.7L277.4,18.0L269.6,14.1L267.6,11.2L268.1,10.3L271.6,9.1L277.4,14.3L279.8,18.5L284.2,19.8L284.7,20.4L284.2,23.3ZM84.6,254.0L81.6,254.5L81.4,253.2L86.5,247.3L89.8,246.3L90.9,246.8L88.6,250.3L84.6,254.0ZM161.9,354.7L155.4,354.8L153.1,354.0L150.3,351.9L147.1,339.7L148.2,335.4L150.9,331.7L154.4,331.0L157.8,333.3L159.1,335.4L161.9,343.6L162.4,350.7L161.9,354.7ZM127.3,275.3L106.8,280.3L99.7,279.8L99.1,277.4L100.5,275.8L106.3,274.2L108.7,262.4L99.8,256.9L99.4,255.4L100.1,252.8L101.1,251.6L106.5,248.9L108.7,248.3L110.6,248.6L114.3,251.8L118.6,258.5L124.3,259.5L128.2,262.4L127.3,275.3ZM109.2,312.0L112.9,330.5L113.0,332.9L111.3,336.2L102.8,340.7L100.1,340.7L101.9,335.1L100.3,330.0L101.1,326.0L100.3,325.3L98.7,325.9L92.6,332.1L90.5,332.7L92.0,322.9L92.9,320.7L96.5,317.3L98.1,317.1L99.8,318.6L104.7,314.3L109.2,312.0ZM117.4,322.3L116.3,323.3L113.7,323.0L112.2,319.4L112.1,315.4L113.7,312.5L120.4,308.1L117.4,306.6L117.2,305.5L119.0,301.9L126.2,296.2L128.1,295.2L130.0,295.4L126.3,305.4L117.4,322.3ZM105.6,96.3L99.1,111.8L96.5,112.2L94.3,116.1L87.3,120.3L93.4,120.4L95.1,121.8L95.1,124.9L94.0,126.7L86.1,133.8L80.7,136.4L74.8,143.8L71.9,143.9L69.0,148.6L66.6,150.7L65.2,150.7L63.7,149.7L60.1,145.1L66.6,140.5L67.2,138.0L71.7,135.3L71.4,134.5L64.2,130.8L61.4,128.3L61.7,127.0L65.1,124.1L60.4,121.6L59.8,120.1L60.0,112.4L62.0,110.7L62.9,108.8L63.7,108.3L67.0,109.3L70.2,112.4L74.0,111.2L78.4,111.8L75.3,103.4L75.9,101.8L77.6,100.0L87.8,94.6L100.5,85.4L103.6,84.0L105.8,90.0L105.6,96.3ZM101.5,220.3L99.9,221.5L98.0,221.3L96.1,219.8L93.6,215.6L99.2,212.7L101.5,214.4L102.4,216.4L102.4,218.5L101.5,220.3ZM108.4,172.4L107.4,181.0L108.9,189.4L111.0,190.5L112.4,192.1L122.0,193.9L131.0,193.4L132.7,194.8L132.9,197.1L131.5,199.6L126.4,204.2L118.5,213.2L115.1,212.6L114.1,199.4L107.5,201.1L102.1,200.9L99.2,199.3L93.1,188.2L81.1,185.0L77.7,180.6L76.7,178.0L77.1,176.5L79.6,173.3L82.7,174.4L84.6,173.7L85.8,172.3L84.1,167.3L96.4,163.7L97.4,158.1L100.1,157.6L103.1,159.5L107.3,165.3L108.4,172.4ZM53.8,156.7L59.6,161.7L55.0,169.9L47.9,169.9L37.9,163.8L38.6,160.8L40.1,159.4L41.7,159.0L44.2,160.0L47.6,158.4L50.4,158.9L53.8,156.7ZM51.5,207.0L49.3,207.5L46.5,207.0L44.7,205.6L42.6,196.9L43.4,190.8L43.2,183.4L49.1,183.2L50.6,184.3L51.5,207.0ZM42.9,220.3L38.4,221.5L36.7,220.8L36.4,219.7L37.4,216.6L40.9,215.5L43.4,217.2L43.8,218.7L42.9,220.3ZM104.6,475.3L100.2,474.8L95.1,477.8L82.4,478.0L81.6,475.7L82.5,468.7L81.4,466.8L76.4,465.9L74.5,464.2L71.6,459.4L70.7,454.0L67.6,450.0L64.0,447.1L61.8,447.0L53.9,456.4L56.4,462.0L46.1,472.4L43.3,471.0L36.3,471.4L33.1,470.4L29.4,466.6L20.3,464.1L18.8,458.0L6.8,446.5L5.4,443.0L6.7,440.9L10.6,437.8L23.5,432.6L25.5,430.5L25.9,428.6L18.7,424.1L17.5,421.3L19.4,419.6L23.3,419.4L26.4,420.2L36.0,415.1L41.1,405.4L43.7,394.2L45.0,392.1L53.1,386.4L55.2,389.5L59.2,390.3L62.8,387.4L67.1,378.4L70.1,377.8L73.4,378.5L79.9,377.4L91.4,373.2L96.5,373.1L103.8,375.3L109.2,375.3L114.0,381.7L116.6,391.9L122.6,402.0L130.4,410.7L130.7,416.1L127.9,418.9L122.1,422.5L122.1,426.3L129.3,423.5L137.3,424.4L140.1,428.3L143.1,438.8L142.4,444.0L140.3,442.4L138.1,437.8L135.6,435.6L132.8,434.5L134.1,440.8L133.6,449.4L134.8,450.2L138.6,450.3L136.1,459.0L130.9,461.4L124.8,462.3L122.2,469.4L119.0,475.3L114.9,478.7L109.7,478.0L104.6,475.3ZM369.9,776.6L365.6,779.7L363.2,784.7L360.3,785.6L357.5,785.7L346.7,778.5L344.3,778.8L346.7,775.5L353.4,772.8L357.2,769.3L365.8,772.7L369.9,776.6Z"></path>
+    </g>
+    <g class="cov-map__rings" aria-hidden="true">
+      <circle cx="420.2" cy="702.4" r="79.8" style="--i:0"></circle><circle cx="420.2" cy="702.4" r="159.6" style="--i:1"></circle><circle cx="420.2" cy="702.4" r="239.5" style="--i:2"></circle>
+    </g>
+    <g class="cov-map__routes" aria-hidden="true">
+      <path class="cov-route" data-loc="hertfordshire" d="M413.6,669.4 Q411.2,673.1 412.4,677.4" pathLength="1" style="--i:0"></path><path class="cov-route" data-loc="birmingham" d="M413.6,669.4 Q381.9,624.4 327.4,617.4" pathLength="1" style="--i:1"></path><path class="cov-route" data-loc="bradford" d="M413.6,669.4 Q410.9,567.9 334.2,501.3" pathLength="1" style="--i:2"></path><path class="cov-route" data-loc="cardiff" d="M413.6,669.4 Q329.2,654.4 261.1,706.5" pathLength="1" style="--i:3"></path><path class="cov-route" data-loc="coventry" d="M413.6,669.4 Q389.9,632.2 346.5,624.5" pathLength="1" style="--i:4"></path><path class="cov-route" data-loc="edinburgh" d="M413.6,669.4 Q392.3,466.2 260.6,310" pathLength="1" style="--i:5"></path><path class="cov-route" data-loc="leeds" d="M413.6,669.4 Q416.4,570.1 345,500.9" pathLength="1" style="--i:6"></path><path class="cov-route" data-loc="leicester" d="M413.6,669.4 Q404.2,626.3 366.1,604" pathLength="1" style="--i:7"></path><path class="cov-route" data-loc="manchester" d="M413.6,669.4 Q392.3,576.4 309.3,529.2" pathLength="1" style="--i:8"></path><path class="cov-route" data-loc="newcastle" d="M413.6,669.4 Q435.6,517.6 341.5,396.5" pathLength="1" style="--i:9"></path><path class="cov-route" data-loc="south-wales" d="M413.6,669.4 Q321.0,643.5 239.4,694.2" pathLength="1" style="--i:10"></path><path class="cov-route" data-loc="wales" d="M413.6,669.4 Q331.4,609.4 231.7,629.5" pathLength="1" style="--i:11"></path>
+    </g>
+    <g class="cov-map__pins" aria-hidden="true">
+      
+      <g class="cov-pin cov-pin--region" data-loc="hertfordshire" transform="translate(412.4 677.4)" style="--i:0">
+        <circle class="cov-pin__halo" r="22"></circle>
+        <circle class="cov-pin__ring" r="9"></circle>
+        <circle class="cov-pin__dot" r="4.2"></circle>
+        <text class="cov-pin__label" x="-12" y="4" text-anchor="end">Hertfordshire</text>
+      </g>
+      <g class="cov-pin" data-loc="birmingham" transform="translate(327.4 617.4)" style="--i:1">
         
-  <div class="block-head">
-    <p class="eyebrow">How we cover the UK</p>
-    <h2 class="grad-head" id="locations-block-1">Remote-first, onsite when it counts</h2>
-    
-  </div>
-        <div class="block-prose"><p>The majority of IT issues are resolved remotely and quickly by our UK-based service desk. For anything that needs hands on hardware, our engineers in London and Stevenage travel to you, and we partner locally where distance calls for it.</p></div>
-      </div>
+        <circle class="cov-pin__ring" r="9"></circle>
+        <circle class="cov-pin__dot" r="4.2"></circle>
+        <text class="cov-pin__label" x="-12" y="4" text-anchor="end">Birmingham</text>
+      </g>
+      <g class="cov-pin" data-loc="bradford" transform="translate(334.2 501.3)" style="--i:2">
+        
+        <circle class="cov-pin__ring" r="9"></circle>
+        <circle class="cov-pin__dot" r="4.2"></circle>
+        <text class="cov-pin__label" x="-12" y="4" text-anchor="end">Bradford</text>
+      </g>
+      <g class="cov-pin" data-loc="cardiff" transform="translate(261.1 706.5)" style="--i:3">
+        
+        <circle class="cov-pin__ring" r="9"></circle>
+        <circle class="cov-pin__dot" r="4.2"></circle>
+        <text class="cov-pin__label" x="12" y="4" text-anchor="start">Cardiff</text>
+      </g>
+      <g class="cov-pin" data-loc="coventry" transform="translate(346.5 624.5)" style="--i:4">
+        
+        <circle class="cov-pin__ring" r="9"></circle>
+        <circle class="cov-pin__dot" r="4.2"></circle>
+        <text class="cov-pin__label" x="-12" y="4" text-anchor="end">Coventry</text>
+      </g>
+      <g class="cov-pin" data-loc="edinburgh" transform="translate(260.6 310)" style="--i:5">
+        
+        <circle class="cov-pin__ring" r="9"></circle>
+        <circle class="cov-pin__dot" r="4.2"></circle>
+        <text class="cov-pin__label" x="12" y="4" text-anchor="start">Edinburgh</text>
+      </g>
+      <g class="cov-pin" data-loc="leeds" transform="translate(345 500.9)" style="--i:6">
+        
+        <circle class="cov-pin__ring" r="9"></circle>
+        <circle class="cov-pin__dot" r="4.2"></circle>
+        <text class="cov-pin__label" x="-12" y="4" text-anchor="end">Leeds</text>
+      </g>
+      <g class="cov-pin" data-loc="leicester" transform="translate(366.1 604)" style="--i:7">
+        
+        <circle class="cov-pin__ring" r="9"></circle>
+        <circle class="cov-pin__dot" r="4.2"></circle>
+        <text class="cov-pin__label" x="-12" y="4" text-anchor="end">Leicester</text>
+      </g>
+      <g class="cov-pin" data-loc="manchester" transform="translate(309.3 529.2)" style="--i:8">
+        
+        <circle class="cov-pin__ring" r="9"></circle>
+        <circle class="cov-pin__dot" r="4.2"></circle>
+        <text class="cov-pin__label" x="12" y="4" text-anchor="start">Manchester</text>
+      </g>
+      <g class="cov-pin" data-loc="newcastle" transform="translate(341.5 396.5)" style="--i:9">
+        
+        <circle class="cov-pin__ring" r="9"></circle>
+        <circle class="cov-pin__dot" r="4.2"></circle>
+        <text class="cov-pin__label" x="-12" y="4" text-anchor="end">Newcastle</text>
+      </g>
+      <g class="cov-pin cov-pin--region" data-loc="south-wales" transform="translate(239.4 694.2)" style="--i:10">
+        <circle class="cov-pin__halo" r="22"></circle>
+        <circle class="cov-pin__ring" r="9"></circle>
+        <circle class="cov-pin__dot" r="4.2"></circle>
+        <text class="cov-pin__label" x="12" y="4" text-anchor="start">South Wales</text>
+      </g>
+      <g class="cov-pin cov-pin--region" data-loc="wales" transform="translate(231.7 629.5)" style="--i:11">
+        <circle class="cov-pin__halo" r="46"></circle>
+        <circle class="cov-pin__ring" r="9"></circle>
+        <circle class="cov-pin__dot" r="4.2"></circle>
+        <text class="cov-pin__label" x="12" y="4" text-anchor="start">Wales</text>
+      </g>
       
-  <aside class="check-card">
-    <h3>What's included</h3>
-    <ul role="list"><li>UK-based service desk by phone and ticketing</li><li>Onsite engineers from our London & Stevenage bases</li><li>Proactive monitoring and cyber security everywhere we work</li><li>One partner for support, cloud, security and projects</li></ul>
-  </aside>
-    </div>
-  </section>
-
-<section class="section" aria-labelledby="all-locations-title">
-  <div class="container">
-    <div class="center-head">
-      <h2 class="grad-head" id="all-locations-title">Areas we cover</h2>
-      <p>Every location gets the same service desk, the same response times and the same engineers.</p>
-    </div>
-    <ul class="location-grid" role="list">
-      <li><a href="locations/it-support-london.html"><span class="location-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>IT support in London</strong><span>Remote first, on-site when needed<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a></li><li><a href="locations/it-support-hertfordshire.html"><span class="location-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>IT support in Hertfordshire</strong><span>Remote first, on-site when needed<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a></li><li><a href="locations/it-support-stevenage.html"><span class="location-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>IT support in Stevenage</strong><span>Remote first, on-site when needed<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a></li><li><a href="locations/it-support-birmingham.html"><span class="location-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>IT support in Birmingham</strong><span>Remote first, on-site when needed<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a></li><li><a href="locations/it-support-bradford.html"><span class="location-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>IT support in Bradford</strong><span>Remote first, on-site when needed<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a></li><li><a href="locations/it-support-cardiff.html"><span class="location-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>IT support in Cardiff</strong><span>Remote first, on-site when needed<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a></li><li><a href="locations/it-support-coventry.html"><span class="location-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>IT support in Coventry</strong><span>Remote first, on-site when needed<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a></li><li><a href="locations/it-support-edinburgh.html"><span class="location-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>IT support in Edinburgh</strong><span>Remote first, on-site when needed<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a></li><li><a href="locations/it-support-leeds.html"><span class="location-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>IT support in Leeds</strong><span>Remote first, on-site when needed<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a></li><li><a href="locations/it-support-leicester.html"><span class="location-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>IT support in Leicester</strong><span>Remote first, on-site when needed<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a></li><li><a href="locations/it-support-manchester.html"><span class="location-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>IT support in Manchester</strong><span>Remote first, on-site when needed<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a></li><li><a href="locations/it-support-newcastle.html"><span class="location-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>IT support in Newcastle</strong><span>Remote first, on-site when needed<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a></li><li><a href="locations/it-support-south-wales.html"><span class="location-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>IT support in South Wales</strong><span>Remote first, on-site when needed<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a></li><li><a href="locations/it-support-wales.html"><span class="location-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>IT support in Wales</strong><span>Remote first, on-site when needed<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a></li>
-    </ul>
+      <g class="cov-pin cov-pin--office" data-loc="london" transform="translate(420.2 702.4)">
+        <circle class="cov-pin__pulse" r="10"></circle>
+        <circle class="cov-pin__ring" r="11"></circle>
+        <circle class="cov-pin__dot" r="6"></circle>
+        <text class="cov-pin__label" x="14" y="14" text-anchor="start">London</text>
+      </g>
+      <g class="cov-pin cov-pin--office" data-loc="stevenage" transform="translate(413.6 669.4)">
+        <circle class="cov-pin__pulse" r="10"></circle>
+        <circle class="cov-pin__ring" r="11"></circle>
+        <circle class="cov-pin__dot" r="6"></circle>
+        <text class="cov-pin__label" x="-14" y="-8" text-anchor="end">Stevenage</text>
+      </g>
+    </g>
+  </svg>
+      <figcaption class="cov-map__caption">
+        <span class="cov-map__key"><i class="cov-key cov-key--office" aria-hidden="true"></i>Our offices</span>
+        <span class="cov-map__key"><i class="cov-key cov-key--area" aria-hidden="true"></i>Areas we cover</span>
+        <span class="cov-map__note">Most issues are resolved remotely and fast, and where you need an engineer in the room, our teams in London and Stevenage travel to you.</span>
+      </figcaption>
+    </figure>
   </div>
 </section>
 
-
-<section class="section section--tight cred-strip" aria-label="Accreditations">
+<section class="section cov-model" aria-labelledby="model-title">
   <div class="container">
-    <ul class="cred-strip__list" role="list">
-      <li><img src="assets/images/partners/cyber-essentials.webp" alt="Cyber Essentials certified" decoding="async"><span><strong>Cyber Essentials certified</strong>Independently assessed against the UK government-backed scheme, so our security fundamentals are verified rather than simply claimed.</span></li><li><img src="assets/images/partners/microsoft-csp.webp" alt="Microsoft Cloud Solution Provider" decoding="async"><span><strong>Microsoft Cloud Solution Provider</strong>A direct partnership with Microsoft.</span></li>
+    <div class="cov-model__head">
+      <div>
+        <p class="eyebrow">How we cover the UK</p>
+        <h2 class="grad-head" id="model-title">Remote-first, onsite when it counts</h2>
+      </div>
+      <p class="cov-model__text">The majority of IT issues are resolved remotely and quickly by our UK-based service desk. For anything that needs hands on hardware, our engineers in London and Stevenage travel to you, and we partner locally where distance calls for it.</p>
+    </div>
+    <ol class="cov-steps" role="list">
+      
+      <li class="cov-step" style="--i:0">
+        <span class="cov-step__n">01</span>
+        <span class="cov-step__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><path d="M21 16a2 2 0 0 1-2 2h-1a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h3v4Z"/><path d="M3 16a2 2 0 0 0 2 2h1a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1H3v4Z"/><path d="M19 18v.5a2.5 2.5 0 0 1-2.5 2.5H13"/></svg></span>
+        <p>UK-based service desk by phone and ticketing</p>
+      </li>
+      <li class="cov-step" style="--i:1">
+        <span class="cov-step__n">02</span>
+        <span class="cov-step__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+        <p>Onsite engineers from our London & Stevenage bases</p>
+      </li>
+      <li class="cov-step" style="--i:2">
+        <span class="cov-step__n">03</span>
+        <span class="cov-step__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+        <p>Proactive monitoring and cyber security everywhere we work</p>
+      </li>
+      <li class="cov-step" style="--i:3">
+        <span class="cov-step__n">04</span>
+        <span class="cov-step__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 2 10 5-10 5L2 7l10-5Z"/><path d="m2 12 10 5 10-5"/><path d="m2 17 10 5 10-5"/></svg></span>
+        <p>One partner for support, cloud, security and projects</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="section section--mist" aria-labelledby="offices-title">
+  <div class="container">
+    <div class="cov-model__head cov-model__head--center">
+      <div>
+        <p class="eyebrow">Our offices</p>
+        <h2 class="grad-head" id="offices-title">Two bases, UK-wide coverage</h2>
+      </div>
+    </div>
+    <div class="office-grid">
+      <article class="office-card office-card--lg office-card--map">
+        <div class="office-card__map" aria-hidden="true"><iframe src="https://www.google.com/maps?q=124+City+Rd%2C+London%2C+EC1V+2NX&amp;ll=51.531342,-0.0886724&amp;z=15&amp;output=embed" title="Map of the London office" loading="lazy" referrerpolicy="no-referrer-when-downgrade" tabindex="-1"></iframe></div>
+        <div class="office-card__body">
+          <span class="office-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <h3>London</h3>
+          <p class="office-card__label">Head office</p>
+          <p>124 City Rd, London, EC1V 2NX</p>
+          <div class="btn-group mt-5">
+            <a class="btn btn--secondary btn--sm" href="https://www.google.com/maps/dir/?api=1&destination=124+City+Rd%2C+London+EC1V+2NX" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Get directions</span></a>
+            <a class="btn btn--ghost btn--sm" href="tel:02046342518"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>020 4634 2518</span></a>
+          </div>
+        </div>
+      </article>
+      <article class="office-card office-card--lg office-card--map">
+        <div class="office-card__map" aria-hidden="true"><iframe src="https://www.google.com/maps?q=Caxton+Point+Business+Centre%2C+Caxton+Way%2C+Stevenage+SG1+2XT&amp;ll=51.904074,-0.217209&amp;z=15&amp;output=embed" title="Map of the Stevenage office" loading="lazy" referrerpolicy="no-referrer-when-downgrade" tabindex="-1"></iframe></div>
+        <div class="office-card__body">
+          <span class="office-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <h3>Stevenage</h3>
+          <p class="office-card__label">Hertfordshire</p>
+          <p>Caxton Point Business Centre, Caxton Way, Stevenage SG1 2XT</p>
+          <div class="btn-group mt-5">
+            <a class="btn btn--secondary btn--sm" href="https://www.google.com/maps/dir/?api=1&destination=Caxton+Point+Business+Centre%2C+Caxton+Way%2C+Stevenage+SG1+2XT" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Get directions</span></a>
+            <a class="btn btn--ghost btn--sm" href="tel:02046342518"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>020 4634 2518</span></a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="locations-cred-title">
+  <div class="container">
+    <div class="cred-why__head">
+      <p class="eyebrow">Certified & accredited</p>
+      <h2 class="grad-head" id="locations-cred-title">Credentials you can check</h2>
+    </div>
+    <ul class="cred-badges" role="list">
+      
+      <li class="cred-badge">
+        <span class="cred-badge__plate"><img src="assets/images/partners/cyber-essentials.webp" alt="Cyber Essentials certified" width="280" height="110" loading="lazy" decoding="async"></span>
+        <span class="cred-badge__body">
+          <h3 class="cred-badge__title">Cyber Essentials certified</h3>
+          <span>Independently assessed against the UK government-backed scheme, so our security fundamentals are verified rather than simply claimed. We help clients certify too.</span>
+          <a class="text-link" href="cyber-security/cyber-essentials-services.html"><span>How Cyber Essentials helps you</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+        </span>
+      </li>
+      <li class="cred-badge">
+        <span class="cred-badge__plate"><img src="assets/images/partners/microsoft-csp.webp" alt="Microsoft Cloud Solution Provider" width="280" height="110" loading="lazy" decoding="async"></span>
+        <span class="cred-badge__body">
+          <h3 class="cred-badge__title">Microsoft Cloud Solution Provider</h3>
+          <span>A direct partnership with Microsoft. We license, deploy and support Microsoft 365 and Azure for you, with escalation straight to Microsoft when it is needed.</span>
+          <a class="text-link" href="managed-cloud-services.html"><span>Our Microsoft cloud services</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+        </span>
+      </li>
     </ul>
-    <ul class="partner-row" role="list">
-      <li><img src="assets/images/partners/fortinet.webp" alt="Fortinet Authorized Partner" decoding="async"></li><li><img src="assets/images/partners/dell-technologies.webp" alt="Dell Technologies Authorized Partner" decoding="async"></li><li><img src="assets/images/partners/ninjaone-logo.svg" alt="NinjaOne partner" decoding="async"></li><li><img src="assets/images/partners/pax8.webp" alt="Pax8 partner" decoding="async"></li><li><img src="assets/images/partners/acronis.webp" alt="Acronis partner" decoding="async"></li>
+    <ul class="partner-row partner-row--badges" role="list">
+      <li><img src="assets/images/partners/fortinet.webp" alt="Fortinet Authorized Partner" loading="lazy" decoding="async"></li><li><img src="assets/images/partners/dell-technologies.webp" alt="Dell Technologies Authorized Partner" loading="lazy" decoding="async"></li><li><img src="assets/images/partners/ninjaone-logo.svg" alt="NinjaOne partner" loading="lazy" decoding="async"></li><li><img src="assets/images/partners/pax8.webp" alt="Pax8 partner" loading="lazy" decoding="async"></li><li><img src="assets/images/partners/acronis.webp" alt="Acronis partner" loading="lazy" decoding="async"></li>
     </ul>
   </div>
 </section>
@@ -219,20 +421,26 @@
 </main>
 <footer class="site-footer" id="footer-nav">
   <div class="container">
-    <div class="site-footer__cta"><div class="cta-band">
-        <figure class="media ratio-4-3 cta-band__photo">
+    <div class="site-footer__cta"><div class="cta-box">
+        <div class="cta-box__ask">
+          <h2>Looking for IT support near you?</h2>
+          <p>Tell us where you are and what you need. We'll tell you honestly whether we're the right fit.</p>
+          <div class="cta-box__actions">
+            <a class="btn btn--light btn--lg" href="contact.html" data-track="locations-cta"><span>Book a consultation</span><svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+          </div>
+        </div>
+        <div class="cta-box__call">
+          <figure class="media ratio-4-3 cta-box__photo">
     <picture>
-      <source type="image/avif" srcset="assets/images/photos/it-support-engineer-headset-480.avif 480w, assets/images/photos/it-support-engineer-headset-768.avif 768w, assets/images/photos/it-support-engineer-headset-1024.avif 1024w, assets/images/photos/it-support-engineer-headset-1280.avif 1280w" sizes="(min-width: 1024px) 34vw, 100vw">
-      <source type="image/webp" srcset="assets/images/photos/it-support-engineer-headset-480.webp 480w, assets/images/photos/it-support-engineer-headset-768.webp 768w, assets/images/photos/it-support-engineer-headset-1024.webp 1024w, assets/images/photos/it-support-engineer-headset-1280.webp 1280w" sizes="(min-width: 1024px) 34vw, 100vw">
+      <source type="image/avif" srcset="assets/images/photos/it-support-engineer-headset-480.avif 480w, assets/images/photos/it-support-engineer-headset-768.avif 768w, assets/images/photos/it-support-engineer-headset-1024.avif 1024w, assets/images/photos/it-support-engineer-headset-1280.avif 1280w" sizes="(min-width: 1024px) 460px, 100vw">
+      <source type="image/webp" srcset="assets/images/photos/it-support-engineer-headset-480.webp 480w, assets/images/photos/it-support-engineer-headset-768.webp 768w, assets/images/photos/it-support-engineer-headset-1024.webp 1024w, assets/images/photos/it-support-engineer-headset-1280.webp 1280w" sizes="(min-width: 1024px) 460px, 100vw">
       <img src="assets/images/photos/it-support-engineer-headset-1280.webp" alt="IT support engineer wearing a headset taking a customer call" width="1280" height="720" loading="lazy" decoding="async">
     </picture>
   </figure>
-        <div class="cta-band__body">
-          <h2>Looking for IT support near you?</h2>
-          <p>Tell us where you are and what you need. We'll tell you honestly whether we're the right fit.</p>
-          <div class="cta-band__actions">
-            <a class="btn btn--light btn--lg" href="contact.html" data-track="locations-cta"><span>Book a consultation</span><svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
-            <a class="btn btn--outline-light btn--lg" href="tel:02046342518" data-track="locations-cta-phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Call 020 4634 2518</span></a>
+          <div class="cta-box__line">
+            <p class="cta-box__label">Prefer to talk?</p>
+            <a class="cta-box__phone" href="tel:02046342518" data-track="locations-cta-phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>020 4634 2518</span></a>
+            <p class="cta-box__note">We answer the phone, no call queues.</p>
           </div>
         </div>
       </div></div>
@@ -252,6 +460,10 @@
           <li><a href="mailto:info@whizzit.co.uk" data-track="footer-email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 7 9 6 9-6"/></svg>info@whizzit.co.uk</a></li>
           <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>124 City Rd, London, EC1V 2NX</span></li><li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Caxton Point Business Centre, Caxton Way, Stevenage SG1 2XT</span></li>
         </ul>
+        <div class="footer-help">
+          <p><strong>Existing customer?</strong>Need help right now? We answer the phone, no call queues.</p>
+          <a class="btn btn--outline-light btn--sm" href="tel:02046342518" data-track="footer-phone-support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Call 020 4634 2518</span></a>
+        </div>
       </div>
       <nav class="site-footer__nav" aria-label="Footer">
         <div class="footer-col"><h2>IT services</h2><ul><li><a href="it-services.html">All IT services</a></li><li><a href="it-support.html">IT Support</a></li><li><a href="managed-cloud-services.html">Managed Cloud Services</a></li><li><a href="cyber-security.html">Cyber Security</a></li><li><a href="network-management.html">Network Management</a></li><li><a href="it-project-management.html">IT Project Management</a></li></ul></div>
@@ -260,16 +472,11 @@
         <div class="footer-col"><h2>Areas we cover</h2><ul><li><a href="locations/it-support-london.html">London</a></li><li><a href="locations/it-support-hertfordshire.html">Hertfordshire</a></li><li><a href="locations/it-support-stevenage.html">Stevenage</a></li><li><a href="locations/it-support-birmingham.html">Birmingham</a></li><li><a href="locations/it-support-bradford.html">Bradford</a></li><li><a href="locations/it-support-cardiff.html">Cardiff</a></li><li><a href="locations/it-support-coventry.html">Coventry</a></li></ul></div>
       </nav>
     </div>
-    <div class="site-footer__support">
-      <p>Existing customer and need help right now? We answer the phone, no call queues.</p>
-      <a class="btn btn--outline-light btn--sm" href="tel:02046342518" data-track="footer-phone-support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Call 020 4634 2518</span></a>
-    </div>
     <div class="site-footer__bottom">
       <p>© 2026 Whizz Solutions Ltd. All rights reserved.</p>
       <ul class="legal-links" role="list">
         <li><a href="privacy-policy.html">Privacy policy</a></li>
         <li><a href="cookie-policy.html">Cookie policy</a></li>
-        <li><a href="https://digitalheroesco.com/" target="_blank" rel="noopener" data-track="footer-credit">Created with love by Digital Heroes</a></li>
       </ul>
     </div>
   </div>
@@ -288,19 +495,19 @@
     </div>
     <div class="mobile-nav__body">
       <a class="mobile-nav__support" href="tel:02046342518" data-track="mobile-phone-support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span><strong>Need help now?</strong>Call 020 4634 2518 — we answer the phone</span></a>
-      <ul class="mobile-nav__list"><li>
+      <ul class="mobile-nav__list"><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="false" aria-controls="mnav-services" data-accordion-trigger>IT Services<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-services" hidden><p class="mobile-nav__group-title">Core services</p><ul><li><a href="it-services.html">All IT services</a></li><li><a href="it-support.html">IT Support</a></li><li><a href="managed-cloud-services.html">Managed Cloud Services</a></li><li><a href="cyber-security.html">Cyber Security</a></li><li><a href="network-management.html">Network Management</a></li><li><a href="it-project-management.html">IT Project Management</a></li></ul><p class="mobile-nav__group-title">Specialist services</p><ul><li><a href="it-support/managed-it-support-services.html">Managed IT Support</a></li><li><a href="cyber-security/cyber-essentials-services.html">Cyber Essentials</a></li><li><a href="managed-cloud-services/cloud-migration-services.html">Cloud Migration</a></li><li><a href="managed-cloud-services/microsoft-365-backup-services.html">Microsoft 365 Backup</a></li><li><a href="network-management/managed-firewall-services.html">Managed Firewall</a></li><li><a href="it-project-management/it-strategy-services.html">IT Strategy</a></li></ul></div>
-    </li><li>
+    </li><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="false" aria-controls="mnav-industries" data-accordion-trigger>Industries<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-industries" hidden><p class="mobile-nav__group-title">Sectors</p><ul><li><a href="industries.html">All industries</a></li><li><a href="managed-it-services-for-business-services-organisations.html">Business Services</a></li><li><a href="it-support-construction.html">Construction</a></li><li><a href="it-support-healthcare.html">Healthcare</a></li><li><a href="managed-it-services-for-financial-services-business.html">Financial Services</a></li><li><a href="managed-it-services-for-legal-firms.html">Legal</a></li><li><a href="managed-it-services-for-education-organisations.html">Education</a></li><li><a href="managed-it-services-for-manufacturing-businesses.html">Manufacturing</a></li><li><a href="managed-it-services-for-insurance-services-businesses.html">Insurance</a></li></ul></div>
-    </li><li>
+    </li><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="false" aria-controls="mnav-customers" data-accordion-trigger>Customers<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-customers" hidden><p class="mobile-nav__group-title">Proof</p><ul><li><a href="our-customers.html">Our customers</a></li><li><a href="our-customers.html#stories">Success stories</a></li><li><a href="our-customers.html#reviews">Google reviews</a></li></ul></div>
-    </li><li>
+    </li><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="false" aria-controls="mnav-resources" data-accordion-trigger>Resources<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-resources" hidden><p class="mobile-nav__group-title">Insights</p><ul><li><a href="blog.html">Blog</a></li><li><a href="blog.html?category=security">Cyber security articles</a></li><li><a href="blog.html?category=cloud">Cloud & Microsoft 365</a></li></ul><p class="mobile-nav__group-title">Support</p><ul><li><a href="contact.html">Book a consultation</a></li><li><a href="tel:02046342518">Call 020 4634 2518</a></li></ul></div>
-    </li><li>
+    </li><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="true" aria-controls="mnav-company" data-accordion-trigger>About<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-company"><p class="mobile-nav__group-title">WhizzIT</p><ul><li><a href="about.html">About us</a></li><li><a href="about.html#team">Meet the team</a></li></ul><p class="mobile-nav__group-title">Locations</p><ul><li><a href="locations.html" aria-current="page">All locations</a></li><li><a href="locations/it-support-london.html">IT support in London</a></li><li><a href="locations/it-support-hertfordshire.html">IT support in Hertfordshire</a></li></ul></div>
     </li><li><a class="mobile-nav__direct" href="contact.html">Contact</a></li></ul>

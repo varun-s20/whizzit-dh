@@ -186,41 +186,28 @@ export function renderBlocks(blocks, { key = "b" } = {}) {
 }
 
 /* ---------- Shared page furniture ---------- */
-// The photos across the hero's foot. Pages can pass their own wide photo
-// (location, case study). Every other page gets three smaller tiles of WhizzIT's
-// own photography: its service's photo first, or the PHOTOS keys it passes as
-// `photos`. Phones show the first.
-const TONE_PHOTOS = {
-  support: ["serviceDesk", "team", "office"],
-  cloud: ["office", "serviceDesk", "team"],
-  cyber: ["team", "office", "network"],
-  network: ["network", "serviceDesk", "van"],
-  projects: ["van", "team", "network"],
-  default: ["team", "serviceDesk", "network"],
-};
-const heroTrio = (keys) => `<div class="photo-trio">${keys
-  .map((key, i) => photo(PHOTOS[key], { ratio: "16-9", sizes: "(min-width: 1280px) 400px, (min-width: 640px) 32vw, 100vw", loading: i ? "lazy" : "eager" }))
-  .join("")}</div>`;
-
-export function pageHero({ eyebrow, title, lead, crumbs = "", aside = "", cls = "", feature, photos, note }) {
-  const tone = (cls.match(/hero--tone-(\w+)/) || [])[1];
-  const fig = feature === false ? "" : feature || heroTrio(photos || TONE_PHOTOS[tone] || TONE_PHOTOS.default);
-  // One column, top to bottom: the headline gets the full row instead of sharing
-  // it with a side panel, then the callback form the live site has on every page,
-  // and whatever used to sit beside it runs full width below.
+// Inner-page hero: the headline and lead on the left, the live site's callback
+// form as a box on the right, and any proof figures across the foot. No photo
+// row by default: a page shows a photograph only when it passes one that belongs
+// to it (`feature`: a location's skyline, a case study's client, a sector).
+export function pageHero({ eyebrow, title, lead, crumbs = "", aside = "", cls = "", feature = "", note }) {
   return `
-<section class="hero hero--sky hero--page hero-stack${fig ? " has-feature" : ""} ${cls}" aria-labelledby="page-hero-title">
+<section class="hero hero--sky hero--page hero-split${feature ? " has-feature" : ""} ${cls}" aria-labelledby="page-hero-title">
   <div class="container">
     ${crumbs}
-    ${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ""}
-    <h1 class="hero-sky__title hero-stack__title" id="page-hero-title">${title}</h1>
-    ${lead ? `<p class="hero-sky__lead">${lead}</p>` : ""}
-    ${callbackForm({ track: "page-hero" })}
-    ${heroNote(note, "page-hero")}
-    ${aside ? `<div class="hero-stack__aside">${aside}</div>` : ""}
+    <div class="hero-split__grid">
+      <div class="hero-split__copy">
+        ${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ""}
+        <h1 class="hero-sky__title hero-split__title" id="page-hero-title">${title}</h1>
+        ${lead ? `<p class="hero-sky__lead">${lead}</p>` : ""}
+        ${heroNote(note, "page-hero")}
+      </div>
+      <div class="hero-split__form">${callbackForm({ track: "page-hero" })}</div>
+    </div>
+    ${aside ? `<div class="hero-split__aside">${aside}</div>` : ""}
   </div>
-</section>${fig ? `
-<div class="hero-feature"><div class="container">${fig}</div></div>` : ""}`;
+</section>${feature ? `
+<div class="hero-feature"><div class="container">${feature}</div></div>` : ""}`;
 }
 
 // Proof figures as one raised faceplate, like a rack unit: a status light per
@@ -279,17 +266,20 @@ export function reviewsBand(quotes, { title = "What our clients say", eyebrow = 
 </section>`;
 }
 
+// Pricing, as two boxes: what we price on, and the two ways to get a number.
 export function pricingPanel({ track = "pricing" } = {}) {
   return `
 <section class="section section--tight" aria-labelledby="pricing-panel-title">
   <div class="container">
-    <div class="pricing-panel">
-      <div>
+    <div class="pricing-boxes">
+      <div class="pricing-boxes__copy">
         <p class="eyebrow">Pricing</p>
         <h2 class="grad-head" id="pricing-panel-title">Pricing built around your business</h2>
         <p>No rigid packages and no surprises. We shape your plan and price around your team, systems and goals, then give you a clear, no-obligation quote.</p>
       </div>
-      <div class="btn-group">
+      <div class="pricing-boxes__act">
+        <span class="pricing-boxes__icon" aria-hidden="true">${icon("message")}</span>
+        <p><strong>Get a tailored quote</strong>${SITE.responseLine}.</p>
         ${btn("Get a tailored quote", "contact.html", { arrow: false, track: `${track}-quote` })}
         ${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "secondary", iconName: "phone", arrow: false, track: `${track}-phone` })}
       </div>

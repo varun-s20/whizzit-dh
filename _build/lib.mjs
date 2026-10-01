@@ -3,10 +3,10 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { icon, logo, logoMark } from "./icons.mjs";
-import { SITE, SERVICES, SPECIALIST, INDUSTRIES, LOCATIONS, NAV, PHOTOS } from "./site.mjs";
+import { SITE, SERVICES, SPECIALIST, INDUSTRIES, LOCATIONS, NAV, PHOTOS, CREDENTIALS, PARTNERS, CASE_PHOTO } from "./site.mjs";
 
 export { icon, logo, logoMark, SITE, SERVICES, SPECIALIST, INDUSTRIES, LOCATIONS };
-export { CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, statValue, PHOTOS, BLOG, BLOG_LISTING, LISTING_CATEGORIES, TEAM, CREDENTIALS, STOCK, SECTOR_PHOTO, CATEGORY_PHOTO } from "./site.mjs";
+export { CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, statValue, PHOTOS, BLOG, BLOG_LISTING, LISTING_CATEGORIES, TEAM, CREDENTIALS, STOCK, SECTOR_PHOTO, SECTOR_NOTE, CATEGORY_PHOTO, CASE_PHOTO } from "./site.mjs";
 
 const OUT = join(import.meta.dirname, "..");
 // Official WhizzIT artwork pulled from staging: dark wordmark on light surfaces,
@@ -182,6 +182,57 @@ export function photo(p, { cls = "", sizes = "(min-width: 1024px) 50vw, 100vw", 
   </figure>`;
 }
 
+// An office on its own Google map (Contact, Locations). Google's keyless embed
+// pins the address (q) and centres the view on ll, so moving ll north drops the
+// pin within the frame (5.13e-5 degrees of latitude per pixel at z=15, measured
+// from the embed itself). The frame is 130px taller than the band that shows,
+// because the crop hides Google's place card, so the pin drops 65px to reach the
+// band's middle, and 15px more so the marker's head, not its tip, sits there.
+// The map is scenery: the address is in the card, "Get directions" opens Google
+// Maps, and the frame takes no focus or pointer so it never traps a scroll.
+const LAT_PER_PX = 5.13e-5;
+const PIN_DROP_PX = 80;
+const mapSrc = (o) => {
+  const [lat, lng] = o.coords;
+  const ll = `${(lat + PIN_DROP_PX * LAT_PER_PX).toFixed(6)},${lng}`;
+  return `https://www.google.com/maps?q=${encodeURIComponent(o.address).replace(/%20/g, "+")}&amp;ll=${ll}&amp;z=15&amp;output=embed`;
+};
+
+export function officeMapCard(o, { level = 3 } = {}) {
+  return `
+      <article class="office-card office-card--lg office-card--map">
+        <div class="office-card__map" aria-hidden="true"><iframe src="${mapSrc(o)}" title="Map of the ${o.name} office" loading="lazy" referrerpolicy="no-referrer-when-downgrade" tabindex="-1"></iframe></div>
+        <div class="office-card__body">
+          <span class="office-card__icon">${icon("mapPin")}</span>
+          <h${level}>${o.name}</h${level}>
+          <p class="office-card__label">${o.label}</p>
+          <p>${o.address}</p>
+          <div class="btn-group mt-5">
+            <a class="btn btn--secondary btn--sm" href="${o.maps}" rel="noopener">${icon("mapPin")}<span>Get directions</span></a>
+            <a class="btn btn--ghost btn--sm" href="${SITE.phoneHref}">${icon("phone")}<span>${SITE.phone}</span></a>
+          </div>
+        </div>
+      </article>`;
+}
+
+// A case study's own photograph (CASE_PHOTO in site.mjs).
+export const casePhoto = (c, options) => photo(PHOTOS[CASE_PHOTO[c.slug]] || PHOTOS.team, options);
+
+// The case-study card, as the home page shows it: the study's photograph, its
+// sector, title and excerpt. Used wherever the stories are listed as cards.
+export function caseTile(c, { level = 3 } = {}) {
+  return `
+  <article class="case-tile">
+    ${casePhoto(c, { cls: "case-tile__art", ratio: "4-5", sizes: "(min-width: 1024px) 24vw, (min-width: 640px) 46vw, 92vw" })}
+    <div class="case-tile__body">
+      <span class="case-tile__tag">${c.sector}</span>
+      <h${level} class="case-tile__title"><a class="card-link" href="@/our-customers/${c.slug}.html">${c.title}</a></h${level}>
+      <p>${c.excerpt}</p>
+      <span class="case-tile__more" aria-hidden="true">Read the story ${icon("arrow")}</span>
+    </div>
+  </article>`;
+}
+
 // Stock photography helper: 3:2 WebP at four widths.
 export function stockPhoto(item, { cls = "", sizes = "(min-width: 1024px) 50vw, 100vw", loading = "lazy", ratio = "3-2", alt = null } = {}) {
   const set = [480, 768, 1024, 1280].map((w) => `@/assets/images/photos/stock-${item.slug}-${w}.webp ${w}w`).join(", ");
@@ -320,21 +371,49 @@ export function faq(items, { title = "Questions we hear often", lead = "", id = 
   </section>`;
 }
 
-// Closing call to action: a photo of someone on the phone beside a dark panel
-// warmed by the brand orange. Every page carries it at the top of the footer
-// (page({ footerCta })), as the home page always has.
+// Closing call to action, at the top of every page's footer (page({ footerCta })).
+// Two boxes side by side rather than one long band: the ask on a dark panel
+// warmed by the brand orange, and beside it the phone line with the engineer who
+// answers it, so the photo says what it is there for.
 function ctaCard({ title, text, cta = "Book a consultation", href = "contact.html", track = "cta-band", level = 2 }) {
-  return `<div class="cta-band">
-        ${photo(PHOTOS.headset, { cls: "cta-band__photo", ratio: "4-3", sizes: "(min-width: 1024px) 34vw, 100vw" })}
-        <div class="cta-band__body">
+  return `<div class="cta-box">
+        <div class="cta-box__ask">
           <h${level}>${title}</h${level}>
           <p>${text}</p>
-          <div class="cta-band__actions">
+          <div class="cta-box__actions">
             ${btn(cta, href, { variant: "light", size: "lg", track })}
-            ${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "outline-light", size: "lg", iconName: "phone", arrow: false, track: `${track}-phone` })}
+          </div>
+        </div>
+        <div class="cta-box__call">
+          ${photo(PHOTOS.headset, { cls: "cta-box__photo", ratio: "4-3", sizes: "(min-width: 1024px) 460px, 100vw" })}
+          <div class="cta-box__line">
+            <p class="cta-box__label">Prefer to talk?</p>
+            <a class="cta-box__phone" href="${SITE.phoneHref}" data-track="${track}-phone">${icon("phone")}<span>${SITE.phone}</span></a>
+            <p class="cta-box__note">We answer the phone, no call queues.</p>
           </div>
         </div>
       </div>`;
+}
+
+// The two credentials as large badges: each logo on its own plate at a size that
+// can actually be read, with the line that says what it proves. `partners` adds
+// the vendor partner logos underneath as a row of tiles.
+export function credBadges({ partners = false, level = 3 } = {}) {
+  const rest = PARTNERS.filter((p) => !CREDENTIALS.some((c) => c.file === p.file));
+  return `<ul class="cred-badges" role="list">
+      ${CREDENTIALS.map((c) => `
+      <li class="cred-badge">
+        <span class="cred-badge__plate"><img src="@/assets/images/partners/${c.file}" alt="${c.title}" width="280" height="110" loading="lazy" decoding="async"></span>
+        <span class="cred-badge__body">
+          <h${level} class="cred-badge__title">${c.title}</h${level}>
+          <span>${c.text}</span>
+          <a class="text-link" href="${at(c.cta.href)}"><span>${c.cta.label}</span>${icon("arrow")}</a>
+        </span>
+      </li>`).join("")}
+    </ul>${partners ? `
+    <ul class="partner-row partner-row--badges" role="list">
+      ${rest.map((p) => `<li><img src="@/assets/images/partners/${p.file}" alt="${p.title}" loading="lazy" decoding="async"></li>`).join("")}
+    </ul>` : ""}`;
 }
 
 export function blogCard(p, { featured = false, level = 3 } = {}) {
@@ -415,9 +494,24 @@ export const trustItems = () =>
 
 
 /* ---------- Header ---------- */
+// A match entry ending in "/" or "-" covers every page that starts with it (a
+// folder, or a family such as "managed-it-services-for-"); anything else is one
+// page. Only the item's own list counts, never the links inside its menu, so a
+// "Book a consultation" button in a dropdown never marks that dropdown current.
+const isPrefix = (m) => m.endsWith("/") || m.endsWith("-");
+
 function isCurrent(item, file) {
-  return item.match.some((m) => (m.endsWith("/") ? file.startsWith(m) : file === m));
+  return item.match.some((m) => (isPrefix(m) ? file.startsWith(m) : file === m));
 }
+
+// WordPress: the header is one generated part for every page, so each item
+// carries its match list as URL paths and wp/wp.js marks the current one in the
+// browser. "*" marks a prefix.
+const navMatch = (item) => {
+  if (!WP_EXPORT) return "";
+  const paths = item.match.map((m) => (m === "index.html" ? "/" : m.endsWith(".html") ? `/${m.replace(/\.html$/, "/")}` : `/${m}*`));
+  return ` data-nav-match="${paths.join(" ")}"${item.bodyClass ? ` data-nav-body="${item.bodyClass.join(" ")}"` : ""}`;
+};
 
 const cur = (href, file) => (href === file ? ' aria-current="page"' : "");
 
@@ -472,12 +566,12 @@ function header(file) {
   // header's second action.
   const items = NAV.map((item) => {
     if (item.type === "link") {
-      return `<li class="primary-nav__item${isCurrent(item, file) ? " is-current" : ""}">
+      return `<li class="primary-nav__item${isCurrent(item, file) ? " is-current" : ""}"${navMatch(item)}>
       <a class="primary-nav__link" href="${at(item.href)}"${cur(item.href, file)}>${item.label}</a>
     </li>`;
     }
     const panel = item.type === "services" ? megaServices(file) : item.type === "industries" ? megaIndustries(file) : megaCompact(item, file);
-    return `<li class="primary-nav__item primary-nav__item--mega${isCurrent(item, file) ? " is-current" : ""}">
+    return `<li class="primary-nav__item primary-nav__item--mega${isCurrent(item, file) ? " is-current" : ""}"${navMatch(item)}>
       <a class="primary-nav__trigger" href="${at(item.href)}"${cur(item.href, file)} data-mega-link>${item.label}</a><button class="primary-nav__caret" type="button" aria-expanded="false" aria-controls="mega-${item.id}" aria-label="${item.label} menu" data-mega-trigger>${icon("chevronDown")}</button>
       <div class="mega" id="mega-${item.id}">${panel}</div>
     </li>`;
@@ -530,7 +624,7 @@ function mobileNav(file) {
       .map((g) => `<p class="mobile-nav__group-title">${g.title}</p><ul>${g.links.map((l) => `<li><a href="${at(l.href)}"${cur(l.href, file)}>${l.title}</a></li>`).join("")}</ul>`)
       .join("");
     const open = isCurrent(item, file);
-    return `<li>
+    return `<li class="mobile-nav__item"${navMatch(item)}>
       <button class="mobile-nav__toggle" type="button" aria-expanded="${open}" aria-controls="mnav-${item.id}" data-accordion-trigger>${item.label}${icon("chevronDown")}</button>
       <div class="mobile-nav__sub" id="mnav-${item.id}"${open ? "" : " hidden"}>${groups}</div>
     </li>`;
@@ -593,6 +687,10 @@ function footer(cta) {
           <li><a href="mailto:${SITE.email}" data-track="footer-email">${icon("mail")}${SITE.email}</a></li>
           ${SITE.offices.map((o) => `<li><span>${icon("mapPin")}${o.address}</span></li>`).join("")}
         </ul>
+        <div class="footer-help">
+          <p><strong>Existing customer?</strong>Need help right now? We answer the phone, no call queues.</p>
+          ${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "outline-light", size: "sm", iconName: "phone", arrow: false, track: "footer-phone-support" })}
+        </div>
       </div>
       <nav class="site-footer__nav" aria-label="Footer">
         ${col("IT services", [{ title: "All IT services", href: "it-services.html" }, ...SERVICES])}
@@ -606,16 +704,11 @@ function footer(cta) {
         ${col("Areas we cover", LOCATIONS.slice(0, 7))}
       </nav>
     </div>
-    <div class="site-footer__support">
-      <p>Existing customer and need help right now? We answer the phone, no call queues.</p>
-      ${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "outline-light", size: "sm", iconName: "phone", arrow: false, track: "footer-phone-support" })}
-    </div>
     <div class="site-footer__bottom">
       <p>© 2026 ${SITE.company}. All rights reserved.</p>
       <ul class="legal-links" role="list">
         <li><a href="@/privacy-policy.html">Privacy policy</a></li>
         <li><a href="@/cookie-policy.html">Cookie policy</a></li>
-        <li><a href="https://digitalheroesco.com/" target="_blank" rel="noopener" data-track="footer-credit">Created with love by Digital Heroes</a></li>
       </ul>
     </div>
   </div>

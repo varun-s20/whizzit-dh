@@ -30,9 +30,17 @@
   max-width: 100%;
 }
 
-/* The sticky header sits under the admin bar when you are logged in. */
+/* The sticky header sits under the admin bar when you are logged in. From
+   1100px the header sticks with its contact strip above the edge (styles.css),
+   so the strip's height comes off the admin bar's offset there. */
 body.admin-bar .site-header {
   top: 32px;
+}
+
+@media (min-width: 1100px) {
+  body.admin-bar .site-header {
+    top: calc(32px - var(--header-top-h) - 1px);
+  }
 }
 
 @media (max-width: 782px) {

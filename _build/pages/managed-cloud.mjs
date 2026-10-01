@@ -1,6 +1,6 @@
 // Managed Cloud Services overview. Signature: platform cards across the top and a
 // four-step migration journey down the middle.
-import { page, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, PARTNERS } from "../lib.mjs";
+import { page, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, PARTNERS, credBadges } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
 import { pageHero, heroProof, renderBlocks, subServiceGrid, reviewsBand, pricingPanel } from "../blocks.mjs";
@@ -123,6 +123,7 @@ ${renderBlocks(rest, { key: "cloud" })}
       <h2 class="grad-head" id="cloud-why-title">${why.title || "Why work with us?"}</h2>
     </div>
     ${why.html ? `<div class="prose-cols">${why.html}</div>` : ""}
+    ${credBadges()}
   </div>
 </section>
 

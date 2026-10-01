@@ -21,6 +21,42 @@ namespace WhizzIT\Migrate;
 defined( 'ABSPATH' ) || exit;
 
 const PAGE_SLUG = 'whizzit-import';
+const BUILD_OPTION = 'whizzit_imported_build';
+
+/** The content build this plugin carries (data/build.json, from the export). */
+function content_build() {
+	$file = plugin_dir_path( WHIZZIT_CORE_FILE ) . 'data/build.json';
+	if ( ! is_readable( $file ) ) {
+		return '';
+	}
+	$data = json_decode( (string) file_get_contents( $file ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local plugin file.
+	return is_string( $data['build'] ?? null ) ? $data['build'] : '';
+}
+
+/** True when the pages in WordPress were imported from an older content build. */
+function import_is_stale() {
+	$build = content_build();
+	return '' !== $build && get_option( BUILD_OPTION ) !== $build;
+}
+
+/*
+ * Uploading a new whizzit-core replaces its section templates. Until the import
+ * is run again, pages still point at the old ones and those sections render
+ * empty, so say so on every admin screen until it is done.
+ */
+add_action( 'admin_notices', function () {
+	if ( ! current_user_can( 'manage_options' ) || ! import_is_stale() ) {
+		return;
+	}
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( $screen && 'tools_page_' . PAGE_SLUG === $screen->id && isset( $_POST['whizzit_action'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read only, to hide the notice while the import runs.
+		return;
+	}
+	printf(
+		'<div class="notice notice-error"><p><strong>WhizzIT: the pages need re-importing.</strong> This version of the WhizzIT Core plugin carries updated page designs that are not in the pages yet, so some sections show empty until they are. Run <a href="%s">Tools &rarr; WhizzIT import</a> (it replaces the page content, so any Elementor edits made since the last import are lost), then purge the cache.</p></div>',
+		esc_url( admin_url( 'tools.php?page=' . PAGE_SLUG ) )
+	);
+} );
 
 /** @return array<int, array<string, mixed>> Page records from data/pages.json. */
 function records() {
@@ -306,8 +342,10 @@ function screen() {
 		if ( 'import' === $action ) {
 			// Sectors first, so a slow host can never leave them unconverted.
 			$report = array_merge( whizzit_import_sectors(), import_pages(), import_posts() );
+			update_option( BUILD_OPTION, content_build(), false );
 		} elseif ( 'revert' === $action ) {
 			$report = array_merge( whizzit_revert_sectors(), revert_pages(), revert_posts() );
+			delete_option( BUILD_OPTION );
 		}
 		flush_caches();
 	}
@@ -319,6 +357,8 @@ function screen() {
 		<h1>WhizzIT import</h1>
 		<p>Puts the new design into Elementor on all <strong><?php echo (int) $pages; ?></strong> pages (the sector pages become Sectors, at the same URLs), and the article text, excerpt, date and category into all <strong><?php echo (int) $posts; ?></strong> blog posts. Everything is matched by its URL and keeps it. Nothing is deleted: the old content is kept, and <em>Revert</em> switches back to it.</p>
 		<p>Now: plugin <?php echo esc_html( WHIZZIT_CORE_VERSION ); ?>, theme <?php echo esc_html( wp_get_theme()->get( 'Version' ) ); ?>, <strong><?php echo (int) count( get_posts( [ 'post_type' => 'sector', 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids' ] ) ); ?></strong> sectors.</p>
+		<p>Page content in this plugin: <code><?php echo esc_html( content_build() ?: 'unknown' ); ?></code>. Last imported: <code><?php echo esc_html( (string) ( get_option( BUILD_OPTION ) ?: 'not recorded' ) ); ?></code>
+			<?php echo import_is_stale() ? ' &mdash; <strong>import needed</strong>' : ' &mdash; up to date'; ?></p>
 		<?php if ( ! defined( 'ELEMENTOR_VERSION' ) ) : ?>
 			<div class="notice notice-error"><p>Elementor is not active. Activate it first.</p></div>
 		<?php endif; ?>

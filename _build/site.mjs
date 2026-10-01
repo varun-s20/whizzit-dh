@@ -247,6 +247,16 @@ export const CREDENTIALS = [
 ];
 
 // Case studies published under /our-customers/.
+// Each case study's photograph: WhizzIT's own photography, the same everywhere
+// a case study appears (home, Our Customers, Industries, the sector and case
+// pages). Staging's case studies carry no photographs of their own.
+export const CASE_PHOTO = {
+  "the-portland-hotel-group": "van",
+  "ixia-clinical": "serviceDesk",
+  "gh-building-and-landscaping": "network",
+  "mbkb-group": "team",
+};
+
 export const CASE_STUDIES = [
   { slug: "the-portland-hotel-group", title: "The Portland Hotel Group", excerpt: "Phone-first IT support across a hotel, restaurant and sports bar: hospitality IT that never clocks off.", sector: "Hospitality", image: "photos/whizzit-van-outside-office-1024.webp" },
   { slug: "ixia-clinical", title: "Ixia Clinical", excerpt: "A smooth migration from Google Workspace to Microsoft 365, with ongoing support a phone call away.", sector: "Healthcare", image: "photos/service-desk-engineer-1024.webp" },
@@ -289,6 +299,18 @@ export const STOCK = {
   meeting: { slug: "meeting", alt: "Business meeting around a table" },
 };
 
+// What each sector tends to come to us for — drawn from the sector pages.
+export const SECTOR_NOTE = {
+  "business-services": "Client confidentiality, billable hours and systems that cannot be down in a working day.",
+  construction: "Site connectivity, rugged kit and project data that has to reach the office.",
+  healthcare: "Patient data, GDPR obligations and systems clinicians depend on daily.",
+  financial: "Regulated data, evidence for audits and resilient access to platforms.",
+  legal: "Case files, client obligations and security questionnaires that have to be answered.",
+  education: "Safeguarding, classroom technology and budgets that have to stretch.",
+  manufacturing: "ERP platforms, connected machinery and multi-site connectivity.",
+  insurance: "Policy platforms, claims systems and fast access to customer records.",
+};
+
 // Which photograph represents each sector and each blog topic.
 export const SECTOR_PHOTO = {
   "business-services": "meeting",
@@ -326,6 +348,8 @@ export const NAV = [
     id: "industries",
     href: "industries.html",
     match: ["industries.html", "it-support-construction.html", "it-support-healthcare.html", "managed-it-services-for-"],
+    // WordPress: a sector added later has its own URL, but always this body class.
+    bodyClass: ["single-sector"],
     type: "industries",
   },
   {

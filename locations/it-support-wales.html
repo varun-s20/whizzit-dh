@@ -92,13 +92,17 @@
 <main id="main" tabindex="-1">
 
 
-<section class="hero hero--sky hero--page hero-stack has-feature hero--location" aria-labelledby="page-hero-title">
+<section class="hero hero--sky hero--page hero-split has-feature hero--location" aria-labelledby="page-hero-title">
   <div class="container">
     <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="../locations.html">Locations</a></li><li><span aria-current="page">IT support in Wales</span></li></ol></nav>
-    <p class="eyebrow">IT support in Wales</p>
-    <h1 class="hero-sky__title hero-stack__title" id="page-hero-title">IT support in Wales</h1>
-    <p class="hero-sky__lead">IT support for businesses across Wales: proactive monitoring, fast response and expert engineers, remote and onsite.</p>
-    
+    <div class="hero-split__grid">
+      <div class="hero-split__copy">
+        <p class="eyebrow">IT support in Wales</p>
+        <h1 class="hero-sky__title hero-split__title" id="page-hero-title">IT support in Wales</h1>
+        <p class="hero-sky__lead">IT support for businesses across Wales: proactive monitoring, fast response and expert engineers, remote and onsite.</p>
+        <p class="hero-sky__note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Prefer to talk? <a href="tel:02046342518" data-track="page-hero-phone">Call 020 4634 2518</a> · <a href="https://www.google.com/maps?cid=17055157413191665489" target="_blank" rel="noopener" data-track="page-hero-google">Rated 5.0 on Google</a> · UK-wide coverage</span></p>
+      </div>
+      <div class="hero-split__form">
 <div class="callback">
   <form class="callback__form" action="/api/submit.php" method="post" data-validate data-demo data-success="callback-success" aria-labelledby="callback-title">
     <input type="hidden" name="form_name" value="callback">
@@ -133,9 +137,9 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
     <p><strong>Got it, thank you.</strong> Your callback request is with the team. We’ll respond the same working day. Need it sorted sooner? <a href="tel:02046342518" data-track="page-hero-success-phone">Call 020 4634 2518</a></p>
   </div>
-</div>
-    <p class="hero-sky__note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Prefer to talk? <a href="tel:02046342518" data-track="page-hero-phone">Call 020 4634 2518</a> · <a href="https://www.google.com/maps?cid=17055157413191665489" target="_blank" rel="noopener" data-track="page-hero-google">Rated 5.0 on Google</a> · UK-wide coverage</span></p>
-    <div class="hero-stack__aside">
+</div></div>
+    </div>
+    <div class="hero-split__aside">
 <ul class="faceplate" role="list">
   <li class="faceplate__unit" style="--i:0"><span class="faceplate__led" aria-hidden="true"></span><span class="faceplate__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><strong>9 min</strong><span>Average first response</span></li><li class="faceplate__unit" style="--i:1"><span class="faceplate__led" aria-hidden="true"></span><span class="faceplate__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>Wales</strong><span>Remote first, on-site when needed</span></li>
 </ul></div>
@@ -303,20 +307,26 @@
 </main>
 <footer class="site-footer" id="footer-nav">
   <div class="container">
-    <div class="site-footer__cta"><div class="cta-band">
-        <figure class="media ratio-4-3 cta-band__photo">
+    <div class="site-footer__cta"><div class="cta-box">
+        <div class="cta-box__ask">
+          <h2>Need IT support in Wales?</h2>
+          <p>Call us and you'll speak to an engineer, not a queue. Same working day response.</p>
+          <div class="cta-box__actions">
+            <a class="btn btn--light btn--lg" href="../contact.html" data-track="loc-Wales-cta"><span>Book a consultation</span><svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+          </div>
+        </div>
+        <div class="cta-box__call">
+          <figure class="media ratio-4-3 cta-box__photo">
     <picture>
-      <source type="image/avif" srcset="../assets/images/photos/it-support-engineer-headset-480.avif 480w, ../assets/images/photos/it-support-engineer-headset-768.avif 768w, ../assets/images/photos/it-support-engineer-headset-1024.avif 1024w, ../assets/images/photos/it-support-engineer-headset-1280.avif 1280w" sizes="(min-width: 1024px) 34vw, 100vw">
-      <source type="image/webp" srcset="../assets/images/photos/it-support-engineer-headset-480.webp 480w, ../assets/images/photos/it-support-engineer-headset-768.webp 768w, ../assets/images/photos/it-support-engineer-headset-1024.webp 1024w, ../assets/images/photos/it-support-engineer-headset-1280.webp 1280w" sizes="(min-width: 1024px) 34vw, 100vw">
+      <source type="image/avif" srcset="../assets/images/photos/it-support-engineer-headset-480.avif 480w, ../assets/images/photos/it-support-engineer-headset-768.avif 768w, ../assets/images/photos/it-support-engineer-headset-1024.avif 1024w, ../assets/images/photos/it-support-engineer-headset-1280.avif 1280w" sizes="(min-width: 1024px) 460px, 100vw">
+      <source type="image/webp" srcset="../assets/images/photos/it-support-engineer-headset-480.webp 480w, ../assets/images/photos/it-support-engineer-headset-768.webp 768w, ../assets/images/photos/it-support-engineer-headset-1024.webp 1024w, ../assets/images/photos/it-support-engineer-headset-1280.webp 1280w" sizes="(min-width: 1024px) 460px, 100vw">
       <img src="../assets/images/photos/it-support-engineer-headset-1280.webp" alt="IT support engineer wearing a headset taking a customer call" width="1280" height="720" loading="lazy" decoding="async">
     </picture>
   </figure>
-        <div class="cta-band__body">
-          <h2>Need IT support in Wales?</h2>
-          <p>Call us and you'll speak to an engineer, not a queue. Same working day response.</p>
-          <div class="cta-band__actions">
-            <a class="btn btn--light btn--lg" href="../contact.html" data-track="loc-Wales-cta"><span>Book a consultation</span><svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
-            <a class="btn btn--outline-light btn--lg" href="tel:02046342518" data-track="loc-Wales-cta-phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Call 020 4634 2518</span></a>
+          <div class="cta-box__line">
+            <p class="cta-box__label">Prefer to talk?</p>
+            <a class="cta-box__phone" href="tel:02046342518" data-track="loc-Wales-cta-phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>020 4634 2518</span></a>
+            <p class="cta-box__note">We answer the phone, no call queues.</p>
           </div>
         </div>
       </div></div>
@@ -336,6 +346,10 @@
           <li><a href="mailto:info@whizzit.co.uk" data-track="footer-email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 7 9 6 9-6"/></svg>info@whizzit.co.uk</a></li>
           <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>124 City Rd, London, EC1V 2NX</span></li><li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Caxton Point Business Centre, Caxton Way, Stevenage SG1 2XT</span></li>
         </ul>
+        <div class="footer-help">
+          <p><strong>Existing customer?</strong>Need help right now? We answer the phone, no call queues.</p>
+          <a class="btn btn--outline-light btn--sm" href="tel:02046342518" data-track="footer-phone-support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Call 020 4634 2518</span></a>
+        </div>
       </div>
       <nav class="site-footer__nav" aria-label="Footer">
         <div class="footer-col"><h2>IT services</h2><ul><li><a href="../it-services.html">All IT services</a></li><li><a href="../it-support.html">IT Support</a></li><li><a href="../managed-cloud-services.html">Managed Cloud Services</a></li><li><a href="../cyber-security.html">Cyber Security</a></li><li><a href="../network-management.html">Network Management</a></li><li><a href="../it-project-management.html">IT Project Management</a></li></ul></div>
@@ -344,16 +358,11 @@
         <div class="footer-col"><h2>Areas we cover</h2><ul><li><a href="../locations/it-support-london.html">London</a></li><li><a href="../locations/it-support-hertfordshire.html">Hertfordshire</a></li><li><a href="../locations/it-support-stevenage.html">Stevenage</a></li><li><a href="../locations/it-support-birmingham.html">Birmingham</a></li><li><a href="../locations/it-support-bradford.html">Bradford</a></li><li><a href="../locations/it-support-cardiff.html">Cardiff</a></li><li><a href="../locations/it-support-coventry.html">Coventry</a></li></ul></div>
       </nav>
     </div>
-    <div class="site-footer__support">
-      <p>Existing customer and need help right now? We answer the phone, no call queues.</p>
-      <a class="btn btn--outline-light btn--sm" href="tel:02046342518" data-track="footer-phone-support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span>Call 020 4634 2518</span></a>
-    </div>
     <div class="site-footer__bottom">
       <p>© 2026 Whizz Solutions Ltd. All rights reserved.</p>
       <ul class="legal-links" role="list">
         <li><a href="../privacy-policy.html">Privacy policy</a></li>
         <li><a href="../cookie-policy.html">Cookie policy</a></li>
-        <li><a href="https://digitalheroesco.com/" target="_blank" rel="noopener" data-track="footer-credit">Created with love by Digital Heroes</a></li>
       </ul>
     </div>
   </div>
@@ -372,19 +381,19 @@
     </div>
     <div class="mobile-nav__body">
       <a class="mobile-nav__support" href="tel:02046342518" data-track="mobile-phone-support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span><strong>Need help now?</strong>Call 020 4634 2518 — we answer the phone</span></a>
-      <ul class="mobile-nav__list"><li>
+      <ul class="mobile-nav__list"><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="false" aria-controls="mnav-services" data-accordion-trigger>IT Services<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-services" hidden><p class="mobile-nav__group-title">Core services</p><ul><li><a href="../it-services.html">All IT services</a></li><li><a href="../it-support.html">IT Support</a></li><li><a href="../managed-cloud-services.html">Managed Cloud Services</a></li><li><a href="../cyber-security.html">Cyber Security</a></li><li><a href="../network-management.html">Network Management</a></li><li><a href="../it-project-management.html">IT Project Management</a></li></ul><p class="mobile-nav__group-title">Specialist services</p><ul><li><a href="../it-support/managed-it-support-services.html">Managed IT Support</a></li><li><a href="../cyber-security/cyber-essentials-services.html">Cyber Essentials</a></li><li><a href="../managed-cloud-services/cloud-migration-services.html">Cloud Migration</a></li><li><a href="../managed-cloud-services/microsoft-365-backup-services.html">Microsoft 365 Backup</a></li><li><a href="../network-management/managed-firewall-services.html">Managed Firewall</a></li><li><a href="../it-project-management/it-strategy-services.html">IT Strategy</a></li></ul></div>
-    </li><li>
+    </li><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="false" aria-controls="mnav-industries" data-accordion-trigger>Industries<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-industries" hidden><p class="mobile-nav__group-title">Sectors</p><ul><li><a href="../industries.html">All industries</a></li><li><a href="../managed-it-services-for-business-services-organisations.html">Business Services</a></li><li><a href="../it-support-construction.html">Construction</a></li><li><a href="../it-support-healthcare.html">Healthcare</a></li><li><a href="../managed-it-services-for-financial-services-business.html">Financial Services</a></li><li><a href="../managed-it-services-for-legal-firms.html">Legal</a></li><li><a href="../managed-it-services-for-education-organisations.html">Education</a></li><li><a href="../managed-it-services-for-manufacturing-businesses.html">Manufacturing</a></li><li><a href="../managed-it-services-for-insurance-services-businesses.html">Insurance</a></li></ul></div>
-    </li><li>
+    </li><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="false" aria-controls="mnav-customers" data-accordion-trigger>Customers<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-customers" hidden><p class="mobile-nav__group-title">Proof</p><ul><li><a href="../our-customers.html">Our customers</a></li><li><a href="../our-customers.html#stories">Success stories</a></li><li><a href="../our-customers.html#reviews">Google reviews</a></li></ul></div>
-    </li><li>
+    </li><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="false" aria-controls="mnav-resources" data-accordion-trigger>Resources<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-resources" hidden><p class="mobile-nav__group-title">Insights</p><ul><li><a href="../blog.html">Blog</a></li><li><a href="../blog.html?category=security">Cyber security articles</a></li><li><a href="../blog.html?category=cloud">Cloud & Microsoft 365</a></li></ul><p class="mobile-nav__group-title">Support</p><ul><li><a href="../contact.html">Book a consultation</a></li><li><a href="tel:02046342518">Call 020 4634 2518</a></li></ul></div>
-    </li><li>
+    </li><li class="mobile-nav__item">
       <button class="mobile-nav__toggle" type="button" aria-expanded="true" aria-controls="mnav-company" data-accordion-trigger>About<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="mobile-nav__sub" id="mnav-company"><p class="mobile-nav__group-title">WhizzIT</p><ul><li><a href="../about.html">About us</a></li><li><a href="../about.html#team">Meet the team</a></li></ul><p class="mobile-nav__group-title">Locations</p><ul><li><a href="../locations.html">All locations</a></li><li><a href="../locations/it-support-london.html">IT support in London</a></li><li><a href="../locations/it-support-hertfordshire.html">IT support in Hertfordshire</a></li></ul></div>
     </li><li><a class="mobile-nav__direct" href="../contact.html">Contact</a></li></ul>

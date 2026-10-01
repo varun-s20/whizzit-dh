@@ -1,6 +1,6 @@
 // IT Project Management overview. Signature: the four-stage delivery method runs
 // down the page as a numbered spine.
-import { page, statValue, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, STATS } from "../lib.mjs";
+import { page, statValue, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, STATS, credBadges } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
 import { pageHero, heroProof, renderBlocks, subServiceGrid, reviewsBand, pricingPanel } from "../blocks.mjs";
@@ -114,6 +114,7 @@ ${renderBlocks(rest, { key: "pm" })}
       <h2 class="grad-head" id="pm-why-title">${why.title || "Why work with us?"}</h2>
     </div>
     ${why.html ? `<div class="prose-cols">${why.html}</div>` : ""}
+    ${credBadges()}
   </div>
 </section>
 
