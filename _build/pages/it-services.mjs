@@ -1,7 +1,8 @@
-// IT Services hub. Signature: "everything under one roof". The five services open
-// as a photo mosaic straight out of the hero, each tile with the photograph of
-// that service being done; below it one explorer panel (a vertical tab list)
-// replaces the five long alternating rows, and the proof sits in one bento.
+// IT Services hub. Signature: "everything under one roof". The hero ends in a
+// slim index of the five services (number, icon, name, one line, how many
+// specialist services); choosing one opens it in the explorer below, a vertical
+// tab list beside one panel that carries that service's own photograph. The
+// proof sits in one bento.
 import {
   page, statValue, reviewAvatar, stars, btn, icon, photo, stockPhoto, breadcrumbs, callbackForm, heroNote, credBadges,
   SITE, SERVICES, STATS, PARTNERS, CREDENTIALS, TESTIMONIALS, PHOTOS, STOCK,
@@ -24,7 +25,7 @@ const pillarCopy = (service) => {
   return { title: block.title, html: paragraphs.slice(0, 2).map((x) => `<p>${x}</p>`).join("") || `<p>${service.desc}</p>`, list: block.list };
 };
 
-// Each service's tile shows that service being done, not a general office shot.
+// Each service's photograph shows that service being done; it sits in its own panel.
 const tilePhoto = {
   support: (o) => photo(PHOTOS.headset, o),
   cloud: (o) => stockPhoto(STOCK.cloudRacks, o),
@@ -35,17 +36,19 @@ const tilePhoto = {
 
 const num = (i) => String(i + 1).padStart(2, "0");
 
-const tiles = SERVICES.map((s, i) => `
-    <article class="svc-tile${i === 0 ? " svc-tile--lead" : ""}" style="--i:${i}">
-      ${tilePhoto[s.key]({ cls: "svc-tile__photo", ratio: i === 0 ? "4-3" : "3-2", sizes: i === 0 ? "(min-width: 1024px) 620px, 100vw" : "(min-width: 1024px) 310px, (min-width: 640px) 50vw, 100vw", loading: "eager" })}
-      <span class="svc-tile__num" aria-hidden="true">${num(i)}</span>
-      <div class="svc-tile__body">
-        <span class="svc-tile__icon" aria-hidden="true">${icon(s.icon)}</span>
-        <h2 class="svc-tile__title"><a class="card-link" href="@/${s.href}">${s.title}</a></h2>
-        <p>${s.short}</p>
-        <span class="svc-tile__meta" aria-hidden="true">${s.children.length} specialist services ${icon("arrow")}</span>
-      </div>
-    </article>`).join("");
+// The index: each row opens its service in the explorer (app.js
+// initServiceIndex); without JS the link goes to the service's own page.
+const index = SERVICES.map((s, i) => `
+      <li>
+        <a class="svc-index__row" href="@/${s.href}" data-svc-open="${s.key}" style="--i:${i}">
+          <span class="svc-index__num">${num(i)}</span>
+          <span class="svc-index__icon" aria-hidden="true">${icon(s.icon)}</span>
+          <span class="svc-index__name">${s.title}</span>
+          <span class="svc-index__short">${s.short}</span>
+          <span class="svc-index__count">${s.children.length} specialist services</span>
+          <span class="svc-index__go" aria-hidden="true">${icon("arrow")}</span>
+        </a>
+      </li>`).join("");
 
 const tabs = SERVICES.map((s, i) => `
           <button class="explorer__tab" type="button" role="tab" id="tab-${s.key}" aria-controls="${s.key}" aria-selected="${i === 0}">
@@ -66,6 +69,7 @@ const panels = SERVICES.map((s, i) => {
             <div class="btn-group mt-6">${btn(`Explore ${s.title}`, s.href, { track: `services-${s.key}` })}</div>
           </div>
           <div class="explorer__subs">
+            ${tilePhoto[s.key]({ cls: "explorer__photo", ratio: "16-9", sizes: "(min-width: 1280px) 400px, (min-width: 1024px) 50vw, 100vw" })}
             <p class="explorer__subs-label">${s.children.length} specialist services</p>
             <ul role="list">
               ${s.children.map((c, n) => `<li style="--n:${n}"><a href="@/${c.href}"><span>${c.title}</span>${icon("arrow")}</a></li>`).join("")}
@@ -89,19 +93,15 @@ const main = `
       </div>
       <div class="svc-hero__form">${callbackForm({ track: "services-hero" })}</div>
     </div>
+    <nav class="svc-index" aria-label="Our five core services">
+      <p class="svc-index__label">Five core services</p>
+      <ol class="svc-index__list" role="list">${index}
+      </ol>
+    </nav>
   </div>
 </section>
 
-${/* The five services as a mosaic lifted out of the hero: IT Support leads at
-     double size, the other four around it. Each tile is one link. */""}
-<section class="svc-mosaic" aria-label="Our five core services" data-no-reveal>
-  <div class="container">
-    <div class="svc-mosaic__grid">${tiles}
-    </div>
-  </div>
-</section>
-
-<section class="section svc-explore" aria-labelledby="explore-title">
+<section class="section svc-explore" id="explore" aria-labelledby="explore-title">
   <div class="container">
     <div class="svc-explore__head">
       <p class="eyebrow">Our services</p>

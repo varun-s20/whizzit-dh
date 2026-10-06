@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initMegaMenu();
   initMobileNavigation();
   initTabs();
+  initServiceIndex();
   initFilters();
   initRails();
   initQuotes();
@@ -34,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initSectorPage();
   initLibrary();
   initCoverageMap();
+  initAboutFilm();
   initForms();
 });
 
@@ -513,7 +515,7 @@ const REVEAL_GROUPS = [
   ".people-grid", ".cred-grid", ".review-wall", ".review-grid", ".insight-grid",
   ".detail-grid", ".sub-grid", ".story-list", ".post-grid", ".stat-band__grid",
   ".card-grid", ".check-grid", ".step-list", ".location-grid", ".logo-row",
-  ".cred-badges", ".client-wall", ".cov-steps",
+  ".cred-badges", ".client-wall", ".film-values__grid", ".film-team__grid", ".film-figures__grid", ".cov-steps",
   ".proof-bento", ".pricing-boxes",
 ].join(",");
 
@@ -1661,4 +1663,90 @@ function initCoverageMap() {
       if (link) window.location.href = link.href;
     });
   });
+}
+
+/* IT Services: each row of the hero's service index opens that service in the
+   explorer below and brings the explorer into view. Without JS the row is a
+   plain link to the service's own page. */
+function initServiceIndex() {
+  const rows = document.querySelectorAll("[data-svc-open]");
+  const explorer = document.getElementById("explore");
+  if (!rows.length || !explorer) return;
+  rows.forEach((row) => row.addEventListener("click", (event) => {
+    const tab = document.getElementById(`tab-${row.dataset.svcOpen}`);
+    if (!tab) return;
+    event.preventDefault();
+    tab.click();
+    const top = explorer.getBoundingClientRect().top + window.scrollY - stuckHeaderHeight() - 8;
+    window.scrollTo({ top, behavior: prefersReducedMotion.matches ? "auto" : "smooth" });
+    tab.focus({ preventScroll: true });
+  }));
+}
+
+/* About: the scroll scenes (pages/about.mjs). Each scene is laid out in full
+   without this; here it becomes a tall sticky stage driven by the scroll.
+   Transform and clip-path only, written straight onto the element each frame.
+   Nothing runs under reduced motion. */
+function initAboutFilm() {
+  if (prefersReducedMotion.matches) return;
+  const clamp = (v) => Math.min(1, Math.max(0, v));
+  const ease = (t) => 1 - Math.pow(1 - t, 3);
+
+  /* The window: the team photo opens from a window to the full screen as the
+     stage scrolls. Rounded corners from tablet up; square on phones. */
+  const win = document.querySelector("[data-film-window]");
+  if (win) {
+    const stage = win.querySelector(".film-window__stage");
+    const frame = win.querySelector(".film-window__frame");
+    const img = win.querySelector(".film-window__photo img");
+    const phone = window.matchMedia("(max-width: 767.98px)");
+    let on = true;
+    let queued = false;
+    const draw = () => {
+      queued = false;
+      if (!on) return;
+      const box = win.getBoundingClientRect();
+      const run = box.height - stage.offsetHeight;
+      const p = run > 0 ? clamp((stuckHeaderHeight() - box.top) / run) : 1;
+      const open = ease(clamp(p / 0.55));
+      const [iy, ix, radius] = phone.matches ? [10, 6, 0] : [16, 20, 28];
+      const r = radius * (1 - open);
+      frame.style.clipPath = `inset(${(iy * (1 - open)).toFixed(2)}% ${(ix * (1 - open)).toFixed(2)}% round ${r.toFixed(1)}px)`;
+      if (img) img.style.transform = `scale(${(1.22 - 0.22 * open).toFixed(4)})`;
+      if (p > 0.6) win.classList.add("is-open");
+      else if (p < 0.5) win.classList.remove("is-open");
+    };
+    const sync = () => {
+      win.classList.add("is-live");
+      draw();
+    };
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(draw);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    phone.addEventListener("change", sync);
+    sync();
+  }
+
+  /* Chapters: the pinned photo wipes to the chapter being read. */
+  const chapters = document.querySelector("[data-film-chapters]");
+  if (chapters && "IntersectionObserver" in window) {
+    const items = [...chapters.querySelectorAll("[data-film-chapter]")];
+    const shots = [...chapters.querySelectorAll("[data-film-shot]")];
+    const now = chapters.querySelector("[data-film-now]");
+    chapters.classList.add("is-live");
+    const show = (index) => {
+      items.forEach((item, i) => item.classList.toggle("is-active", i === index));
+      shots.forEach((shot, i) => shot.classList.toggle("is-active", i === index));
+      if (now) now.textContent = String(index + 1).padStart(2, "0");
+    };
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => entry.isIntersecting && show(items.indexOf(entry.target)));
+    }, { rootMargin: "-45% 0px -45% 0px" });
+    items.forEach((item) => io.observe(item));
+    show(0);
+  }
 }

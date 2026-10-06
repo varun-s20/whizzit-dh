@@ -1,6 +1,17 @@
-// About page. Content is WhizzIT's own, taken from /about/ on staging (see _source/content/about.md).
+// About page. A calm page in scenes that play as you scroll.
+//  1. Header: dark and understated. The headline with a hand-drawn underline,
+//     a quiet trust line, and one photograph presented like a framed print.
+//  2. The window: the team photo opens from a rounded window to the full
+//     screen as you scroll; the mission rises over it on a dark gradient.
+//  3. Three chapters (our story, our approach, why WhizzIT) scroll past a
+//     pinned photograph that wipes to a new picture for each chapter.
+//  4. The four values as a quiet row of boxes.
+//  5. The figures, the team, the review and credentials.
+// Scroll scenes are app.js initAboutFilm; without JS, and under reduced
+// motion, every scene is simply laid out in order. Every word is WhizzIT's own
+// (/about/ on staging, and the home page's "Our approach").
 import {
-  page, statValue, reviewAvatar, stars, btn, icon, photo, breadcrumbs, callbackForm, heroNote, credBadges,
+  page, statValue, reviewAvatar, stars, btn, icon, photo, breadcrumbs, heroNote, credBadges,
   SITE, STATS, TEAM, PHOTOS, TESTIMONIALS,
 } from "../lib.mjs";
 
@@ -11,124 +22,167 @@ const values = [
   { title: "Affordability", icon: "target", text: "Cost effective IT solutions without compromising on quality. Tailored support that maximises value and minimises costs for your business." },
 ];
 
-const crumbs = [{ title: "Home", href: "index.html" }, { title: "About" }];
+const chapters = [
+  {
+    label: "Our story",
+    title: "A partner, not just a provider",
+    text: "We saw a gap in the affordable IT support market for a business that genuinely puts clients first. WhizzIT combines best in class technical expertise with the accountability and responsiveness of a senior team that stays close to every account.",
+    photo: PHOTOS.office,
+    caption: "Engineers at work in the WhizzIT office",
+  },
+  {
+    label: "Our approach",
+    title: "IT support built on long-term partnerships",
+    text: "Every client gets the same dedication and care, whatever the size of their business. We take the time to understand your goals, tailor our services to match, and build trusted partnerships that help your business grow with confidence.",
+    photo: PHOTOS.serviceDesk,
+    caption: "A service desk engineer helping a client",
+  },
+  {
+    label: "Why choose WhizzIT",
+    title: "Support that goes beyond the fix",
+    text: "Exceptional IT support goes beyond fixing technical issues. It is about providing outstanding customer service every step of the way, so you always feel supported and valued. Whether it is troubleshooting, proactive maintenance or strategic IT guidance, you get clear communication and a friendly, professional approach.",
+    photo: PHOTOS.van,
+    caption: "The WhizzIT van, outside the office",
+  },
+];
 
+const crumbs = [{ title: "Home", href: "index.html" }, { title: "About" }];
 const review = TESTIMONIALS[0];
+const pad = (n) => String(n).padStart(2, "0");
 
 const main = `
-<section class="hero hero--sky about-hero" aria-labelledby="about-hero-title">
-  <div class="container about-hero__inner">
+<section class="hero hero--sky film-title" aria-labelledby="about-hero-title">
+  <div class="film-title__glow" aria-hidden="true"></div>
+  <div class="container">
     ${breadcrumbs(crumbs)}
-    <p class="eyebrow">About WhizzIT</p>
-    ${/* Two lines. The promise sits on a raised metal nameplate that a band of
-         light crosses once the headline has settled. */""}
-    <h1 class="about-hero__title" id="about-hero-title">
-      <span class="about-hero__line">An independent IT partner</span>
-      <span class="about-hero__line"><span class="about-hero__plate">that puts clients first.</span></span>
-    </h1>
-    <p class="about-hero__lead">We saw a gap in the affordable IT support market for a business that genuinely puts clients first. WhizzIT combines best in class technical expertise with the accountability and responsiveness of a senior team that stays close to every account.</p>
-    ${callbackForm({ track: "about-hero" })}
-    ${heroNote("UK-wide coverage", "about-hero")}
+    <div class="film-title__grid">
+      <div class="film-title__copy">
+        <p class="eyebrow">About WhizzIT</p>
+        <h1 class="film-title__head" id="about-hero-title">An independent IT partner that puts <span class="film-title__mark">clients first.<svg viewBox="0 0 300 18" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M3 12 C 70 4, 150 3, 297 9" pathLength="1"></path><path d="M40 16 C 110 10, 190 10, 260 14" pathLength="1"></path></svg></span></h1>
+        <p class="film-title__lead">WhizzIT is an independent managed IT provider supporting UK businesses with IT support, cloud and cyber security.</p>
+        <div class="film-title__actions">
+          ${btn("Book a consultation", "contact.html", { track: "about-hero-book" })}
+          <a class="film-title__link" href="#team" data-track="about-hero-team">Meet the team${icon("arrow")}</a>
+        </div>
+        <ul class="film-title__trust" role="list">
+          <li><a href="${SITE.google.reviewsUrl}" rel="noopener" data-track="about-hero-google"><strong>${SITE.google.rating}</strong>${stars(`Rated ${SITE.google.rating} out of 5 on Google`)}<span>${SITE.google.count} Google reviews</span></a></li>
+          <li>${icon("shield")}<span>Cyber Essentials certified</span></li>
+          <li>${icon("cloud")}<span>Microsoft Cloud Solution Provider</span></li>
+        </ul>
+      </div>
+      ${/* One real photograph, with a caption plate. */""}
+      <figure class="film-print">
+        <div class="film-print__photo">${photo(PHOTOS.headset, { ratio: "4-5", sizes: "(min-width: 1024px) 460px, 90vw", loading: "eager" })}</div>
+        <figcaption class="film-print__caption">${icon("headset")}<span>An engineer on the service desk, taking a client's call</span></figcaption>
+      </figure>
+    </div>
   </div>
 </section>
 
-${/* Three of WhizzIT's own photos, set as raised plates that fan out from one
-     stack on load and tilt with the pointer. Starts inside the dark hero and
-     finishes on the page below. */""}
-<div class="relief" data-tilt>
-  <div class="container">
-    <div class="relief__stage">
-      <div class="relief__plate relief__plate--left">${photo(PHOTOS.office, { ratio: "4-3", sizes: "(min-width: 1024px) 500px, 56vw", loading: "eager" })}</div>
-      <div class="relief__plate relief__plate--right">${photo(PHOTOS.van, { ratio: "4-3", sizes: "(min-width: 1024px) 500px, 56vw", loading: "eager" })}</div>
-      <div class="relief__plate relief__plate--centre">${photo(PHOTOS.serviceDesk, { ratio: "4-5", sizes: "(min-width: 1024px) 400px, 44vw", loading: "eager" })}</div>
-      <p class="relief__seal relief__seal--rating">
-        <strong>${SITE.google.rating}</strong>
-        ${stars(`Rated ${SITE.google.rating} out of 5 on Google`)}
-        <span>${SITE.google.count} Google reviews</span>
-      </p>
+${/* The window: a sticky stage. The photo's frame opens from a rounded window
+     to the full screen as the stage scrolls through, then the mission rises over a dark gradient. */""}
+<section class="film-window" aria-labelledby="mission-title" data-film-window data-no-reveal>
+  <div class="film-window__stage">
+    <div class="film-window__frame">
+      ${photo(PHOTOS.team, { cls: "film-window__photo", ratio: "16-9", sizes: "100vw" })}
+    </div>
+    <div class="film-window__copy">
+      <p class="eyebrow" id="mission-title">Our mission</p>
+      <blockquote class="film-window__quote"><p>Our mission is to deliver reliable, top tier IT services while making sure every client feels genuinely valued and properly supported.</p></blockquote>
     </div>
   </div>
-</div>
+</section>
 
-<section class="section value-keys" aria-labelledby="values-title" data-no-reveal>
-  <div class="container">
-    <div class="value-keys__head">
-      <p class="eyebrow">What we stand for</p>
-      <h2 class="grad-head" id="values-title">Four things we refuse to compromise on</h2>
-      <p>Every client gets the same dedication and care, whatever the size of their business.</p>
+<section class="film-chapters" aria-label="Our story" data-film-chapters data-no-reveal>
+  <div class="container film-chapters__grid">
+    <div class="film-chapters__media" aria-hidden="true">
+      <div class="film-chapters__frame">
+        ${chapters.map((c, i) => `
+        <figure class="film-shot${i === 0 ? " is-active" : ""}" data-film-shot>
+          ${photo(c.photo, { ratio: "4-5", sizes: "(min-width: 1024px) 520px, 100vw" })}
+          <figcaption>${c.caption}</figcaption>
+        </figure>`).join("")}
+        <span class="film-chapters__count"><span data-film-now>01</span> / ${pad(chapters.length)}</span>
+      </div>
     </div>
-    ${/* This page's signature: the four values are keys on a keyboard tray. When
-         the tray scrolls into view they are pressed in turn, as if typed, and stay
-         backlit. */""}
-    <ol class="value-keys__tray" role="list" data-on-view>
-      ${values.map((v, i) => `
-      <li class="value-key" style="--i:${i}">
-        <div class="value-key__cap">
-          <span class="value-key__icon">${icon(v.icon)}</span>
-          <h3 class="value-key__legend">${v.title}</h3>
-        </div>
-        <p>${v.text}</p>
+    <ol class="film-chapters__list" role="list">
+      ${chapters.map((c, i) => `
+      <li class="film-chapter" data-film-chapter>
+        <figure class="film-chapter__photo">${photo(c.photo, { ratio: "4-3", sizes: "100vw" })}<figcaption>${c.caption}</figcaption></figure>
+        <p class="film-chapter__label"><span>${pad(i + 1)}</span>${c.label}</p>
+        <h2 class="film-chapter__title">${c.title}</h2>
+        <p class="film-chapter__text">${c.text}</p>
       </li>`).join("")}
     </ol>
   </div>
 </section>
 
-<section class="section mission" aria-labelledby="mission-title" data-no-reveal>
+<section class="film-values" aria-labelledby="values-title">
   <div class="container">
-    <div class="mission__head">
-      <p class="eyebrow">Our mission</p>
-      <h2 class="grad-head" id="mission-title">IT support built on long-term partnerships</h2>
+    <div class="film-values__head">
+      <p class="eyebrow">What we stand for</p>
+      <h2 class="grad-head" id="values-title">Four things we refuse to compromise on</h2>
+      <p>Every client gets the same dedication and care, whatever the size of their business.</p>
     </div>
-    ${/* One raised steel card: a slim photo banner, a quote medallion pressed onto
-         its edge, then the mission engraved beneath. */""}
-    <div class="mission-plaque">
-      <div class="mission-plaque__window">
-        ${photo(PHOTOS.team, { ratio: "16-9", sizes: "(min-width: 1100px) 1000px, 92vw" })}
-      </div>
-      <span class="mission-plaque__seal" aria-hidden="true">${icon("quote")}</span>
-      <div class="mission-plaque__content">
-        <blockquote class="mission-plaque__text">
-          <p>Our mission is to deliver reliable, top tier IT services while making sure every client feels genuinely valued and properly supported.</p>
-        </blockquote>
-        <p class="mission-plaque__body">We believe that optimising the design of your systems, coupled with proactive support, is the key to unlocking your full business potential. We take the time to understand your goals, tailor our services to match, and build trusted partnerships that help your business grow with confidence.</p>
-        <div class="btn-group">
-          ${btn("Start a conversation", "contact.html", { arrow: false, track: "about-mission-cta" })}
-        </div>
-      </div>
-    </div>
+    <ol class="film-values__grid" role="list">
+      ${values.map((v, i) => `
+      <li class="film-value">
+        <span class="film-value__top">
+          <span class="film-value__icon" aria-hidden="true">${icon(v.icon)}</span>
+          <span class="film-value__num" aria-hidden="true">${pad(i + 1)}</span>
+        </span>
+        <h3 class="film-value__title">${v.title}</h3>
+        <p class="film-value__text">${v.text}</p>
+      </li>`).join("")}
+    </ol>
   </div>
 </section>
 
-<section class="section stat-band" aria-labelledby="stats-title">
+<section class="film-figures" aria-labelledby="stats-title">
   <div class="container">
-    <div class="stat-band__head">
-      <p class="eyebrow">By the numbers</p>
-      <h2 class="grad-head grad-head--dark" id="stats-title">Proof, not promises</h2>
-    </div>
-    <dl class="stat-band__grid">
+    <p class="eyebrow">By the numbers</p>
+    <h2 class="visually-hidden" id="stats-title">Proof, not promises</h2>
+    <dl class="film-figures__grid">
       ${STATS.map((s) => `
-      <div>
+      <div class="film-figure">
         <dd>${statValue(s)}</dd>
         <dt>${s.label}</dt>
         <p>${s.note}</p>
       </div>`).join("")}
     </dl>
-    <p class="stat-band__note">Figures published by WhizzIT. Response and resolution times measured across every ticket in 2025.</p>
+    <p class="film-figures__note">Figures published by WhizzIT. Response and resolution times measured across every ticket in 2025.</p>
   </div>
 </section>
 
-<section class="section about-beyond" aria-labelledby="beyond-title">
+<section class="section film-team" id="team" aria-labelledby="team-title">
   <div class="container">
-    <div class="statement">
-      <p class="eyebrow">Why choose WhizzIT</p>
-      <h2 class="grad-head" id="beyond-title">Support that goes beyond the fix</h2>
-      <p>Exceptional IT support goes beyond fixing technical issues. It is about providing outstanding customer service every step of the way, so you always feel supported and valued. We take the time to understand your business needs, offering tailored IT support that keeps your systems running smoothly with minimal disruption. Whether it is troubleshooting, proactive maintenance or strategic IT guidance, you get clear communication and a friendly, professional approach.</p>
+    <div class="film-team__head">
+      <div>
+        <p class="eyebrow">Meet the team</p>
+        <h2 class="grad-head" id="team-title">The people behind WhizzIT</h2>
+      </div>
+      <p>Senior engineers who stay close to every account, so you speak to someone who already knows your setup.</p>
     </div>
-    <figure class="quote-feature">
-      <span class="quote-feature__mark" aria-hidden="true">${icon("quote")}</span>
+    <div class="film-team__grid">
+      ${TEAM.map((m, i) => `
+      <article class="film-person" style="--i:${i}">
+        <span class="film-person__mono" aria-hidden="true">${m.initials}</span>
+        <h3 class="film-person__name">${m.name}</h3>
+        <p class="film-person__role">${m.role}</p>
+        <p class="film-person__bio">${m.bio}</p>
+        <a class="film-person__link" href="${m.linkedin}" rel="noopener" aria-label="${m.name} on LinkedIn">${icon("linkedin")}<span>LinkedIn</span></a>
+      </article>`).join("")}
+    </div>
+  </div>
+</section>
+
+<section class="film-quote" aria-label="Customer review">
+  <div class="container">
+    <figure class="film-quote__fig">
+      ${stars(`Rated ${SITE.google.rating} out of 5`)}
       <blockquote><p>“${review.quote}”</p></blockquote>
       <figcaption>
-        ${reviewAvatar(review, { cls: "avatar--lg", badge: true })}
+        ${reviewAvatar(review, { badge: true })}
         <span><strong>${review.name}</strong>${review.role}</span>
         <a href="${SITE.google.reviewsUrl}" rel="noopener">See all ${SITE.google.count} reviews${icon("arrow")}</a>
       </figcaption>
@@ -136,29 +190,9 @@ ${/* Three of WhizzIT's own photos, set as raised plates that fan out from one
   </div>
 </section>
 
-<section class="section about-team" id="team" aria-labelledby="team-title">
+<section class="section" aria-labelledby="credentials-title">
   <div class="container">
-    <div class="center-head">
-      <p class="eyebrow">Meet the team</p>
-      <h2 class="grad-head" id="team-title">The people behind WhizzIT</h2>
-      <p>Senior engineers who stay close to every account, so you speak to someone who already knows your setup.</p>
-    </div>
-    <div class="people-grid">
-      ${TEAM.map((m) => `
-      <article class="team-card">
-        <span class="team-card__avatar" aria-hidden="true">${m.initials}</span>
-        <h3>${m.name}</h3>
-        <p class="team-card__role">${m.role}</p>
-        <p>${m.bio}</p>
-        <a class="team-card__link" href="${m.linkedin}" rel="noopener">${icon("linkedin")}<span>LinkedIn</span></a>
-      </article>`).join("")}
-    </div>
-  </div>
-</section>
-
-<section class="section about-credentials" aria-labelledby="credentials-title">
-  <div class="container">
-    <div class="center-head">
+    <div class="cred-why__head">
       <p class="eyebrow">Certified &amp; accredited</p>
       <h2 class="grad-head" id="credentials-title">Credentials you can check</h2>
     </div>
