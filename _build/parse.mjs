@@ -1,7 +1,7 @@
 // Turns a staging page's markup into a structured model the new templates render.
 // The old theme uses a consistent set of blocks (page-hero, feature-split, tabs,
 // disclose, cardgrid, section-head), so each one maps cleanly onto our components.
-import { rewriteLinks, sanitizeBody, dropElement } from "./content.mjs";
+import { rewriteLinks, sanitizeBody, dropElement, plainText } from "./content.mjs";
 
 const decode = (s) =>
   String(s)
@@ -16,7 +16,7 @@ const decode = (s) =>
     .replace(/&amp;/g, "&")
     .replace(/&quot;/g, '"');
 
-export const text = (html = "") => decode(html.replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+export const text = (html = "") => decode(plainText(html)).replace(/\s+/g, " ").trim();
 
 // Keeps inline prose markup (p, ul, ol, strong, em, a) and drops theme classes,
 // SVG decoration and animation hooks.
@@ -41,11 +41,14 @@ function parseHero(html) {
   const hero = one(/<section class="page-hero"[\s\S]*?<div class="hero-split">([\s\S]*?)<div class="reveal-x/, html) ||
     one(/<section class="page-hero"([\s\S]*?)<\/section>/, html);
   const title = text(one(/<h1[^>]*>([\s\S]*?)<\/h1>/, hero));
-  const leadParas = paragraphs(hero).map((m) => text(m[1])).filter(Boolean);
+  const paras = paragraphs(hero).filter((m) => text(m[1]));
+  const leadParas = paras.map((m) => text(m[1]));
   return {
     eyebrow: text(one(/<span class="eyebrow[^"]*"[^>]*>([\s\S]*?)<\/span>/, hero)),
     title,
     lead: leadParas[0] || "",
+    // The same paragraph with its links (staging links London and Hertfordshire).
+    leadHtml: paras[0] ? clean(paras[0][1]) : "",
     extra: leadParas.slice(1),
   };
 }
@@ -84,15 +87,24 @@ const cards = (chunk) =>
     })
     .filter((c) => c.title);
 
-const faqItems = (chunk) =>
-  chunk
+const faqItems = (chunk) => [
+  ...chunk
+    .split('class="faq__item"')
+    .slice(1)
+    .map((part) => ({
+      q: text(one(/<button class="faq__q"[^>]*>([\s\S]*?)<span class="faq__icon/, part)),
+      a: ((a) => (/^<(p|ul|ol)/.test(a) ? a : `<p>${a}</p>`))(clean(one(/<div class="faq__a-inner">([\s\S]*?)<\/div>\s*<\/div>/, part))),
+    }))
+    .filter((f) => f.q && f.a !== "<p></p>"),
+  ...chunk
     .split('class="disclose__item"')
     .slice(1)
     .map((part) => ({
       q: text(one(/<span>([\s\S]*?)<\/span>\s*<\/span>/, part) || one(/<span class="disclose__label">([\s\S]*?)<\/span>/, part)),
       a: clean(one(/<div class="disclose__a-inner">([\s\S]*?)<\/div>\s*<\/div>/, part)),
     }))
-    .filter((f) => f.q && f.a);
+    .filter((f) => f.q && f.a),
+];
 
 const tabs = (chunk) => {
   const labels = all(/<button[^>]*class="tabs__tab[^"]*"[^>]*>([\s\S]*?)<\/button>/g, chunk).map((m) => text(m[1]));

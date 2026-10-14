@@ -1,12 +1,17 @@
 // IT Support overview. Signature: the remote/on-site split as a head-to-head
 // comparison, with the service-desk numbers running underneath it.
-import { page, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, CREDENTIALS, credBadges } from "../lib.mjs";
+import { page, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, CREDENTIALS, credBadges, statStrip } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
-import { pageHero, heroProof, renderBlocks, subServiceGrid, reviewsBand, pricingPanel } from "../blocks.mjs";
+import { parseSections } from "../section-parse.mjs";
+import { hubTail } from "../sections.mjs";
+import { pageHero } from "../blocks.mjs";
 
 const support = service("support");
 const m = parsePage(pageByPath("/it-support/").html);
+// Everything below the hand-built sections, with the staging copy (sections.mjs).
+const P = parseSections(pageByPath("/it-support/").html);
+const band = P.sections.find((s) => s.kind === "ctaBand");
 const crumbs = [{ title: "Home", href: "index.html" }, { title: "IT Services", href: "it-services.html" }, { title: "IT Support" }];
 
 const block = (needle) => m.blocks.find((b) => b.title.toLowerCase().includes(needle)) || { html: "", list: [], cards: [] };
@@ -15,9 +20,6 @@ const covers = block("whole environment");
 const included = block("what’s included");
 const why = block("why work with us");
 
-// Content blocks left for the generic renderer (the rest are laid out by hand).
-const handled = [howItWorks.title, covers.title, included.title, why.title];
-const rest = m.blocks.filter((b) => !handled.includes(b.title) && !/pricing built|related guides|what our support clients say/i.test(b.title));
 
 const main = `
 ${pageHero({
@@ -26,11 +28,7 @@ ${pageHero({
   lead: m.lead,
   crumbs: breadcrumbs(crumbs),
   cls: "hero--tone-support",
-  aside: heroProof([
-    { icon: "clock", value: "9 min", label: "Average first response in 2025" },
-    { icon: "refresh", value: "6 hours", label: "Average resolution time" },
-    { icon: "headset", value: "Unlimited", label: "Remote service desk" },
-  ]),
+  aside: statStrip({ compact: true, track: "it-support-hero" }),
 })}
 
 <section class="section" aria-labelledby="covers-title">
@@ -84,28 +82,13 @@ ${pageHero({
   </div>
 </section>
 
-${renderBlocks(rest, { key: "support" })}
-
-<section class="section" aria-labelledby="why-title">
-  <div class="container statement-wide">
-    <div class="center-head">
-      <p class="eyebrow">${why.eyebrow || "Why WhizzIT"}</p>
-      <h2 class="grad-head" id="why-title">${why.title || "Why work with us?"}</h2>
-    </div>
-    ${why.html ? `<div class="prose-cols">${why.html}</div>` : ""}
-    ${credBadges()}
-  </div>
-</section>
-
-${subServiceGrid(support, { title: "Specialist support services" })}
-${reviewsBand([TESTIMONIALS[0], TESTIMONIALS[4], TESTIMONIALS[5]], { title: "What our support clients say" })}
-${pricingPanel({ track: "support-pricing" })}
+${hubTail(P, { slug: "it-support", tone: "support" }, { skip: [covers.title, included.title, howItWorks.title] })}
 `;
 
 page({
   footerCta: {
-    title: "Want support that answers the phone?",
-    text: `Book a no-obligation conversation. ${SITE.responseLine}, UK-wide coverage.`,
+    title: band?.title || "Want support that answers the phone?",
+    text: band?.text || `Book a no-obligation conversation. ${SITE.responseLine}, UK-wide coverage.`,
     track: "support-final-cta",
   },
   file: "it-support.html",

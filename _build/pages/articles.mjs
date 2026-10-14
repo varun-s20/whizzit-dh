@@ -2,6 +2,50 @@
 // parsed in content.mjs — titles, dates, authors and prose are the client's own.
 import { page, icon, blogCard, blogArt, breadcrumbs, serviceRow, service, btn, callbackForm, renderEnquiries, SITE, cleanUrl } from "../lib.mjs";
 import { BLOG } from "../site.mjs";
+import { plainText } from "../content.mjs";
+import { parseSections } from "../section-parse.mjs";
+import { R } from "../sections.mjs";
+
+const plain = (s = "") => plainText(s).replace(/&#8217;/g, "’").replace(/&amp;/g, "&");
+
+// The author box staging prints after every article.
+function authorBox(html) {
+  const box = html.match(/<aside class="card authorbox[\s\S]*?<\/aside>/)?.[0];
+  if (!box) return null;
+  return {
+    name: plain(box.match(/<strong>([\s\S]*?)<\/strong>/)?.[1]),
+    role: plain(box.match(/<span class="role">([\s\S]*?)<\/span>/)?.[1]).replace(/^[—–-]\s*/, ""),
+    bio: plain(box.match(/<p class="authorbox__bio">([\s\S]*?)<\/p>/)?.[1]),
+  };
+}
+
+/**
+ * What staging prints after an article's body, drawn once for both the static
+ * page and WordPress (wp-export.mjs puts it in posts.json; single.php prints
+ * it): the author box, the FAQ, the partners and the closing call to action.
+ */
+export function articleExtras(post) {
+  const after = parseSections(post.html).sections;
+  const faq = after.find((s) => s.kind === "faq");
+  const partners = after.find((s) => s.kind === "partners");
+  const band = after.find((s) => s.kind === "ctaBand");
+  const author = authorBox(post.html);
+  const ctx = { slug: post.slug, tone: "support", n: 0 };
+  return {
+    authorHtml: author?.bio ? `
+      <aside class="article-author" aria-label="About the author">
+        <span class="avatar" aria-hidden="true">${author.name.split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase()}</span>
+        <div>
+          <p class="article-author__name"><strong>${author.name}</strong>${author.role ? ` — ${author.role}` : ""}</p>
+          <p>${author.bio}</p>
+          <a class="text-link" href="@/about.html"><span>More about WhizzIT</span>${icon("arrow")}</a>
+        </div>
+      </aside>` : "",
+    faqHtml: faq ? R.faq({ ...faq, title: faq.title || "Frequently asked questions" }, `${post.slug}-faq-title`, ctx).replace('id="faq"', 'id="frequently-asked-questions"') : "",
+    partnersHtml: partners ? R.partners(partners, `${post.slug}-partners-title`, ctx) : "",
+    cta: band ? { title: band.title, text: band.text } : null,
+  };
+}
 
 // Which core service each article category points readers towards.
 const SERVICE_FOR = {
@@ -32,6 +76,7 @@ BLOG.forEach((post, index) => {
   // A couple of posts are filed under a category that does not match their subject.
   const SLUG_SERVICE = { "how-to-choose-managed-network-services-provider": "network" };
   const svc = service(SLUG_SERVICE[post.slug] || SERVICE_FOR[post.category] || "support");
+  const extras = articleExtras(post);
 
   const main = `
 <article>
@@ -53,6 +98,8 @@ BLOG.forEach((post, index) => {
       <h2 id="help">How WhizzIT can help</h2>
       <p>If you'd like a second opinion on any of this, our team is happy to talk it through. See our <a href="@/${svc.href}">${svc.title.toLowerCase().replace("it ", "IT ")}</a> service or <a href="@/contact.html">get in touch</a>.</p>
 
+      ${extras.authorHtml}
+
       <nav class="article-nav" aria-label="More articles">
         ${prev ? `<a href="@/blog/${prev.slug}.html" rel="prev"><span>Previous article</span>${prev.title}</a>` : "<span></span>"}
         ${next ? `<a href="@/blog/${next.slug}.html" rel="next"><span>Next article</span>${next.title}</a>` : ""}
@@ -73,19 +120,22 @@ BLOG.forEach((post, index) => {
   </div>
 </article>
 
+${extras.faqHtml}
+
 <section class="section" aria-labelledby="related-articles-title">
   <div class="container">
     <h2 id="related-articles-title" class="h3">Related articles</h2>
     <div class="blog-grid mt-7">${related.map((p) => blogCard(listed(p))).join("")}</div>
   </div>
 </section>
+${extras.partnersHtml}
 
 `;
 
   page({
     footerCta: {
-      title: "Want help putting this into practice?",
-      text: "Our engineers can review your setup and tell you what to prioritise.",
+      title: extras.cta?.title || "Want help putting this into practice?",
+      text: extras.cta?.text || "Our engineers can review your setup and tell you what to prioritise.",
       cta: "Talk to an IT expert",
       track: `article-${post.slug}-final-cta`,
     },

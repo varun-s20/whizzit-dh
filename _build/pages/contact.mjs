@@ -1,6 +1,7 @@
 // Contact. Signature: the enquiry form sits beside the two real offices, with the
 // direct routes (phone, email) above the fold.
-import { page, btn, icon, breadcrumbs, reviewAvatar, field, formMode, captchaRow, officeMapCard, WP_EXPORT, SITE, TESTIMONIALS, CREDENTIALS } from "../lib.mjs";
+import { page, btn, icon, breadcrumbs, reviewAvatar, field, formMode, captchaRow, officeMapCard, WP_EXPORT, SITE, TESTIMONIALS, CREDENTIALS, G_COUNT,
+} from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
 
@@ -37,7 +38,7 @@ const main = `
       <h2 class="h4" id="form-title">Send us a message</h2>
       <p class="muted mt-3">Tell us what you need. ${SITE.responseLine}, and your details stay with us.</p>
 
-      <form class="form mt-6" action="/api/submit.php" method="post" data-validate${formMode()} data-success="contact-success" aria-labelledby="form-title">
+      <form class="form mt-6" action="${SITE.formAction}" method="post" data-validate${formMode()} data-success="contact-success" aria-labelledby="form-title">
         <input type="hidden" name="form_name" value="contact">
         <input class="visually-hidden" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="form-alert form-alert--error" data-error-summary tabindex="-1" role="alert" hidden>
@@ -114,7 +115,7 @@ const main = `
       <figcaption>
         ${reviewAvatar(TESTIMONIALS[2], { badge: true })}
         <span><strong>${TESTIMONIALS[2].name}</strong>${TESTIMONIALS[2].role}</span>
-        <a href="${SITE.google.reviewsUrl}" rel="noopener">See all ${SITE.google.count} reviews${icon("arrow")}</a>
+        <a href="${SITE.google.reviewsUrl}" rel="noopener">See all ${G_COUNT} reviews${icon("arrow")}</a>
       </figcaption>
     </figure>
   </div>

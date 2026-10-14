@@ -6,7 +6,7 @@
 // way round (app.js initCoverageMap). Below: how the coverage works, the two
 // offices on their Google maps (as on Contact), and the credentials.
 // Every word is staging's /locations/ page or copy the site already uses.
-import { page, icon, breadcrumbs, credBadges, officeMapCard, SITE, LOCATIONS } from "../lib.mjs";
+import { page, icon, breadcrumbs, credBadges, officeMapCard, SITE, LOCATIONS, LOCATION_PLACES } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
 import { UK_VIEW, UK_PATH, project } from "../uk-map.mjs";
@@ -19,24 +19,7 @@ const coverBlock = block(/remote-first/i);
 const certBlock = block(/credentials/i);
 const paragraphs = (html = "") => [...html.matchAll(/<p>([\s\S]*?)<\/p>/g)].map((x) => x[1].trim());
 
-// Where each area is. Cities sit on their centre; the three areas that are
-// regions rather than towns (Hertfordshire, South Wales, Wales) get a wider halo.
-const PLACE = {
-  London: { at: SITE.offices[0].coords, office: 0 },
-  Stevenage: { at: SITE.offices[1].coords, office: 1 },
-  Hertfordshire: { at: [51.81, -0.24], region: true },
-  Birmingham: { at: [52.4862, -1.8904] },
-  Bradford: { at: [53.796, -1.7594] },
-  Cardiff: { at: [51.4816, -3.1791] },
-  Coventry: { at: [52.4068, -1.5197] },
-  Edinburgh: { at: [55.9533, -3.1883] },
-  Leeds: { at: [53.8008, -1.5491] },
-  Leicester: { at: [52.6369, -1.1398] },
-  Manchester: { at: [53.4808, -2.2426] },
-  Newcastle: { at: [54.9783, -1.6178] },
-  "South Wales": { at: [51.62, -3.6], region: true },
-  Wales: { at: [52.35, -3.75], region: true },
-};
+const PLACE = LOCATION_PLACES;
 
 const slug = (t) => t.toLowerCase().replace(/[^a-z]+/g, "-");
 const offices = SITE.offices.map((o) => ({ ...o, xy: project(...o.coords) }));

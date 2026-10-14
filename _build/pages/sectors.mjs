@@ -1,53 +1,75 @@
-// Industry pages (8). Their own design, shared with no other page: a "sector
-// cover" hero (the sector's photograph bleeding off the right edge, its line icon
-// drawn huge behind the title), then a briefing: numbered sections down the main
-// column with their labels in the margin, and a sticky side column carrying an
-// "on this page" index and the callback box. The six "what you get" points are a
-// ledger whose ticks draw in; the three sector considerations are a timeline
-// whose line fills as it is read. Previous / next industry close the page.
-//
-// Phones get their own arrangement rather than a squeezed one: photo first with
-// the content rising over it as a sheet, the callback box at the end, and a
-// bottom action bar (app.js initSectorDock) once the hero has scrolled away.
-//
-// Every word comes from the sector's staging page (_source/wp-pages.json) or
-// from copy the site already uses elsewhere (the sector notes on /industries/,
-// the review and credential components). Section labels are the staging page's
-// own eyebrows; nothing here is written for these pages.
+// Industry pages (8), at /industries/<slug>/. Their own design, shared with no
+// other page and built without boxes: content sits on the page, divided by
+// hairlines, photographs and type.
+//   hero        dark, the sector's photograph on the right running off the
+//               edge, the callback form over its foot, the proof strip below
+//   switcher    the eight sectors as one row of links, this one marked
+//   intro       a large statement beside "what you get", a numbered list
+//   issues      a dark band: the sector's particular demands in columns, each
+//               under a large outlined numeral, then the related-sector note
+//   proof       the sector's client story and review over its photograph
+//   services    "Everything IT, under one roof": icons in the service tones
+//   ask         the mid-page prompt as one line of large type and two actions
+//   then the credentials, the FAQ, partners, and the other sectors as a strip
+//   of photographs.
+// Every word comes from the sector's staging page (section-parse.mjs) or copy
+// the site already uses (the sector notes on /industries/).
 import {
-  page, btn, icon, stockPhoto, casePhoto, breadcrumbs, callbackForm, credBadges, reviewAvatar, stars, heroNote,
+  page, btn, icon, stockPhoto, casePhoto, breadcrumbs, callbackForm, reviewAvatar, stars, statStrip,
   SITE, SERVICES, INDUSTRIES, CASE_STUDIES, TESTIMONIALS, STOCK, SECTOR_PHOTO, SECTOR_NOTE,
 } from "../lib.mjs";
-import { pageByPath } from "../content.mjs";
-import { parsePage } from "../parse.mjs";
+import { writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { WP_EXPORT } from "../lib.mjs";
+import { pageByPath, plainText } from "../content.mjs";
+import { parseSections } from "../section-parse.mjs";
+import { R, kindOf } from "../sections.mjs";
 
 const pad = (n) => String(n).padStart(2, "0");
-const paragraphs = (html = "") => [...html.matchAll(/<p>([\s\S]*?)<\/p>/g)].map((x) => x[1].trim()).filter(Boolean);
 const sectorPhoto = (s, o) => stockPhoto(STOCK[SECTOR_PHOTO[s.key]] || STOCK.meeting, o);
+const stagingPath = (href) => `/${href.replace(/^industries\//, "").replace(/\.html$/, "/")}`;
 
 // Case studies are filed by sector name; three sectors have one.
 const STUDY_SECTOR = { Healthcare: "healthcare", Construction: "construction", Education: "education" };
-
-// The check mark the ledger draws, as one path so its stroke can be animated.
-const tick = `<svg class="sx-ledger__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5l4.2 4.2L19 7"/></svg>`;
+// "Everything IT, under one roof" cards are the five services, by title.
+const serviceFor = (title) => SERVICES.find((s) => s.title.toLowerCase() === title.toLowerCase());
 
 INDUSTRIES.forEach((sector, i) => {
-  const source = pageByPath(`/${sector.href.replace(/\.html$/, "/")}`);
+  const source = pageByPath(stagingPath(sector.href));
   if (!source) return;
-  const m = parsePage(source.html);
+  const { hero, sections } = parseSections(source.html);
+  const key = sector.key;
+  const t = (n) => `sector-${key}-${n}`;
+  const ctx = { slug: `sector-${key}`, tone: "support", n: 0, storyCount: 0 };
 
-  const built = m.blocks.find((b) => b.list && b.list.length) || { eyebrow: "", title: "", html: "", list: [], listTitle: "" };
-  const brief = m.blocks.find((b) => b.faq && b.faq.length);
-  const builtText = paragraphs(built.html);
-  // "What we do / Everything IT, under one roof" and "Certified & accredited".
-  const whatWeDo = m.blocks.find((b) => /under one roof/i.test(b.title)) || { eyebrow: "What we do", title: "Everything IT, under one roof", lead: "" };
-  const certified = m.blocks.find((b) => /credentials you can check/i.test(b.title)) || { eyebrow: "Certified & accredited", title: "Credentials you can check" };
-  const briefLead = brief ? brief.lead || paragraphs(brief.html)[0] || "" : "";
+  const used = new Set();
+  const take = (pred) => {
+    const s = sections.find((x, n) => !used.has(n) && pred(x));
+    if (s) used.add(sections.indexOf(s));
+    return s;
+  };
+  const intro = take((s) => s.kind === "content" && s.lists.length && s.flow.length);
+  const issues = take((s) => s.kind === "content" && s.steps.length);
+  const services = take((s) => s.kind === "content" && /under one roof/i.test(s.title) && s.cards.length);
+  const quote = take((s) => s.kind === "content" && s.quotes.length && !s.title);
+  const story = take((s) => s.kind === "content" && /client story/i.test(s.eyebrow));
+  const ask = take((s) => s.kind === "ctaMid");
+  const credentials = take((s) => s.kind === "credentials");
+  const faq = take((s) => s.kind === "faq");
+  const partners = take((s) => s.kind === "partners");
+  const band = take((s) => s.kind === "ctaBand");
+  const notes = sections.filter((s, n) => !used.has(n) && s.kind === "note");
+  notes.forEach((s) => used.add(sections.indexOf(s)));
+  const relatedNote = notes.find((s) => !/written and maintained/i.test(s.text));
+  const signOff = notes.find((s) => /written and maintained/i.test(s.text));
+  // Anything this layout has no place for is still drawn, never dropped.
+  const extra = sections.filter((s, n) => !used.has(n) && s.kind === "content");
 
-  const review = TESTIMONIALS.find((t) => (t.sectors || []).includes(sector.key)) || TESTIMONIALS[0];
-  const study = CASE_STUDIES.find((c) => STUDY_SECTOR[c.sector] === sector.key);
-  const prev = INDUSTRIES[(i + INDUSTRIES.length - 1) % INDUSTRIES.length];
-  const next = INDUSTRIES[(i + 1) % INDUSTRIES.length];
+  const study = CASE_STUDIES.find((c) => STUDY_SECTOR[c.sector] === key);
+  const storyLink = story?.cards[0]?.html.match(/href="([^"]+)"[^>]*>([^<]+)</);
+  const review = quote?.quotes[0];
+  const reviewer = review && (TESTIMONIALS.find((x) => x.name === review.by) || { name: review.by, role: review.role });
+  const others = INDUSTRIES.filter((s) => s.key !== key);
 
   const crumbs = [
     { title: "Home", href: "index.html" },
@@ -55,192 +77,194 @@ INDUSTRIES.forEach((sector, i) => {
     { title: sector.title },
   ];
 
-  // The briefing's sections, in order: the side index is built from this list.
-  const sections = [
-    { id: "overview", label: built.eyebrow || sector.title },
-    { id: "included", label: built.listTitle || "What you get with WhizzIT" },
-    brief && { id: "specifics", label: brief.eyebrow || brief.title },
-    { id: "proof", label: "Customer stories" },
-    { id: "coverage", label: whatWeDo.eyebrow || "What we do" },
-    { id: "credentials", label: certified.eyebrow || "Certified & accredited" },
-  ].filter(Boolean);
-  const num = (id) => pad(sections.findIndex((s) => s.id === id) + 1);
-  const label = (id) => `<p class="sx-sec__label"><span>${num(id)}</span>${sections.find((s) => s.id === id).label}</p>`;
+  // The related-sector note links the sectors it names.
+  const linkSectors = (text) => INDUSTRIES.reduce((out, s) => out.replace(new RegExp(`\\b(${s.title.replace(/s$/, "")}s?)\\b`, "i"), (m) => `<a href="@/${s.href}">${m}</a>`), text);
 
   const main = `
-<section class="sx-hero" aria-labelledby="page-hero-title">
-  <div class="sx-hero__media">
-    ${sectorPhoto(sector, { cls: "sx-hero__photo", ratio: "4-5", sizes: "(min-width: 1024px) 46vw, 100vw", loading: "eager" })}
-    <p class="sx-hero__tag">
-      <span class="sx-hero__tag-icon" aria-hidden="true">${icon("alert")}</span>
-      <span><strong>${sector.title}</strong>${SECTOR_NOTE[sector.key] || sector.desc}</span>
-    </p>
+<section class="hero hero--sky ix-hero" aria-labelledby="page-hero-title">
+  <div class="ix-hero__media">
+    ${sectorPhoto(sector, { cls: "ix-hero__photo", ratio: "4-5", sizes: "(min-width: 1024px) 48vw, 100vw", loading: "eager" })}
   </div>
-  <div class="sx-hero__sheet">
-    <span class="sx-hero__mark" aria-hidden="true">${icon(sector.icon)}</span>
-    <div class="sx-hero__inner">
-      ${breadcrumbs(crumbs)}
-      <p class="sx-hero__kicker"><span>Industry ${pad(i + 1)} / ${pad(INDUSTRIES.length)}</span><span>${sector.title}</span></p>
-      <h1 class="sx-hero__title" id="page-hero-title">${m.title}</h1>
-      <p class="sx-hero__lead">${m.lead}</p>
-      <div class="sx-hero__actions">
-        ${btn("Request a callback", "#talk", { size: "lg", track: `sector-${sector.key}-hero-callback` })}
+  <div class="container ix-hero__inner">
+    ${breadcrumbs(crumbs)}
+    <div class="ix-hero__grid">
+      <div class="ix-hero__copy">
+        <p class="ix-hero__kicker"><span class="ix-hero__icon" aria-hidden="true">${icon(sector.icon)}</span><span>${hero.eyebrow || sector.title}</span><span class="ix-hero__count">${pad(i + 1)} / ${pad(INDUSTRIES.length)}</span></p>
+        <h1 class="ix-hero__title" id="page-hero-title">${hero.title}</h1>
+        <p class="ix-hero__lead">${hero.lead}</p>
+        <p class="ix-hero__note">${SECTOR_NOTE[key] || sector.desc}</p>
+        <a class="ix-hero__call" href="${SITE.phoneHref}" data-track="${t("hero-phone")}">${icon("phone")}<span>Prefer to talk? <strong>${SITE.phone}</strong></span></a>
       </div>
-      ${heroNote("UK-wide coverage", `sector-${sector.key}-hero`)}
+      <div class="ix-hero__form">${callbackForm({ track: t("hero"), id: "hcb" })}</div>
     </div>
+    <div class="ix-hero__foot">${statStrip({ compact: true, track: t("hero-strip") })}</div>
   </div>
 </section>
 
-<div class="container sx-body">
-  <div class="sx-main">
-
-    <section class="sx-sec" id="overview" aria-labelledby="overview-title" data-on-view>
-      ${label("overview")}
-      <div class="sx-sec__body">
-        <h2 class="sx-sec__title" id="overview-title">${built.title}</h2>
-        ${builtText.map((t, n) => `<p class="${n === 0 ? "sx-lede" : "sx-text"}">${t}</p>`).join("")}
-      </div>
-    </section>
-
-    <section class="sx-sec" id="included" aria-labelledby="included-title" data-on-view>
-      ${label("included")}
-      <div class="sx-sec__body">
-        <h2 class="sx-sec__title" id="included-title">${built.listTitle || "What you get with WhizzIT"}</h2>
-        <ol class="sx-ledger" role="list">
-          ${built.list.map((item, n) => `
-          <li style="--n:${n}">
-            <span class="sx-ledger__n">${pad(n + 1)}</span>
-            ${tick}
-            <span class="sx-ledger__text">${item}</span>
-          </li>`).join("")}
-        </ol>
-      </div>
-    </section>
-
-    ${brief ? `
-    <section class="sx-sec" id="specifics" aria-labelledby="specifics-title" data-on-view>
-      ${label("specifics")}
-      <div class="sx-sec__body">
-        <h2 class="sx-sec__title" id="specifics-title">${brief.title}</h2>
-        ${briefLead ? `<p class="sx-brief__lead">${briefLead}</p>` : ""}
-        <ol class="sx-points" role="list">
-          ${brief.faq.map((f, n) => `
-          <li class="sx-point">
-            <span class="sx-point__n" aria-hidden="true">${pad(n + 1)}</span>
-            <h3 class="sx-point__title">${f.q}</h3>
-            <div class="sx-point__text">${f.a}</div>
-          </li>`).join("")}
-        </ol>
-      </div>
-    </section>` : ""}
-
-    <section class="sx-sec" id="proof" aria-labelledby="proof-title" data-on-view>
-      ${label("proof")}
-      <div class="sx-sec__body">
-        <h2 class="sx-sec__title" id="proof-title">What our clients say</h2>
-        ${study ? `
-        <article class="sx-case">
-          ${casePhoto(study, { cls: "sx-case__photo", ratio: "4-3", sizes: "(min-width: 1024px) 300px, 100vw" })}
-          <div class="sx-case__body">
-            <span class="sx-case__tag">Case study · ${study.sector}</span>
-            <h3 class="sx-case__title"><a class="card-link" href="@/our-customers/${study.slug}.html">${study.title}</a></h3>
-            <p>${study.excerpt}</p>
-            <span class="sx-case__more" aria-hidden="true">Read the story ${icon("arrow")}</span>
-          </div>
-        </article>` : ""}
-        <figure class="sx-quote">
-          <span class="sx-quote__mark" aria-hidden="true">${icon("quote")}</span>
-          <blockquote><p>${review.quote}</p></blockquote>
-          <figcaption>
-            ${reviewAvatar(review, { badge: true })}
-            <span><strong>${review.name}</strong>${review.role}</span>
-            <span class="sx-quote__stars">${stars(`Rated ${SITE.google.rating} out of 5 on Google`)}</span>
-          </figcaption>
-          <a class="sx-quote__more" href="${SITE.google.reviewsUrl}" rel="noopener">See all ${SITE.google.count} reviews${icon("arrow")}</a>
-        </figure>
-      </div>
-    </section>
-
-    <section class="sx-sec" id="coverage" aria-labelledby="coverage-title" data-on-view>
-      ${label("coverage")}
-      <div class="sx-sec__body">
-        <h2 class="sx-sec__title" id="coverage-title">${whatWeDo.title}</h2>
-        ${whatWeDo.lead ? `<p class="sx-text sx-text--lead">${whatWeDo.lead}</p>` : ""}
-        <ul class="sx-cover" role="list">
-          ${SERVICES.map((s) => `
-          <li>
-            <a href="@/${s.href}" data-track="sector-${sector.key}-${s.key}">
-              <span class="sx-cover__icon" aria-hidden="true">${icon(s.icon)}</span>
-              <strong>${s.title}</strong>
-              <span class="sx-cover__text">${s.short}</span>
-              <span class="sx-cover__go" aria-hidden="true">${icon("arrow")}</span>
-            </a>
-          </li>`).join("")}
-        </ul>
-        <p class="sx-cover__all">${btn("All IT services", "it-services.html", { variant: "secondary", arrow: false, track: `sector-${sector.key}-services` })}</p>
-      </div>
-    </section>
-
-    <section class="sx-sec" id="credentials" aria-labelledby="credentials-title" data-on-view>
-      ${label("credentials")}
-      <div class="sx-sec__body">
-        <h2 class="sx-sec__title" id="credentials-title">${certified.title}</h2>
-        ${credBadges({ partners: true })}
-      </div>
-    </section>
-  </div>
-
-  ${/* Desktop: sticks beside the briefing. Phones and tablets: it follows the
-       briefing as the closing "talk to us" box, which the action bar links to. */""}
-  <aside class="sx-aside" id="talk" aria-label="Talk to us">
-    <nav class="sx-toc" aria-label="On this page" data-sx-toc>
-      <p class="sx-toc__title">On this page</p>
-      <ol role="list">
-        ${sections.map((s) => `<li><a href="#${s.id}"><span>${num(s.id)}</span>${s.label}</a></li>`).join("")}
-      </ol>
-    </nav>
-    <div class="sx-talk">
-      ${callbackForm({ track: `sector-${sector.key}-talk`, captchaTheme: "light" })}
-      <a class="sx-talk__call" href="${SITE.phoneHref}" data-track="sector-${sector.key}-talk-phone">${icon("phone")}<span>Prefer to talk? <strong>${SITE.phone}</strong></span></a>
-    </div>
-  </aside>
-</div>
-
-<nav class="sx-pager" aria-labelledby="other-sectors-title">
+<nav class="ix-switch" aria-label="Industries we support">
   <div class="container">
-    <h2 class="sx-pager__title" id="other-sectors-title">Other industries we support</h2>
-    <div class="sx-pager__grid">
-      ${[["prev", prev, "Previous industry"], ["next", next, "Next industry"]].map(([dir, s, text]) => `
-      <a class="sx-pager__link sx-pager__link--${dir}" href="@/${s.href}" data-track="sector-${sector.key}-${dir}">
-        ${sectorPhoto(s, { cls: "sx-pager__photo", ratio: "16-9", sizes: "(min-width: 768px) 50vw, 100vw" })}
-        <span class="sx-pager__text">
-          <span class="sx-pager__dir">${dir === "prev" ? icon("arrowLeft") : ""}${text}${dir === "next" ? icon("arrow") : ""}</span>
-          <strong>${s.title}</strong>
-          <span class="sx-pager__desc">${s.desc}</span>
-        </span>
-      </a>`).join("")}
-    </div>
-    <p class="sx-pager__all"><a href="@/industries.html">All industries</a></p>
+    <ul class="ix-switch__list" role="list">
+      ${INDUSTRIES.map((s) => `<li><a href="@/${s.href}"${s.key === key ? ' aria-current="page"' : ""}>${icon(s.icon)}<span>${s.title}</span></a></li>`).join("")}
+    </ul>
   </div>
 </nav>
 
+${intro ? `
+<section class="section ix-intro" aria-labelledby="${key}-intro-title">
+  <div class="container ix-intro__grid">
+    <div class="ix-intro__copy">
+      <p class="eyebrow">${intro.eyebrow}</p>
+      <h2 class="ix-intro__title" id="${key}-intro-title">${intro.title}</h2>
+      <div class="ix-intro__text">${intro.flow.join("")}</div>
+    </div>
+    <div class="ix-gets">
+      <p class="ix-gets__label">${intro.lists[0].label || "What you get with WhizzIT"}</p>
+      <ol class="ix-gets__list" role="list">
+        ${intro.lists[0].items.map((item, n) => `<li><span class="ix-gets__n" aria-hidden="true">${pad(n + 1)}</span><span>${item}</span></li>`).join("")}
+      </ol>
+    </div>
+  </div>
+</section>` : ""}
+
+${issues ? `
+<section class="section ix-issues" aria-labelledby="${key}-issues-title">
+  <div class="container">
+    <div class="ix-issues__head">
+      <p class="ix-issues__eyebrow">${issues.eyebrow}</p>
+      <h2 class="ix-issues__title" id="${key}-issues-title">${issues.title}</h2>
+      ${issues.lead ? `<p class="ix-issues__lead">${issues.lead}</p>` : ""}
+    </div>
+    <ol class="ix-issues__list ix-issues__list--${issues.steps.length}" role="list">
+      ${issues.steps.map((st, n) => `
+      <li>
+        <span class="ix-issues__n" aria-hidden="true">${st.no || pad(n + 1)}</span>
+        <h3>${st.q}</h3>
+        <div class="ix-issues__a">${st.a}</div>
+      </li>`).join("")}
+    </ol>
+    ${relatedNote ? `<p class="ix-issues__note">${icon("route")}<span>${linkSectors(relatedNote.text)}</span></p>` : ""}
+  </div>
+</section>` : ""}
+
+${review || story ? `
+<section class="ix-proof" aria-label="${sector.title} client story">
+  <div class="ix-proof__media">
+    ${study ? casePhoto(study, { cls: "ix-proof__photo", ratio: "16-9", sizes: "100vw" }) : sectorPhoto(sector, { cls: "ix-proof__photo", ratio: "16-9", sizes: "100vw" })}
+  </div>
+  <div class="container ix-proof__inner">
+    ${review ? `
+    <figure class="ix-proof__quote">
+      ${stars(`Rated ${SITE.google.rating} out of 5 on Google`)}
+      <blockquote><p>${review.text.replace(/^[“"]|[”"]$/g, "")}</p></blockquote>
+      <figcaption>${reviewAvatar(reviewer, { badge: true })}<span><strong>${review.by}</strong>${review.role || reviewer.role || ""}</span></figcaption>
+    </figure>` : ""}
+    ${story ? `
+    <div class="ix-proof__story">
+      <p class="ix-proof__eyebrow">${story.eyebrow}</p>
+      <p class="ix-proof__title">${story.cards[0].title}</p>
+      ${(story.cards[0].html.match(/<p>[\s\S]*?<\/p>/) || [""])[0]}
+      ${storyLink ? `<a class="ix-proof__link" href="${storyLink[1]}">${storyLink[2].trim()}${icon("arrow")}</a>` : ""}
+    </div>` : ""}
+  </div>
+</section>` : ""}
+
+${services ? `
+<section class="section ix-services" aria-labelledby="${key}-services-title">
+  <div class="container">
+    <div class="ix-services__head">
+      <div>
+        <p class="eyebrow">${services.eyebrow}</p>
+        <h2 class="grad-head" id="${key}-services-title">${services.title}</h2>
+      </div>
+      ${services.lead ? `<p>${services.lead}</p>` : ""}
+    </div>
+    <ul class="ix-services__list" role="list">
+      ${services.cards.map((c) => {
+        const svc = serviceFor(c.title);
+        const inner = `<span class="ix-services__icon" aria-hidden="true">${icon(svc?.icon || "sparkle")}</span><strong>${c.title}</strong><span class="ix-services__text">${c.html.replace(/<\/?p>/g, " ").trim()}</span>`;
+        return `<li class="tone-${svc?.tone || "support"}">${svc ? `<a href="@/${svc.href}" data-track="${t(svc.key)}">${inner}<span class="ix-services__go" aria-hidden="true">${icon("arrow")}</span></a>` : `<div>${inner}</div>`}</li>`;
+      }).join("")}
+    </ul>
+  </div>
+</section>` : ""}
+
+${extra.map((s) => R[kindOf(s, 1)](s, `${key}-extra-${sections.indexOf(s)}`, ctx)).join("\n")}
+
+${ask ? `
+<section class="section ix-ask" aria-labelledby="${key}-ask-title">
+  <div class="container ix-ask__inner">
+    <p class="ix-ask__eyebrow">${ask.eyebrow}</p>
+    <h2 class="ix-ask__title" id="${key}-ask-title">${ask.title}</h2>
+    ${ask.text ? `<p class="ix-ask__text">${ask.text}</p>` : ""}
+    <div class="ix-ask__act">
+      ${btn("Request a callback", "#page-hero-title", { size: "lg", track: t("ask-callback") })}
+      <a class="ix-ask__call" href="${SITE.phoneHref}" data-track="${t("ask-phone")}">${icon("phone")}<span>${SITE.phone}</span></a>
+    </div>
+    ${ask.quote?.text ? `<p class="ix-ask__quote">“${ask.quote.text.replace(/^[“"]|[”"]$/g, "")}” <span>${ask.quote.by}${ask.quote.role ? `, ${ask.quote.role}` : ""}</span></p>` : ""}
+  </div>
+</section>` : ""}
+
+${credentials ? R.credentials(credentials, `${key}-cred-title`, ctx) : ""}
+${faq ? R.faq(faq, `${key}-faq-title`, ctx) : ""}
+${partners ? R.partners(partners, `${key}-partners-title`, ctx) : ""}
+
+<nav class="section ix-more" aria-labelledby="${key}-more-title">
+  <div class="container">
+    <div class="ix-more__head">
+      <h2 class="grad-head" id="${key}-more-title">Other industries we support</h2>
+      ${btn("All industries", "industries.html", { variant: "secondary", arrow: false, track: t("all") })}
+    </div>
+  </div>
+  <ul class="ix-more__strip" role="list">
+    ${others.map((s) => `
+    <li>
+      <a href="@/${s.href}" data-track="${t(`more-${s.key}`)}">
+        ${sectorPhoto(s, { cls: "ix-more__photo", ratio: "4-5", sizes: "(min-width: 1024px) 22vw, 70vw" })}
+        <span class="ix-more__name">${icon(s.icon)}<strong>${s.title}</strong></span>
+      </a>
+    </li>`).join("")}
+  </ul>
+  ${signOff ? `<div class="container"><p class="ix-more__note">${signOff.text}</p></div>` : ""}
+</nav>
+
 <div class="sx-dock" data-sx-dock aria-hidden="true">
-  <a class="btn btn--primary sx-dock__main" href="#talk" tabindex="-1"><span>Request a callback</span></a>
-  <a class="sx-dock__call" href="${SITE.phoneHref}" tabindex="-1" aria-label="Call ${SITE.phone}">${icon("phone")}</a>
+  <a class="btn btn--primary sx-dock__main" href="#page-hero-title" tabindex="-1" data-track="${t("dock-callback")}"><span>Request a callback</span></a>
+  <a class="sx-dock__call" href="${SITE.phoneHref}" tabindex="-1" aria-label="Call ${SITE.phone}" data-track="${t("dock-phone")}">${icon("phone")}</a>
 </div>
 `;
 
+  const schema = [];
+  if (faq?.items?.length) {
+    schema.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faq.items.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: plainText(f.a) } })),
+    });
+  }
+
   page({
     footerCta: {
-      title: `IT that fits how ${sector.title} works`,
-      text: "Book a no-obligation conversation and we'll tell you what we would change first.",
-      track: `sector-${sector.key}-cta`,
+      title: band?.title || `IT that fits how ${sector.title} works`,
+      text: band?.text || "Book a no-obligation conversation and we'll tell you what we would change first.",
+      track: t("cta"),
     },
     file: sector.href,
-    title: m.title,
-    description: m.lead && m.lead.length > 40 ? m.lead : sector.desc,
-    bodyClass: `page--industry page--sector page--light-hero sector--${sector.key}`,
+    title: hero.title,
+    description: hero.lead && hero.lead.length > 40 ? hero.lead : sector.desc,
+    bodyClass: `page--industry page--sector page--sky sector--${key}`,
     crumbs,
     main,
+    schema,
   });
 });
+
+// The static preview: the old root-level industry URLs point at their new home
+// (WordPress answers them with a permanent redirect, inc/sectors.php).
+if (!WP_EXPORT) {
+  const ROOT = join(import.meta.dirname, "..", "..");
+  INDUSTRIES.forEach((s) => {
+    const old = s.href.replace(/^industries\//, "");
+    writeFileSync(join(ROOT, old), `<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>Moved</title><meta name="robots" content="noindex"><link rel="canonical" href="${SITE.url}/${s.href.replace(/\.html$/, "/")}"><meta http-equiv="refresh" content="0; url=industries/${old}"></head><body><p>This page has moved to <a href="industries/${old}">industries/${old}</a>.</p></body></html>
+`);
+  });
+}

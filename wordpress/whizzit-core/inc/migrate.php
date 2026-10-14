@@ -78,7 +78,12 @@ function find_page( $path ) {
 		$front = (int) get_option( 'page_on_front' );
 		return $front ? get_post( $front ) : get_page_by_path( 'home' );
 	}
-	return get_page_by_path( trim( $path, '/' ), OBJECT, [ 'page', 'sector' ] );
+	$found = get_page_by_path( trim( $path, '/' ), OBJECT, [ 'page', 'sector' ] );
+	// Industry pages are sectors at /industries/<slug>/, found by their slug.
+	if ( ! $found && preg_match( '#^/industries/[^/]+/$#', $path ) && function_exists( 'whizzit_sector_by_path' ) ) {
+		$found = whizzit_sector_by_path( $path );
+	}
+	return $found;
 }
 
 /** Stable 7-character Elementor element ID, so re-imports do not churn IDs. */
@@ -258,6 +263,12 @@ function import_posts() {
 		update_post_meta( $id, '_whizzit_card_excerpt', wp_slash( $rec['cardExcerpt'] ?? '' ) );
 		update_post_meta( $id, '_whizzit_chip', wp_slash( $rec['chip'] ?? '' ) );
 		update_post_meta( $id, '_whizzit_related', implode( ',', $rec['related'] ?? [] ) );
+		// What the design prints after the body (single.php): author box, FAQ,
+		// partners, and the closing call to action's own wording.
+		update_post_meta( $id, '_whizzit_author_box', wp_slash( $rec['authorHtml'] ?? '' ) );
+		update_post_meta( $id, '_whizzit_faq', wp_slash( $rec['faqHtml'] ?? '' ) );
+		update_post_meta( $id, '_whizzit_partners', wp_slash( $rec['partnersHtml'] ?? '' ) );
+		update_post_meta( $id, '_whizzit_cta', ! empty( $rec['cta'] ) ? wp_slash( wp_json_encode( $rec['cta'] ) ) : '' );
 		$report[] = [ 'path' => $path, 'status' => 'imported', 'id' => $id ];
 	}
 	// Categories an earlier import made that staging's four replaced.

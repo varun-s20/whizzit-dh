@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initSectorPage();
   initLibrary();
   initCoverageMap();
+  initPlaceNotes();
   initAboutFilm();
   initForms();
 });
@@ -614,9 +615,11 @@ function initRevealAnimations() {
 
 /* Form UX validation. Server-side validation is still required once a
    backend is connected — this only improves the experience. */
-/* Live form sending: the same contract as the current whizzit.co.uk site. The
-   form posts its FormData to its action (/api/submit.php) and asks for JSON; any
-   reply that is not an error and does not say success:false counts as sent.
+/* Live form sending. The form posts its FormData to its action (the whizzit-core
+   handler, /wp-json/whizzit/v1/submit) and asks for JSON; any reply that is not
+   an error and does not say success:false counts as sent. A refused send resets
+   that form's reCAPTCHA (a token works once); if the server refused the
+   reCAPTCHA itself, the box asks for the tick again.
    reCAPTCHA v2 is fetched only once someone engages with a form, and revealed
    on the first press of submit; if Google's script cannot load at all, the form
    still posts and the server decides, so an outage never costs a lead. */
@@ -637,7 +640,13 @@ const captcha = (() => {
   // Read this form's own token: getResponse() with no widget id only reads the
   // first widget on the page, and a page can carry two forms.
   const tokenFor = (form) => form.querySelector('textarea[name="g-recaptcha-response"]')?.value || "";
-  return { load, ready, tokenFor, failed: () => failed };
+  // api.js renders the widgets in page order, so a form's widget id is its index.
+  const reset = (form) => {
+    const index = [...document.querySelectorAll(".g-recaptcha")].indexOf(form.querySelector(".g-recaptcha"));
+    if (index < 0 || !ready()) return;
+    try { window.grecaptcha.reset(index); } catch { /* widget not rendered yet */ }
+  };
+  return { load, ready, tokenFor, reset, failed: () => failed };
 })();
 
 function initCaptchaLoading() {
@@ -684,9 +693,9 @@ function sendLive(form) {
   if (button) button.disabled = true;
 
   fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
-    .then((r) => r.json().catch(() => ({})).then((data) => r.ok && data.success !== false))
-    .then((ok) => {
-      if (!ok) throw new Error("rejected");
+    .then((r) => r.json().catch(() => ({})).then((data) => ({ ok: r.ok && data.success !== false, reason: data.error })))
+    .then(({ ok, reason }) => {
+      if (!ok) throw Object.assign(new Error("rejected"), { reason });
       const kind = form.querySelector('[name="form_name"]')?.value || "contact";
       (window.dataLayer = window.dataLayer || []).push({ event: "generate_lead", form_name: kind, page_path: location.pathname });
       const success = document.getElementById(form.dataset.success);
@@ -697,7 +706,13 @@ function sendLive(form) {
         success.focus();
       }
     })
-    .catch(() => {
+    .catch((error) => {
+      captcha.reset(form);
+      if (error.reason === "captcha" && row) {
+        row.classList.add("is-armed", "has-error");
+        row.scrollIntoView({ block: "center", behavior: prefersReducedMotion.matches ? "auto" : "smooth" });
+        return;
+      }
       if (errorBox) errorBox.hidden = false;
     })
     .finally(() => {
@@ -1291,8 +1306,9 @@ function initSectorPage() {
     spy();
   }
 
+  // Location pages (location-pages.mjs) use the same bar under their cover.
   const dock = document.querySelector("[data-sx-dock]");
-  const hero = document.querySelector(".sx-hero");
+  const hero = document.querySelector(".sx-hero, .lx-cover, .ix-hero");
   if (!dock || !hero || !("IntersectionObserver" in window)) return;
 
   const actions = [...dock.querySelectorAll("a")];
@@ -1662,6 +1678,104 @@ function initCoverageMap() {
       const link = links.find((l) => l.dataset.loc === pin.dataset.loc);
       if (link) window.location.href = link.href;
     });
+  });
+}
+
+/* Location pages: "<Area> in particular". From 900px a vertical tab list sits
+   beside the point being read; below that every point is a card in a swipe
+   row and the list is hidden. The selected panel is marked with a class, not
+   `hidden`, so the stylesheet decides per width what shows. Without JS all
+   points are laid out in full. */
+function initPlaceNotes() {
+  // The intro's long paragraph of figures: on phones it opens from a preview
+  // (the stylesheet clamps it there; the button is hidden from 768px).
+  document.querySelectorAll("[data-lx-more]").forEach((more) => {
+    const toggle = more.querySelector("button");
+    toggle.hidden = false;
+    toggle.addEventListener("click", () => {
+      const open = more.classList.toggle("is-open");
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.textContent = open ? "Show less" : "Read more";
+    });
+  });
+
+  // London's "Before you commit": below 900px the questions are a checklist
+  // and each one opens in place. The heading's text moves into a button and
+  // the answer into its own region; above 900px the button is inert text and
+  // the tabs beside it do the work.
+  const narrow = window.matchMedia("(max-width: 899.98px)");
+  document.querySelectorAll(".lx-notes--checklist .lx-notes__panel").forEach((panel, i) => {
+    const heading = panel.querySelector("h3");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "lx-notes__q";
+    button.append(...heading.childNodes);
+    heading.append(button);
+    const answer = document.createElement("div");
+    answer.className = "lx-notes__a";
+    answer.id = `${panel.id}-a`;
+    [...panel.children].filter((el) => el !== heading && !el.classList.contains("lx-notes__count")).forEach((el) => answer.append(el));
+    panel.append(answer);
+    panel.classList.toggle("is-open", i === 0);
+
+    const sync = () => {
+      button.tabIndex = narrow.matches ? 0 : -1;
+      if (narrow.matches) {
+        button.setAttribute("aria-expanded", String(panel.classList.contains("is-open")));
+        button.setAttribute("aria-controls", answer.id);
+      } else {
+        button.removeAttribute("aria-expanded");
+        button.removeAttribute("aria-controls");
+      }
+    };
+    button.addEventListener("click", () => {
+      if (!narrow.matches) return;
+      panel.classList.toggle("is-open");
+      sync();
+    });
+    narrow.addEventListener("change", sync);
+    sync();
+  });
+
+  document.querySelectorAll("[data-lx-notes]").forEach((box) => {
+    const tabs = [...box.querySelectorAll('[role="tab"]')];
+    const panels = tabs.map((tab) => document.getElementById(tab.getAttribute("aria-controls")));
+    const indicator = box.querySelector(".lx-notes__indicator");
+    let current = 0;
+
+    const place = () => {
+      if (!indicator) return;
+      const tab = tabs[current];
+      indicator.style.transform = `translateY(${tab.offsetTop}px)`;
+      indicator.style.height = `${tab.offsetHeight}px`;
+    };
+
+    const select = (index, focus = false) => {
+      current = index;
+      tabs.forEach((tab, i) => {
+        tab.setAttribute("aria-selected", String(i === index));
+        tab.tabIndex = i === index ? 0 : -1;
+        panels[i].classList.toggle("is-active", i === index);
+      });
+      place();
+      if (focus) tabs[index].focus();
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", () => select(i));
+      tab.addEventListener("keydown", (event) => {
+        const keys = { ArrowDown: i + 1, ArrowUp: i - 1, ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 };
+        if (!(event.key in keys)) return;
+        event.preventDefault();
+        select((keys[event.key] + tabs.length) % tabs.length, true);
+      });
+    });
+
+    box.classList.add("is-tabs");
+    select(0);
+    window.addEventListener("resize", place);
+    // Placed without a transition first, so it does not slide in from the top.
+    requestAnimationFrame(() => requestAnimationFrame(() => indicator?.classList.add("is-ready")));
   });
 }
 

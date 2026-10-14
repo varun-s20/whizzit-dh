@@ -1,12 +1,17 @@
 // Network Management overview. Signature: a monitoring panel showing what we watch,
 // paired with the site-by-site coverage list.
-import { page, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, LOCATIONS } from "../lib.mjs";
+import { page, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, LOCATIONS, statStrip } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
-import { pageHero, heroProof, renderBlocks, subServiceGrid, reviewsBand, pricingPanel } from "../blocks.mjs";
+import { parseSections } from "../section-parse.mjs";
+import { hubTail } from "../sections.mjs";
+import { pageHero } from "../blocks.mjs";
 
 const network = service("network");
 const m = parsePage(pageByPath("/network-management/").html);
+// Everything below the hand-built sections, with the staging copy (sections.mjs).
+const P = parseSections(pageByPath("/network-management/").html);
+const band = P.sections.find((s) => s.kind === "ctaBand");
 const crumbs = [{ title: "Home", href: "index.html" }, { title: "IT Services", href: "it-services.html" }, { title: "Network Management" }];
 
 const block = (needle) => m.blocks.find((b) => b.title.toLowerCase().includes(needle)) || { html: "", list: [], cards: [] };
@@ -14,8 +19,6 @@ const covers = block("expert hands");
 const included = block("what’s included");
 const trust = block("support you can trust");
 
-const handled = [covers.title, included.title, trust.title];
-const rest = m.blocks.filter((b) => !handled.includes(b.title) && !/pricing built|related guides|network management services|what our clients say/i.test(b.title));
 
 // What continuous monitoring actually watches, in the order an engineer checks it.
 const monitored = [
@@ -34,11 +37,7 @@ ${pageHero({
   lead: m.lead,
   crumbs: breadcrumbs(crumbs),
   cls: "hero--tone-network",
-  aside: heroProof([
-    { icon: "activity", value: "24/7", label: "Monitoring and alerting" },
-    { icon: "wifi", value: "Multi-site", label: "Offices, sites and remote teams" },
-    { icon: "clock", value: "9 min", label: "Average first response" },
-  ]),
+  aside: statStrip({ compact: true, track: "network-management-hero" }),
 })}
 
 <section class="section" aria-labelledby="network-covers-title">
@@ -115,8 +114,7 @@ ${trust.cards.length ? `
   </div>
 </section>` : ""}
 
-${renderBlocks(rest, { key: "network" })}
-${subServiceGrid(network, { title: "Network management services" })}
+${hubTail(P, { slug: "network-management", tone: "network" }, { skip: [covers.title, included.title, trust.title], cardsOf: [covers.title] })}
 
 <section class="section section--tight" aria-labelledby="network-areas-title">
   <div class="container">
@@ -133,15 +131,12 @@ ${subServiceGrid(network, { title: "Network management services" })}
     </ul>
   </div>
 </section>
-
-${reviewsBand([TESTIMONIALS[4], TESTIMONIALS[2], TESTIMONIALS[0]], { title: "What our clients say" })}
-${pricingPanel({ track: "network-pricing" })}
 `;
 
 page({
   footerCta: {
-    title: "Tired of blaming the Wi-Fi?",
-    text: "We will survey what you have, tell you what is actually wrong and fix it properly.",
+    title: band?.title || "Tired of blaming the Wi-Fi?",
+    text: band?.text || "We will survey what you have, tell you what is actually wrong and fix it properly.",
     track: "network-final-cta",
   },
   file: "network-management.html",

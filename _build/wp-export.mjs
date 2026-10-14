@@ -102,6 +102,7 @@ console.log(`Sections: ${templates.size} templates (${fields} fields), ${structu
 const { BLOG, BLOG_LISTING, LISTING_CATEGORIES, SERVICES, STOCK, CATEGORY_PHOTO, wpUrls, enquiryBox } = await import("./lib.mjs");
 const { icon, iconNames } = await import("./icons.mjs");
 const flat = (html) => html.replace(/\s*\n\s*/g, " ").trim();
+const { articleExtras } = await import("./pages/articles.mjs");
 // category: the blog-listing category (staging's four); chip: the label the
 // article itself shows; card*: how staging's blog page lists it; related: the
 // three articles staging shows under it.
@@ -110,6 +111,11 @@ const posts = BLOG.map((p) => ({
   category: p.card?.category || p.category, chip: p.categoryLabel,
   cardTitle: p.card?.title || "", cardExcerpt: p.card?.excerpt || "", related: p.related || [],
   body: flat(wpUrls(p.body)),
+  // After the body, as staging prints it (single.php): author box, FAQ,
+  // partners, and the closing call to action's wording.
+  ...(({ authorHtml, faqHtml, partnersHtml, cta }) => ({
+    authorHtml: flat(wpUrls(authorHtml)), faqHtml: flat(wpUrls(faqHtml)), partnersHtml: flat(wpUrls(partnersHtml)), cta,
+  }))(articleExtras(p)),
 }));
 writeFileSync(join(plugin, "data", "posts.json"), JSON.stringify({ posts }, null, 1));
 

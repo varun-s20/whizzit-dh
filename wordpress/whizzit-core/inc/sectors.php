@@ -8,8 +8,10 @@
  * Industries directory and "Other industries" on each sector page. Adding a
  * sector (Sectors → Duplicate an existing one) adds it everywhere.
  *
- * Sector URLs stay at the root of the site (/it-support-construction/), as they
- * were when they were pages.
+ * Sector URLs sit under the Industries page (/industries/it-support-construction/,
+ * client, 11 Oct 2026). The old root URLs (/it-support-construction/) answer
+ * with a permanent redirect to the new ones, so links and search results keep
+ * working.
  *
  *   [whizzit_sectors view="directory|cards|grid" exclude="current" limit="4"]
  *   [whizzit_sectors_count]
@@ -51,27 +53,48 @@ add_action( 'init', function () {
 	}
 } );
 
-/* ---------- Root-level URLs ---------- */
+/* ---------- URLs: /industries/<slug>/ ---------- */
+
+const WHIZZIT_SECTOR_BASE = 'industries';
 
 add_filter( 'post_type_link', function ( $url, $post ) {
-	return 'sector' === $post->post_type && $post->post_name && 'publish' === $post->post_status ? home_url( user_trailingslashit( $post->post_name ) ) : $url;
+	return 'sector' === $post->post_type && $post->post_name && 'publish' === $post->post_status ? home_url( user_trailingslashit( WHIZZIT_SECTOR_BASE . '/' . $post->post_name ) ) : $url;
 }, 10, 2 );
 
-// /it-support-construction/: WordPress only matches its page rule when a page has
-// that path, so read the path itself and serve the sector when one has it.
+// WordPress matches /industries/<slug>/ against the page rule (a child of the
+// Industries page) and finds nothing, so read the path itself and serve the
+// sector. The old root URL of a sector redirects to the new one.
 add_filter( 'request', function ( $vars ) {
 	$path = trim( (string) ( $GLOBALS['wp']->request ?? '' ), '/' );
-	if ( '' === $path || str_contains( $path, '/' ) || is_admin() || get_page_by_path( $path ) ) {
+	if ( '' === $path || is_admin() ) {
 		return $vars;
 	}
-	$sector = get_page_by_path( $path, OBJECT, 'sector' );
-	if ( ! $sector ) {
-		return $vars;
+	$parts = explode( '/', $path );
+	if ( 2 === count( $parts ) && WHIZZIT_SECTOR_BASE === $parts[0] && ! get_page_by_path( $path ) ) {
+		$sector = get_page_by_path( $parts[1], OBJECT, 'sector' );
+		if ( ! $sector ) {
+			return $vars;
+		}
+		// Keep query-string vars (preview and the like); drop what the failed match set.
+		$vars = array_diff_key( $vars, array_flip( [ 'pagename', 'page', 'name', 'error', 'attachment', 'category_name' ] ) );
+		return array_merge( $vars, [ 'sector' => $sector->post_name, 'post_type' => 'sector', 'name' => $sector->post_name ] );
 	}
-	// Keep query-string vars (preview and the like); drop what the failed match set.
-	$vars = array_diff_key( $vars, array_flip( [ 'pagename', 'page', 'name', 'error', 'attachment', 'category_name' ] ) );
-	return array_merge( $vars, [ 'sector' => $sector->post_name, 'post_type' => 'sector', 'name' => $sector->post_name ] );
+	if ( 1 === count( $parts ) && ! get_page_by_path( $path ) ) {
+		$sector = get_page_by_path( $path, OBJECT, 'sector' );
+		if ( $sector && 'publish' === $sector->post_status ) {
+			$query = isset( $_SERVER['QUERY_STRING'] ) && '' !== $_SERVER['QUERY_STRING'] ? '?' . sanitize_text_field( wp_unslash( $_SERVER['QUERY_STRING'] ) ) : '';
+			wp_safe_redirect( get_permalink( $sector ) . $query, 301 );
+			exit;
+		}
+	}
+	return $vars;
 } );
+
+/** A sector by its path, old (/slug/) or new (/industries/slug/). */
+function whizzit_sector_by_path( $path ) {
+	$slug = basename( trim( (string) $path, '/' ) );
+	return '' === $slug ? null : get_page_by_path( $slug, OBJECT, [ 'sector', 'page' ] );
+}
 
 // Pages and sectors share the root, so a sector cannot take a page's slug (or the reverse).
 add_filter( 'wp_unique_post_slug', function ( $slug, $id, $status, $type, $parent ) {
@@ -263,7 +286,8 @@ add_action( 'admin_post_whizzit_duplicate_sector', function () {
 function whizzit_import_sectors() {
 	$report = [];
 	foreach ( whizzit_data( 'sectors' )['sectors'] ?? [] as $n => $s ) {
-		$post = get_page_by_path( trim( $s['path'], '/' ), OBJECT, [ 'page', 'sector' ] );
+		// Sectors are found by their slug: the path moved under /industries/.
+		$post = whizzit_sector_by_path( $s['path'] );
 		if ( ! $post ) {
 			$report[] = [ 'path' => $s['path'], 'status' => 'missing', 'id' => 0 ];
 			continue;

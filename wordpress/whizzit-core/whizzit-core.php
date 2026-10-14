@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name:       WhizzIT Core
- * Description:       WhizzIT's site tools: the WhizzIT Elementor widgets every page is built from, Sectors, site settings (Settings → WhizzIT), the blog and sector listings, and the import from the design build (Tools → WhizzIT import).
- * Version:           2.4.6
+ * Description:       WhizzIT's site tools: the WhizzIT Elementor widgets every page is built from, Sectors, site settings (Settings → WhizzIT), the website forms (Form entries), the blog and sector listings, and the import from the design build (Tools → WhizzIT import).
+ * Version:           2.5.5
  * Requires at least: 6.5
  * Requires PHP:      8.1
  * Requires Plugins:  elementor
@@ -15,7 +15,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-const WHIZZIT_CORE_VERSION = '2.4.6';
+const WHIZZIT_CORE_VERSION = '2.5.5';
 const WHIZZIT_CORE_FILE    = __FILE__;
 
 require __DIR__ . '/inc/render.php';
@@ -23,5 +23,12 @@ require __DIR__ . '/inc/sections.php';
 require __DIR__ . '/inc/elementor.php';
 require __DIR__ . '/inc/sectors.php';
 require __DIR__ . '/inc/settings.php';
+// The reCAPTCHA secret, kept out of git: inc/secrets.php is created locally
+// and only travels inside the plugin zip. wp-config.php can define it instead.
+if ( is_readable( __DIR__ . '/inc/secrets.php' ) ) {
+	require __DIR__ . '/inc/secrets.php';
+}
+require __DIR__ . '/inc/forms.php';
+require __DIR__ . '/inc/google-reviews.php';
 require __DIR__ . '/inc/shortcodes.php';
 require __DIR__ . '/inc/migrate.php';

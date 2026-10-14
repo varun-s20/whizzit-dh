@@ -2,3 +2,6 @@
 *.wpress
 # Packaged theme/plugin zips; rebuild with python package_plugin.py
 wordpress/dist/
+
+# reCAPTCHA secret (and any other server secret): only ever shipped inside the plugin zip.
+wordpress/whizzit-core/inc/secrets.php

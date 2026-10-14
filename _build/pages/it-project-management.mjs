@@ -1,12 +1,17 @@
 // IT Project Management overview. Signature: the four-stage delivery method runs
 // down the page as a numbered spine.
-import { page, statValue, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, STATS, credBadges } from "../lib.mjs";
+import { page, statValue, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, STATS, credBadges, statStrip } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
-import { pageHero, heroProof, renderBlocks, subServiceGrid, reviewsBand, pricingPanel } from "../blocks.mjs";
+import { parseSections } from "../section-parse.mjs";
+import { hubTail } from "../sections.mjs";
+import { pageHero } from "../blocks.mjs";
 
 const projects = service("projects");
 const m = parsePage(pageByPath("/it-project-management/").html);
+// Everything below the hand-built sections, with the staging copy (sections.mjs).
+const P = parseSections(pageByPath("/it-project-management/").html);
+const band = P.sections.find((s) => s.kind === "ctaBand");
 const crumbs = [{ title: "Home", href: "index.html" }, { title: "IT Services", href: "it-services.html" }, { title: "IT Project Management" }];
 
 const block = (needle) => m.blocks.find((b) => b.title.toLowerCase().includes(needle)) || { html: "", list: [], cards: [], eyebrow: "" };
@@ -14,8 +19,6 @@ const covers = block("every stage");
 const method = block("delivery method");
 const why = block("why work with us");
 
-const handled = [covers.title, method.title, why.title];
-const rest = m.blocks.filter((b) => !handled.includes(b.title) && !/pricing built|related guides|strategy, advisory|what our project clients say/i.test(b.title));
 
 // Typical projects, drawn from the specialist services under this pillar.
 const projectTypes = [
@@ -32,11 +35,7 @@ ${pageHero({
   lead: m.lead,
   crumbs: breadcrumbs(crumbs),
   cls: "hero--tone-projects",
-  aside: heroProof([
-    { icon: "route", value: "4 stages", label: "Design, implementation, delivery, improvement" },
-    { icon: "users", value: "One owner", label: "A named lead from start to finish" },
-    { icon: "clock", value: "9 min", label: "Average first response" },
-  ]),
+  aside: statStrip({ compact: true, track: "it-project-management-hero" }),
 })}
 
 <section class="section" aria-labelledby="pm-covers-title">
@@ -93,40 +92,24 @@ ${pageHero({
   </div>
 </section>
 
-${renderBlocks(rest, { key: "pm" })}
-
 <section class="section stat-band" aria-labelledby="pm-stats-title">
   <div class="container">
     <div class="stat-band__head">
       <p class="eyebrow">By the numbers</p>
       <h2 class="grad-head grad-head--dark" id="pm-stats-title">Proof, not promises</h2>
     </div>
-    <dl class="stat-band__grid">
-      ${STATS.map((s) => `<div><dd>${statValue(s)}</dd><dt>${s.label}</dt><p>${s.note}</p></div>`).join("")}
-    </dl>
+    ${statStrip({ track: "pm-proof" })}
+    <p class="stat-band__source">Figures published by WhizzIT. Response and resolution times measured across every ticket in 2025.</p>
   </div>
 </section>
 
-<section class="section section--tight" aria-labelledby="pm-why-title">
-  <div class="container statement-wide">
-    <div class="center-head">
-      <p class="eyebrow">${why.eyebrow || "Why WhizzIT"}</p>
-      <h2 class="grad-head" id="pm-why-title">${why.title || "Why work with us?"}</h2>
-    </div>
-    ${why.html ? `<div class="prose-cols">${why.html}</div>` : ""}
-    ${credBadges()}
-  </div>
-</section>
-
-${subServiceGrid(projects, { title: "Strategy, advisory and delivery services" })}
-${reviewsBand([TESTIMONIALS[5], TESTIMONIALS[1], TESTIMONIALS[4]], { title: "What our project clients say" })}
-${pricingPanel({ track: "pm-pricing" })}
+${hubTail(P, { slug: "it-project-management", tone: "projects" }, { skip: [covers.title, method.title], cardsOf: [covers.title] })}
 `;
 
 page({
   footerCta: {
-    title: "Got a move, migration or upgrade coming?",
-    text: "Tell us the deadline. We will work backwards from it and tell you what has to happen when.",
+    title: band?.title || "Got a move, migration or upgrade coming?",
+    text: band?.text || "Tell us the deadline. We will work backwards from it and tell you what has to happen when.",
     track: "pm-final-cta",
   },
   file: "it-project-management.html",

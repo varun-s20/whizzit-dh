@@ -7,11 +7,11 @@
     <figure class="enquiry__proof">
       <p class="enquiry__stars" role="img" aria-label="Rated 5 out of 5">★★★★★</p>
       <blockquote><p>{{QUOTE}}</p></blockquote>
-      <figcaption><strong>{{BY}}</strong>, {{ROLE}} · <a href="https://www.google.com/maps?cid=17055157413191665489" target="_blank" rel="noopener">see all 15 reviews</a></figcaption>
+      <figcaption><strong>{{BY}}</strong>, {{ROLE}} · <a href="https://www.google.com/maps?cid=17055157413191665489" target="_blank" rel="noopener">see all <span data-g="count">16</span> reviews</a></figcaption>
     </figure>
   </div>
   <div class="enquiry__form">
-    <form action="/api/submit.php" method="post" data-validate data-success="{{ID}}-success" aria-labelledby="{{ID}}-form-title">
+    <form action="/wp-json/whizzit/v1/submit" method="post" data-validate data-success="{{ID}}-success" aria-labelledby="{{ID}}-form-title">
       <input type="hidden" name="form_name" value="inline">
       <input class="visually-hidden" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
       <p class="enquiry__head"><strong id="{{ID}}-form-title">Send us a message</strong><span>We respond the same working day.</span></p>
@@ -34,7 +34,7 @@
         <textarea class="field__input" id="{{ID}}-message" name="message" rows="3" placeholder="A few details about your IT needs…" required data-msg-required="Please let us know how we can help." aria-describedby="{{ID}}-message-error"></textarea>
         <p class="field__error" id="{{ID}}-message-error"></p>
       </div>
-      <div class="captcha-row"><div class="g-recaptcha" data-sitekey="6LetGGItAAAAABGoBmlvEaWqFhJNfk97jeH2zaOv" data-theme="light"></div><p class="field__error">Please complete the reCAPTCHA to continue.</p></div>
+      <div class="captcha-row"><div class="g-recaptcha" data-sitekey="6LdMa-UtAAAAAMfV3sodal6zDzZMXePeoSEOhlWh" data-theme="light"></div><p class="field__error">Please complete the reCAPTCHA to continue.</p></div>
     <p class="form-error" role="alert" hidden>Sorry, something went wrong. Please call 020 4634 2518 or email info@whizzit.co.uk.</p>
       <button class="btn btn--primary btn--block" type="submit" data-track="article-enquiry-submit"><span>Send message</span></button>
     </form>

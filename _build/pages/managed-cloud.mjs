@@ -1,12 +1,17 @@
 // Managed Cloud Services overview. Signature: platform cards across the top and a
 // four-step migration journey down the middle.
-import { page, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, PARTNERS, credBadges } from "../lib.mjs";
+import { page, btn, icon, photo, breadcrumbs, service, SITE, TESTIMONIALS, PHOTOS, PARTNERS, credBadges, statStrip } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
-import { pageHero, heroProof, renderBlocks, subServiceGrid, reviewsBand, pricingPanel } from "../blocks.mjs";
+import { parseSections } from "../section-parse.mjs";
+import { hubTail } from "../sections.mjs";
+import { pageHero } from "../blocks.mjs";
 
 const cloud = service("cloud");
 const m = parsePage(pageByPath("/managed-cloud-services/").html);
+// Everything below the hand-built sections, with the staging copy (sections.mjs).
+const P = parseSections(pageByPath("/managed-cloud-services/").html);
+const band = P.sections.find((s) => s.kind === "ctaBand");
 const crumbs = [{ title: "Home", href: "index.html" }, { title: "IT Services", href: "it-services.html" }, { title: "Managed Cloud Services" }];
 
 const block = (needle) => m.blocks.find((b) => b.title.toLowerCase().includes(needle)) || { html: "", list: [], cards: [] };
@@ -14,8 +19,6 @@ const covers = block("nothing missed");
 const included = block("what’s included");
 const why = block("why work with us");
 
-const handled = [covers.title, included.title, why.title];
-const rest = m.blocks.filter((b) => !handled.includes(b.title) && !/pricing built|related guides|our cloud services|what our cloud clients say/i.test(b.title));
 
 // Platforms WhizzIT manages, named across the staging copy.
 const platforms = [
@@ -39,11 +42,7 @@ ${pageHero({
   lead: m.lead,
   crumbs: breadcrumbs(crumbs),
   cls: "hero--tone-cloud",
-  aside: heroProof([
-    { icon: "cloud", value: "Microsoft CSP", label: "Direct Microsoft partnership" },
-    { icon: "refresh", value: "Backed up", label: "Microsoft 365 and Google Workspace" },
-    { icon: "clock", value: "9 min", label: "Average first response" },
-  ]),
+  aside: statStrip({ compact: true, track: "managed-cloud-hero" }),
 })}
 
 <section class="section platforms" aria-labelledby="platforms-title">
@@ -114,28 +113,13 @@ ${pageHero({
   </div>
 </section>
 
-${renderBlocks(rest, { key: "cloud" })}
-
-<section class="section section--tight" aria-labelledby="cloud-why-title">
-  <div class="container statement-wide">
-    <div class="center-head">
-      <p class="eyebrow">${why.eyebrow || "Why WhizzIT"}</p>
-      <h2 class="grad-head" id="cloud-why-title">${why.title || "Why work with us?"}</h2>
-    </div>
-    ${why.html ? `<div class="prose-cols">${why.html}</div>` : ""}
-    ${credBadges()}
-  </div>
-</section>
-
-${subServiceGrid(cloud, { title: "Our cloud services" })}
-${reviewsBand([TESTIMONIALS[3], TESTIMONIALS[1], TESTIMONIALS[2]], { title: "What our cloud clients say" })}
-${pricingPanel({ track: "cloud-pricing" })}
+${hubTail(P, { slug: "managed-cloud", tone: "cloud" }, { skip: [covers.title, included.title], cardsOf: [covers.title] })}
 `;
 
 page({
   footerCta: {
-    title: "Thinking about a move to the cloud?",
-    text: "We will tell you what to move, what to leave and what it will cost before anything changes.",
+    title: band?.title || "Thinking about a move to the cloud?",
+    text: band?.text || "We will tell you what to move, what to leave and what it will cost before anything changes.",
     track: "cloud-final-cta",
   },
   file: "managed-cloud-services.html",

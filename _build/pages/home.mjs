@@ -2,8 +2,8 @@
 // (see /_source); the layout is the bold redesign — photo-led hero, a proof strip
 // that overlaps it, an ink services band, and photo tiles for stories and sectors.
 import {
-  page, statValue, btn, textLink, icon, photo, stockPhoto, postCover, stars, reviewAvatar, callbackForm, heroNote, caseTile,
-  WP_EXPORT, SITE, SERVICES, INDUSTRIES, CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, PHOTOS, BLOG_LISTING, STOCK, SECTOR_PHOTO,
+  page, statValue, statStrip, btn, textLink, icon, photo, stockPhoto, postCover, stars, reviewAvatar, callbackForm, heroNote, caseTile,
+  WP_EXPORT, SITE, SERVICES, INDUSTRIES, CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, PHOTOS, BLOG_LISTING, STOCK, SECTOR_PHOTO, G_RATING,
 } from "../lib.mjs";
 
 /* ---------- About tabs (from /about/) ---------- */
@@ -47,18 +47,6 @@ const serviceStage = `
       <span class="svc-stage__rail"><span class="svc-stage__fill"></span></span>
     </div>
   </div>`;
-
-/* ---------- Proof strip: an icon and a tone per figure, in STATS order ---------- */
-const STAT_LOOK = [["handHeart", "cyber"], ["award", "support"], ["clock", "cloud"], ["star", "projects"]];
-
-// A figure with an href (the Google rating) links out: its note becomes the link
-// text, and the link stretches over the whole tile.
-const statItem = (s, i) => `
-      <div class="stat-strip__item${s.href ? " stat-strip__item--link" : ""} tone-${STAT_LOOK[i][1]}">
-        <dt><span class="stat-strip__icon">${icon(STAT_LOOK[i][0])}</span>${s.label}</dt>
-        <dd class="stat-strip__value">${statValue(s)}</dd>
-        ${s.href ? `<dd class="stat-strip__more"><a class="card-link" href="${s.href}" target="_blank" rel="noopener" data-track="home-strip-google">${s.note}${icon("arrow")}</a></dd>` : ""}
-      </div>`;
 
 /* ---------- About photos ----------
    WhizzIT's own photography as an auto-sliding carousel. The track is a
@@ -143,9 +131,7 @@ const main = `
 
 <div class="home-strip">
   <div class="container">
-    <dl class="stat-strip">
-      ${STATS.map(statItem).join("")}
-    </dl>
+    ${statStrip({ track: "home-strip" })}
     <p class="home-strip__source">Figures published by WhizzIT. Response and resolution times measured across every ticket in 2025.</p>
     <p class="home-strip__lead">WhizzIT delivers expert managed IT services and reliable IT support to businesses across the UK. Proactive maintenance, responsive support and no tech jargon. Simple, secure and stress free.</p>
   </div>
@@ -202,7 +188,7 @@ const main = `
   <div class="container">
     <div class="center-head">
       <h2 class="grad-head" id="quotes-title">Don’t just take our word for it</h2>
-      <p>Rated ${SITE.google.rating} on Google. Every review below is verified on our <a href="${SITE.google.reviewsUrl}" rel="noopener">Google Business profile</a>.</p>
+      <p>Rated ${G_RATING} on Google. Every review below is verified on our <a href="${SITE.google.reviewsUrl}" rel="noopener">Google Business profile</a>.</p>
     </div>
     <div class="quote-slider" data-quotes>
       ${/* Dots, not a row of eleven initial-circles. With no reviewer photos on file

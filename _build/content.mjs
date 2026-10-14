@@ -19,13 +19,29 @@ const decode = (s) =>
     .replace(/&#8211;|&ndash;/g, "–")
     .replace(/&quot;/g, '"');
 
-const strip = (s) => decode(s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ")).trim();
+/**
+ * Plain text of a fragment. Inline tags close up without a space, so
+ * "<a>London</a>, and" reads "London, and"; block tags become a space.
+ */
+export const plainText = (s = "") =>
+  String(s).replace(/<\/?(a|abbr|b|code|em|i|mark|small|span|strong|sub|sup|u)\b[^>]*>/gi, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+const strip = (s) => decode(plainText(s)).trim();
 const first = (re, s, fallback = "") => (s.match(re)?.[1] ?? fallback);
 
 // Staging links become local page links: "/cyber-security/email-security-services/" → "@/cyber-security/email-security-services.html"
 // A few staging links point at paths that live elsewhere in the static build.
 const ALIASES = {
   "it-support-london": "locations/it-support-london",
+  // The industry pages moved under /industries/.
+  "managed-it-services-for-business-services-organisations": "industries/managed-it-services-for-business-services-organisations",
+  "it-support-construction": "industries/it-support-construction",
+  "it-support-healthcare": "industries/it-support-healthcare",
+  "managed-it-services-for-financial-services-business": "industries/managed-it-services-for-financial-services-business",
+  "managed-it-services-for-legal-firms": "industries/managed-it-services-for-legal-firms",
+  "managed-it-services-for-education-organisations": "industries/managed-it-services-for-education-organisations",
+  "managed-it-services-for-manufacturing-businesses": "industries/managed-it-services-for-manufacturing-businesses",
+  "managed-it-services-for-insurance-services-businesses": "industries/managed-it-services-for-insurance-services-businesses",
+
   privacy: "privacy-policy",
   cookies: "cookie-policy",
 };
@@ -233,6 +249,9 @@ function parsePost(post) {
     // Section headings become the article's on-page contents list.
     sections: [...body.matchAll(/<h2 id="([^"]+)"[^>]*>([\s\S]*?)<\/h2>/g)].map((m) => ({ id: m[1], title: strip(m[2]) })),
     body: sanitizeBody(rewriteLinks(decode(body))).trim(),
+    // The whole staging page: the author box, FAQ and closing call to action
+    // after the body are read from it (pages/articles.mjs).
+    html: raw,
   };
 }
 

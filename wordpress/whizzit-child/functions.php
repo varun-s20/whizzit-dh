@@ -56,6 +56,20 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_script( 'whizzit-wp', $uri . '/wp/wp.js', [], filemtime( $dir . '/wp/wp.js' ), [ 'in_footer' => true, 'strategy' => 'defer' ] );
 }, 20 );
 
+/**
+ * Elementor's front-end stylesheet resets things the design styles itself: it
+ * zeroes the margin of every <figure> inside a widget with a selector the
+ * design's rules cannot outrank, which shifted spacing against the static
+ * site. Loaded inside a cascade layer instead, Elementor's rules still apply
+ * wherever the design sets nothing, and the design wins every conflict.
+ */
+add_filter( 'style_loader_tag', function ( $tag, $handle, $href ) {
+	if ( 'elementor-frontend' !== $handle || is_admin() || ! $href ) {
+		return $tag;
+	}
+	return sprintf( "<style id=\"%s-css\">@import url(\"%s\") layer(elementor);</style>\n", esc_attr( $handle ), esc_url_raw( $href ) );
+}, 10, 3 );
+
 add_action( 'wp_head', function () {
 	printf( '<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n", esc_url( get_stylesheet_directory_uri() . '/wp/fonts/urbanist-latin.woff2' ) );
 	// The design's favicons, unless a Site Icon has been set in the Customizer.

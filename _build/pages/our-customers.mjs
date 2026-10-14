@@ -4,7 +4,7 @@
 // cards as on the home page (lib.mjs caseTile), each with its own photograph.
 import {
   page, reviewAvatar, stars, icon, breadcrumbs, callbackForm, heroNote, caseTile,
-  SITE, CLIENTS, CASE_STUDIES, TESTIMONIALS,
+  SITE, CLIENTS, CASE_STUDIES, TESTIMONIALS, G_RATING, G_COUNT,
 } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
@@ -22,10 +22,10 @@ const main = `
         <h1 class="hero-sky__title proof-hero__title" id="page-hero-title">${m.title}</h1>
         <p class="hero-sky__lead">${m.lead}</p>
         <div class="proof-score">
-          <span class="proof-score__num">${SITE.google.rating}</span>
+          <span class="proof-score__num">${G_RATING}</span>
           <span class="proof-score__detail">
             ${stars(`Rated ${SITE.google.rating} out of 5 on Google`)}
-            <span>Rated excellent across ${SITE.google.count} Google reviews</span>
+            <span>Rated excellent across ${G_COUNT} Google reviews</span>
             <a href="${SITE.google.reviewsUrl}" rel="noopener" data-track="customers-google">${icon("google")}<span>Read them on Google</span>${icon("arrow")}</a>
           </span>
         </div>
@@ -46,7 +46,7 @@ const main = `
         <figcaption>${reviewAvatar(t, { badge: true })}<span><strong>${t.name}</strong>${t.role}</span></figcaption>
       </figure>`).join("")}
     </div>
-    <p class="small muted mt-6">All ${SITE.google.count} reviews are published on our Google Business profile, names and all.</p>
+    <p class="small muted mt-6">All ${G_COUNT} reviews are published on our Google Business profile, names and all.</p>
   </div>
 </section>
 

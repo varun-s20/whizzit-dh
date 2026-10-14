@@ -34,6 +34,13 @@ while ( have_posts() ) :
 	if ( count( $related ) < 3 ) {
 		$related = array_merge( $related, whizzit_latest_posts( 3 - count( $related ), [ 'post__not_in' => array_merge( [ $p['id'] ], wp_list_pluck( $related, 'ID' ) ) ] ) );
 	}
+	// After the body, as the design prints it (exported by the build, set by the import).
+	$extra = function ( $key ) use ( $p ) {
+		$html = (string) get_post_meta( $p['id'], $key, true );
+		$html = function_exists( 'whizzit_expand_assets' ) ? whizzit_expand_assets( $html ) : $html;
+		return function_exists( 'whizzit_apply_settings' ) ? whizzit_apply_settings( $html ) : $html;
+	};
+	$cta      = json_decode( (string) get_post_meta( $p['id'], '_whizzit_cta', true ), true );
 	$initials = strtoupper( implode( '', array_map( fn( $w ) => $w[0] ?? '', array_slice( preg_split( '/\s+/', trim( $p['author'] ) ), 0, 2 ) ) ) );
 	?>
 <article>
@@ -62,6 +69,7 @@ while ( have_posts() ) :
 			<?php if ( $svc ) : ?>
 				<p>If you'd like a second opinion on any of this, our team is happy to talk it through. See our <a href="<?php echo esc_url( home_url( $svc['url'] ) ); ?>"><?php echo esc_html( str_replace( 'it ', 'IT ', strtolower( $svc['title'] ) ) ); ?></a> service or <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">get in touch</a>.</p>
 			<?php endif; ?>
+			<?php echo $extra( '_whizzit_author_box' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- generated design markup. ?>
 			<nav class="article-nav" aria-label="More articles">
 				<?php if ( $older ) : ?>
 					<a href="<?php echo esc_url( get_permalink( $older ) ); ?>" rel="prev"><span>Previous article</span><?php echo esc_html( get_the_title( $older ) ); ?></a>
@@ -95,6 +103,8 @@ while ( have_posts() ) :
 	</div>
 </article>
 
+<?php echo $extra( '_whizzit_faq' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- generated design markup. ?>
+
 <?php if ( $related ) : ?>
 <section class="section" aria-labelledby="related-articles-title">
 	<div class="container">
@@ -104,11 +114,14 @@ while ( have_posts() ) :
 </section>
 <?php endif; ?>
 
+<?php echo $extra( '_whizzit_partners' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- generated design markup. ?>
+
 	<?php
-	// The closing CTA card sits at the top of the footer, as on every page.
+	// The closing CTA card sits at the top of the footer, as on every page,
+	// with the article's own wording from staging where it has one.
 	$footer_cta = [
-		'title' => 'Want help putting this into practice?',
-		'text'  => 'Our engineers can review your setup and tell you what to prioritise.',
+		'title' => is_array( $cta ) && ! empty( $cta['title'] ) ? $cta['title'] : 'Want help putting this into practice?',
+		'text'  => is_array( $cta ) && ! empty( $cta['text'] ) ? $cta['text'] : 'Our engineers can review your setup and tell you what to prioritise.',
 		'cta'   => 'Talk to an IT expert',
 		'track' => 'article-' . $slug . '-final-cta',
 	];

@@ -5,8 +5,10 @@
 // proof sits in one bento.
 import {
   page, statValue, reviewAvatar, stars, btn, icon, photo, stockPhoto, breadcrumbs, callbackForm, heroNote, credBadges,
-  SITE, SERVICES, STATS, PARTNERS, CREDENTIALS, TESTIMONIALS, PHOTOS, STOCK,
+  SITE, SERVICES, STATS, PARTNERS, CREDENTIALS, TESTIMONIALS, PHOTOS, STOCK, G_COUNT, statStrip,
 } from "../lib.mjs";
+import { parseSections } from "../section-parse.mjs";
+import { R } from "../sections.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
 
@@ -79,6 +81,15 @@ const panels = SERVICES.map((s, i) => {
 }).join("");
 
 const quote = TESTIMONIALS[0];
+// Staging's own reviews, related guides, partners and closing copy.
+const P = parseSections(pageByPath("/it-services/").html).sections;
+const stagingReviews = P.find((x) => x.kind === "content" && x.quotes.length >= 2);
+const stagingPosts = P.find((x) => x.kind === "posts");
+const stagingPartners = P.find((x) => x.kind === "partners");
+const stagingBand = P.find((x) => x.kind === "ctaBand");
+const stagingCreds = P.find((x) => x.kind === "credentials");
+const signOff = P.find((x) => x.kind === "note" && /written and maintained/i.test(x.text));
+const ctx = { slug: "it-services", tone: "support", n: 0 };
 
 const main = `
 <section class="hero hero--sky svc-hero" aria-labelledby="page-hero-title">
@@ -88,7 +99,7 @@ const main = `
       <div class="svc-hero__copy">
         <p class="eyebrow">IT services</p>
         <h1 class="hero-sky__title svc-hero__title" id="page-hero-title">${m.title}</h1>
-        <p class="hero-sky__lead">${m.lead}</p>
+        <p class="hero-sky__lead">${m.leadHtml || m.lead}</p>
         ${heroNote("UK-wide coverage", "services-hero")}
       </div>
       <div class="svc-hero__form">${callbackForm({ track: "services-hero" })}</div>
@@ -113,12 +124,6 @@ const main = `
         <div class="explorer__list" role="tablist" aria-orientation="vertical" aria-label="IT services">${tabs}
           <span class="explorer__indicator" aria-hidden="true"></span>
         </div>
-        <aside class="explorer__else">
-          <span class="explorer__else-icon" aria-hidden="true">${icon("message")}</span>
-          <h3>Something else?</h3>
-          <p>Not sure what you need? Tell us what you're wrestling with and we'll point you in the right direction, even if the answer turns out not to be us.</p>
-          ${btn("Get in touch", "contact.html", { variant: "secondary", arrow: false, track: "services-something-else" })}
-        </aside>
       </div>
       <div class="explorer__stage">${panels}
       </div>
@@ -132,37 +137,33 @@ const main = `
       <p class="eyebrow">Why work with us</p>
       <h2 class="grad-head" id="services-proof-title">Proof, not promises</h2>
     </div>
-    <div class="proof-bento">
-      <div class="proof-bento__creds">${credBadges()}</div>
-      <dl class="proof-bento__stats">
-        ${STATS.map((s) => `
-        <div class="proof-stat">
-          <dd>${statValue(s)}</dd>
-          <dt>${s.label}</dt>
-        </div>`).join("")}
-      </dl>
-      <figure class="proof-bento__quote">
-        ${stars(`Rated ${SITE.google.rating} out of 5`)}
-        <blockquote><p>“${quote.quote}”</p></blockquote>
-        <figcaption>${reviewAvatar(quote, { badge: true })}<span><strong>${quote.name}</strong>${quote.role}</span></figcaption>
-        <a class="text-link" href="${SITE.google.reviewsUrl}" rel="noopener"><span>All ${SITE.google.count} Google reviews</span>${icon("arrow")}</a>
-      </figure>
-      <div class="proof-bento__partners">
-        <p class="proof-bento__label">The partners behind the work</p>
-        <ul class="partner-row partner-row--badges" role="list">
+    ${statStrip({ track: "services-proof" })}
+    <p class="svc-proof__note">Figures published by WhizzIT. Response and resolution times measured across every ticket in 2025.</p>
+    <div class="svc-proof__foot">
+      <div class="svc-proof__marks">
+        <p class="svc-proof__label">Certified and partnered</p>
+        <ul class="svc-proof__creds" role="list">
+          ${CREDENTIALS.map((c) => `<li><a href="@/${c.cta.href}"><img src="@/assets/images/partners/${c.file}" alt="${c.title}" width="280" height="110" loading="lazy" decoding="async"><span>${c.cta.label}${icon("arrow")}</span></a></li>`).join("")}
+        </ul>
+        ${stagingCreds?.note ? `<p class="cred-note">${stagingCreds.note}</p>` : ""}
+        <ul class="svc-proof__partners" role="list">
           ${PARTNERS.filter((p) => !CREDENTIALS.some((c) => c.file === p.file)).map((p) => `<li><img src="@/assets/images/partners/${p.file}" alt="${p.title}" loading="lazy" decoding="async"></li>`).join("")}
         </ul>
       </div>
     </div>
-    <p class="svc-proof__note">Figures published by WhizzIT. Response and resolution times measured across every ticket in 2025.</p>
   </div>
 </section>
+
+${stagingReviews ? R.reviews(stagingReviews, "services-reviews-title", ctx) : ""}
+${stagingPosts ? R.posts(stagingPosts, "services-guides-title", ctx) : ""}
+${stagingPartners ? R.partners(stagingPartners, "services-partners-title", ctx) : ""}
+${signOff ? `<div class="container"><p class="sv-family__note">${signOff.text}</p></div>` : ""}
 `;
 
 page({
   footerCta: {
-    title: "Not sure which service you need?",
-    text: "Tell us what is slowing your team down. We will recommend the right mix, not the biggest package.",
+    title: stagingBand?.title || "Not sure which service you need?",
+    text: stagingBand?.text || "Tell us what is slowing your team down. We will recommend the right mix, not the biggest package.",
     track: "services-final-cta",
   },
   file: "it-services.html",

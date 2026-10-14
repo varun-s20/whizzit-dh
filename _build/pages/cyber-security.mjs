@@ -1,12 +1,17 @@
 // Cyber Security overview. Signature: the layered-defence stack, with the
 // Cyber Essentials certification pulled out as its own feature.
-import { page, btn, icon, breadcrumbs, service, SITE, TESTIMONIALS, CREDENTIALS } from "../lib.mjs";
+import { page, btn, icon, breadcrumbs, service, SITE, TESTIMONIALS, CREDENTIALS, statStrip } from "../lib.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
-import { pageHero, heroProof, renderBlocks, subServiceGrid, reviewsBand, pricingPanel } from "../blocks.mjs";
+import { parseSections } from "../section-parse.mjs";
+import { hubTail } from "../sections.mjs";
+import { pageHero } from "../blocks.mjs";
 
 const cyber = service("cyber");
 const m = parsePage(pageByPath("/cyber-security/").html);
+// Everything below the hand-built sections, with the staging copy (sections.mjs).
+const P = parseSections(pageByPath("/cyber-security/").html);
+const band = P.sections.find((s) => s.kind === "ctaBand");
 const crumbs = [{ title: "Home", href: "index.html" }, { title: "IT Services", href: "it-services.html" }, { title: "Cyber Security" }];
 
 const block = (needle) => m.blocks.find((b) => b.title.toLowerCase().includes(needle)) || { html: "", list: [], cards: [] };
@@ -14,8 +19,6 @@ const covers = block("defence in depth");
 const included = block("what’s included");
 const trust = block("security you can trust");
 
-const handled = [covers.title, included.title, trust.title];
-const rest = m.blocks.filter((b) => !handled.includes(b.title) && !/pricing built|related guides|specialist cyber|what our clients say/i.test(b.title));
 
 // The layers WhizzIT protects, each one pointing at the service that covers it.
 const layers = [
@@ -34,11 +37,7 @@ ${pageHero({
   lead: m.lead,
   crumbs: breadcrumbs(crumbs),
   cls: "hero--tone-cyber",
-  aside: heroProof([
-    { icon: "shield", value: "Cyber Essentials", label: "Certified, and we certify clients" },
-    { icon: "eye", value: "24/7", label: "Managed detection and response" },
-    { icon: "clock", value: "9 min", label: "Average first response" },
-  ]),
+  aside: statStrip({ compact: true, track: "cyber-security-hero" }),
 })}
 
 <section class="section defence" aria-labelledby="layers-title">
@@ -119,16 +118,13 @@ ${trust.cards.length ? `
   </div>
 </section>` : ""}
 
-${renderBlocks(rest, { key: "cyber" })}
-${subServiceGrid(cyber, { title: "Specialist cyber security services", lead: "Ten services that plug into the layers above, on their own or as one managed programme." })}
-${reviewsBand([TESTIMONIALS[1], TESTIMONIALS[0], TESTIMONIALS[3]], { title: "What our clients say" })}
-${pricingPanel({ track: "cyber-pricing" })}
+${hubTail(P, { slug: "cyber-security", tone: "cyber" }, { skip: [covers.title, included.title, trust.title], cardsOf: [covers.title] })}
 `;
 
 page({
   footerCta: {
-    title: "Not sure where your gaps are?",
-    text: "Book a security review. We will tell you what to fix first, in plain English, with evidence.",
+    title: band?.title || "Not sure where your gaps are?",
+    text: band?.text || "Book a security review. We will tell you what to fix first, in plain English, with evidence.",
     track: "cyber-final-cta",
   },
   file: "cyber-security.html",

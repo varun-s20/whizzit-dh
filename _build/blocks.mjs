@@ -1,7 +1,7 @@
 // Renders the parsed staging blocks with the new design system. Each block kind
 // gets its own component. Blocks with a card, tabs or accordion stack: heading and
 // prose across the row, the component below (see .block-split:has in styles.css).
-import { icon, btn, reviewAvatar, photo, callbackForm, heroNote, WP_EXPORT, SITE, PHOTOS } from "./lib.mjs";
+import { icon, btn, reviewAvatar, photo, callbackForm, heroNote, WP_EXPORT, SITE, PHOTOS, G_RATING, G_COUNT } from "./lib.mjs";
 
 // WordPress export: each structured block carries its data in a marker comment,
 // so the importer builds a WhizzIT Elementor widget with real fields (and
@@ -252,7 +252,7 @@ export function reviewsBand(quotes, { title = "What our clients say", eyebrow = 
     <div class="center-head">
       <p class="eyebrow">${eyebrow}</p>
       <h2 class="grad-head" id="service-reviews-title">${title}</h2>
-      <p>Rated ${SITE.google.rating} on Google across ${SITE.google.count} reviews.</p>
+      <p>Rated ${G_RATING} on Google across ${G_COUNT} reviews.</p>
     </div>
     <div class="review-grid">
       ${quotes.map((t) => `

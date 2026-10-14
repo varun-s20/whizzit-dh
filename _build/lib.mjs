@@ -3,10 +3,10 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { icon, logo, logoMark } from "./icons.mjs";
-import { SITE, SERVICES, SPECIALIST, INDUSTRIES, LOCATIONS, NAV, PHOTOS, CREDENTIALS, PARTNERS, CASE_PHOTO } from "./site.mjs";
+import { SITE, SERVICES, SPECIALIST, INDUSTRIES, LOCATIONS, NAV, PHOTOS, CREDENTIALS, PARTNERS, CASE_PHOTO, STATS, statValue, G_RATING, G_COUNT } from "./site.mjs";
 
 export { icon, logo, logoMark, SITE, SERVICES, SPECIALIST, INDUSTRIES, LOCATIONS };
-export { CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, statValue, PHOTOS, BLOG, BLOG_LISTING, LISTING_CATEGORIES, TEAM, CREDENTIALS, STOCK, SECTOR_PHOTO, SECTOR_NOTE, CATEGORY_PHOTO, CASE_PHOTO } from "./site.mjs";
+export { CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, statValue, PHOTOS, BLOG, BLOG_LISTING, LISTING_CATEGORIES, TEAM, CREDENTIALS, STOCK, SECTOR_PHOTO, SECTOR_NOTE, CATEGORY_PHOTO, CASE_PHOTO, LOCATION_PLACES, AREA_PHOTO, SVC_PHOTO, G_RATING, G_COUNT } from "./site.mjs";
 
 const OUT = join(import.meta.dirname, "..");
 // Official WhizzIT artwork pulled from staging: dark wordmark on light surfaces,
@@ -54,9 +54,9 @@ export const field = ({ id, label, type = "text", autocomplete = "", required = 
     <p class="field__error" id="${id}-error"></p>
   </div>`;
 
-// Live forms (the WordPress export) post to /api/submit.php exactly as the current
-// site does: FormData, reCAPTCHA v2 revealed on the first press of submit, JSON
-// reply. The static preview keeps data-demo, which shows the success state
+// Live forms (the WordPress export) post to SITE.formAction, the handler in
+// whizzit-core (inc/forms.php): FormData, reCAPTCHA v2 revealed on the first
+// press of submit, JSON reply. The static preview keeps data-demo, which shows the success state
 // without sending anything.
 export const formMode = () => (WP_EXPORT ? "" : " data-demo");
 
@@ -66,35 +66,55 @@ export const captchaRow = (theme = "dark") => (WP_EXPORT
   : "");
 
 // "Request a callback": the form WhizzIT's live site carries at the top of every
-// page, with the same fields, copy and endpoint contract (POST /api/submit.php,
+// page, with the same fields, copy and endpoint contract (POST SITE.formAction,
 // form_name=callback, the botcheck honeypot).
-// `phone` adds a required phone field (the home page asks for one); the endpoint
-// needs to accept a `phone` value before that goes live.
-export function callbackForm({ track = "callback", phone = false, captchaTheme = "dark" } = {}) {
+// `phone` adds a required phone field (the home page asks for one).
+// `id` prefixes the field ids, for a page that carries two callback forms.
+export function callbackForm({ track = "callback", phone = false, captchaTheme = "dark", id = "cb" } = {}) {
+  const box = id === "cb" ? "callback" : `${id}-callback`;
   return `
 <div class="callback${phone ? " callback--phone" : ""}">
-  <form class="callback__form" action="/api/submit.php" method="post" data-validate${formMode()} data-success="callback-success" aria-labelledby="callback-title">
+  <form class="callback__form" action="${SITE.formAction}" method="post" data-validate${formMode()} data-success="${box}-success" aria-labelledby="${box}-title">
     <input type="hidden" name="form_name" value="callback">
     <input class="visually-hidden" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <p class="callback__head"><strong id="callback-title">Request a callback</strong><span>We respond the same working day.</span></p>
+    <p class="callback__head"><strong id="${box}-title">Request a callback</strong><span>We respond the same working day.</span></p>
     <div class="callback__row">
-      ${field({ id: "cb-name", name: "name", label: "Name", autocomplete: "name", placeholder: "Jane Smith" })}
-      ${field({ id: "cb-email", name: "email", label: "Email", type: "email", autocomplete: "email", placeholder: "jane@company.co.uk" })}
-      ${phone ? field({ id: "cb-phone", name: "phone", label: "Phone", type: "tel", autocomplete: "tel", placeholder: "07700 900123", msg: "Enter your phone number", attrs: ' pattern="[0-9 +\\(\\)\\-]{7,20}"' }) : ""}
+      ${field({ id: `${id}-name`, name: "name", label: "Name", autocomplete: "name", placeholder: "Jane Smith" })}
+      ${field({ id: `${id}-email`, name: "email", label: "Email", type: "email", autocomplete: "email", placeholder: "jane@company.co.uk" })}
+      ${phone ? field({ id: `${id}-phone`, name: "phone", label: "Phone", type: "tel", autocomplete: "tel", placeholder: "07700 900123", msg: "Enter your phone number", attrs: ' pattern="[0-9 +\\(\\)\\-]{7,20}"' }) : ""}
       <div class="field callback__message">
-        <label class="field__label" for="cb-message">How can we help? <span class="field__optional">(optional)</span></label>
-        <textarea class="field__input" id="cb-message" name="message" rows="1" placeholder="A quick note about your IT…" aria-describedby="cb-message-error"></textarea>
-        <p class="field__error" id="cb-message-error"></p>
+        <label class="field__label" for="${id}-message">How can we help? <span class="field__optional">(optional)</span></label>
+        <textarea class="field__input" id="${id}-message" name="message" rows="1" placeholder="A quick note about your IT…" aria-describedby="${id}-message-error"></textarea>
+        <p class="field__error" id="${id}-message-error"></p>
       </div>
       <button class="btn btn--primary callback__submit" type="submit" data-track="${track}-submit"><span>Request a callback</span></button>
     </div>
     ${captchaRow(captchaTheme)}
   </form>
-  <div class="callback__success" id="callback-success" tabindex="-1" hidden>
+  <div class="callback__success" id="${box}-success" tabindex="-1" hidden>
     ${icon("checkCircle")}
     <p><strong>Got it, thank you.</strong> Your callback request is with the team. We’ll respond the same working day. Need it sorted sooner? <a href="${SITE.phoneHref}" data-track="${track}-success-phone">Call ${SITE.phone}</a></p>
   </div>
 </div>`;
+}
+
+/* ---------- The proof strip ----------
+   The home page's four figures (STATS): satisfaction, experience, response time
+   and the Google rating, which links to the Google Business Profile. The same
+   strip is used wherever the site shows proof figures. `compact` is the
+   slimmer version that sits across the foot of a page hero; it keeps the
+   home page's light card even inside a dark hero. */
+const STAT_LOOK = [["handHeart", "cyber"], ["award", "support"], ["clock", "cloud"], ["star", "projects"]];
+
+export function statStrip({ compact = false, track = "strip" } = {}) {
+  const item = (s, i) => `
+      <div class="stat-strip__item${s.href ? " stat-strip__item--link" : ""} tone-${STAT_LOOK[i][1]}">
+        <dt><span class="stat-strip__icon">${icon(STAT_LOOK[i][0])}</span><span>${s.label}</span></dt>
+        <dd class="stat-strip__value">${statValue(s)}</dd>
+        ${s.href ? `<dd class="stat-strip__more"><a class="card-link" href="${s.href}" target="_blank" rel="noopener" data-track="${track}-google">${s.note}${icon("arrow")}</a></dd>` : ""}
+      </div>`;
+  return `<dl class="stat-strip${compact ? " stat-strip--compact" : ""}">${STATS.map(item).join("")}
+    </dl>`;
 }
 
 // The enquiry box staging carries in the middle of four articles: a phone line,
@@ -111,11 +131,11 @@ export function enquiryBox({ eyebrow = "", title = "", text = "", quote = "", by
     <figure class="enquiry__proof">
       <p class="enquiry__stars" role="img" aria-label="Rated 5 out of 5">★★★★★</p>
       <blockquote><p>${quote}</p></blockquote>
-      <figcaption><strong>${by}</strong>, ${role} · <a href="${SITE.google.reviewsUrl}" target="_blank" rel="noopener">see all ${SITE.google.count} reviews</a></figcaption>
+      <figcaption><strong>${by}</strong>, ${role} · <a href="${SITE.google.reviewsUrl}" target="_blank" rel="noopener">see all ${G_COUNT} reviews</a></figcaption>
     </figure>
   </div>
   <div class="enquiry__form">
-    <form action="/api/submit.php" method="post" data-validate${formMode()} data-success="${id}-success" aria-labelledby="${id}-form-title">
+    <form action="${SITE.formAction}" method="post" data-validate${formMode()} data-success="${id}-success" aria-labelledby="${id}-form-title">
       <input type="hidden" name="form_name" value="inline">
       <input class="visually-hidden" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
       <p class="enquiry__head"><strong id="${id}-form-title">Send us a message</strong><span>We respond the same working day.</span></p>
@@ -146,8 +166,9 @@ export const renderEnquiries = (html) => {
 
 // The line under a hero's callback form: the phone for anyone who would rather
 // talk, then proof, which links to the Google reviews.
-export const heroNote = (tail = "UK-wide coverage", track = "hero") =>
-  `<p class="hero-sky__note">${icon("phone")}<span>Prefer to talk? <a href="${SITE.phoneHref}" data-track="${track}-phone">Call ${SITE.phone}</a> · <a href="${SITE.google.reviewsUrl}" target="_blank" rel="noopener" data-track="${track}-google">${SITE.google.label}</a> · ${tail}</span></p>`;
+// `google: false` when the hero carries the proof cluster, which links there.
+export const heroNote = (tail = "UK-wide coverage", track = "hero", { google = true } = {}) =>
+  `<p class="hero-sky__note">${icon("phone")}<span>Prefer to talk? <a href="${SITE.phoneHref}" data-track="${track}-phone">Call ${SITE.phone}</a>${google ? ` · <a href="${SITE.google.reviewsUrl}" target="_blank" rel="noopener" data-track="${track}-google">Rated ${G_RATING} on Google</a>` : ""} · ${tail}</span></p>`;
 
 export function textLink(label, href, track = "") {
   const t = track ? ` data-track="${track}"` : "";
@@ -439,7 +460,7 @@ export function blogArt(name) {
 export function reviewSummary() {
   return `<div class="review-summary">
     <span class="review-summary__source">${icon("google")} Google reviews</span>
-    <div class="cluster"><span class="review-summary__score">${SITE.google.rating}</span>${stars(SITE.google.label)}</div>
+    <div class="cluster"><span class="review-summary__score">${G_RATING}</span>${stars(SITE.google.label)}</div>
     <p class="small muted"><a href="${SITE.google.reviewsUrl}" rel="noopener">Read the reviews on Google</a></p>
     <p class="small muted">Ready to connect to a live Google Reviews feed.</p>
   </div>`;
@@ -687,10 +708,6 @@ function footer(cta) {
           <li><a href="mailto:${SITE.email}" data-track="footer-email">${icon("mail")}${SITE.email}</a></li>
           ${SITE.offices.map((o) => `<li><span>${icon("mapPin")}${o.address}</span></li>`).join("")}
         </ul>
-        <div class="footer-help">
-          <p><strong>Existing customer?</strong>Need help right now? We answer the phone, no call queues.</p>
-          ${btn(`Call ${SITE.phone}`, SITE.phoneHref, { variant: "outline-light", size: "sm", iconName: "phone", arrow: false, track: "footer-phone-support" })}
-        </div>
       </div>
       <nav class="site-footer__nav" aria-label="Footer">
         ${col("IT services", [{ title: "All IT services", href: "it-services.html" }, ...SERVICES])}

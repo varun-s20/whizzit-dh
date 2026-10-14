@@ -11,8 +11,8 @@
 // motion, every scene is simply laid out in order. Every word is WhizzIT's own
 // (/about/ on staging, and the home page's "Our approach").
 import {
-  page, statValue, reviewAvatar, stars, btn, icon, photo, breadcrumbs, heroNote, credBadges,
-  SITE, STATS, TEAM, PHOTOS, TESTIMONIALS,
+  page, statValue, statStrip, reviewAvatar, stars, btn, icon, photo, breadcrumbs, heroNote, credBadges,
+  SITE, STATS, TEAM, PHOTOS, TESTIMONIALS, G_RATING, G_COUNT,
 } from "../lib.mjs";
 
 const values = [
@@ -65,7 +65,7 @@ const main = `
           <a class="film-title__link" href="#team" data-track="about-hero-team">Meet the team${icon("arrow")}</a>
         </div>
         <ul class="film-title__trust" role="list">
-          <li><a href="${SITE.google.reviewsUrl}" rel="noopener" data-track="about-hero-google"><strong>${SITE.google.rating}</strong>${stars(`Rated ${SITE.google.rating} out of 5 on Google`)}<span>${SITE.google.count} Google reviews</span></a></li>
+          <li><a href="${SITE.google.reviewsUrl}" rel="noopener" data-track="about-hero-google"><strong>${G_RATING}</strong>${stars(`Rated ${SITE.google.rating} out of 5 on Google`)}<span>${G_COUNT} Google reviews</span></a></li>
           <li>${icon("shield")}<span>Cyber Essentials certified</span></li>
           <li>${icon("cloud")}<span>Microsoft Cloud Solution Provider</span></li>
         </ul>
@@ -142,14 +142,7 @@ ${/* The window: a sticky stage. The photo's frame opens from a rounded window
   <div class="container">
     <p class="eyebrow">By the numbers</p>
     <h2 class="visually-hidden" id="stats-title">Proof, not promises</h2>
-    <dl class="film-figures__grid">
-      ${STATS.map((s) => `
-      <div class="film-figure">
-        <dd>${statValue(s)}</dd>
-        <dt>${s.label}</dt>
-        <p>${s.note}</p>
-      </div>`).join("")}
-    </dl>
+    ${statStrip({ track: "about-figures" })}
     <p class="film-figures__note">Figures published by WhizzIT. Response and resolution times measured across every ticket in 2025.</p>
   </div>
 </section>
@@ -170,7 +163,7 @@ ${/* The window: a sticky stage. The photo's frame opens from a rounded window
         <h3 class="film-person__name">${m.name}</h3>
         <p class="film-person__role">${m.role}</p>
         <p class="film-person__bio">${m.bio}</p>
-        <a class="film-person__link" href="${m.linkedin}" rel="noopener" aria-label="${m.name} on LinkedIn">${icon("linkedin")}<span>LinkedIn</span></a>
+        ${m.linkedin ? `<a class="film-person__link" href="${m.linkedin}" rel="noopener" aria-label="${m.name} on LinkedIn">${icon("linkedin")}<span>LinkedIn</span></a>` : ""}
       </article>`).join("")}
     </div>
   </div>
@@ -184,7 +177,7 @@ ${/* The window: a sticky stage. The photo's frame opens from a rounded window
       <figcaption>
         ${reviewAvatar(review, { badge: true })}
         <span><strong>${review.name}</strong>${review.role}</span>
-        <a href="${SITE.google.reviewsUrl}" rel="noopener">See all ${SITE.google.count} reviews${icon("arrow")}</a>
+        <a href="${SITE.google.reviewsUrl}" rel="noopener">See all ${G_COUNT} reviews${icon("arrow")}</a>
       </figcaption>
     </figure>
   </div>

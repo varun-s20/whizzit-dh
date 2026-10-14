@@ -11,9 +11,13 @@ export const SITE = {
   phoneHref: "tel:02046342518",
   email: "info@whizzit.co.uk",
   responseLine: "Same working day response",
-  // reCAPTCHA v2 site key the live forms use (public by design; bound to the
-  // client's domains in their Google reCAPTCHA console).
-  recaptchaSiteKey: "6LetGGItAAAAABGoBmlvEaWqFhJNfk97jeH2zaOv",
+  // reCAPTCHA v2 site key (public by design; bound to the client's domains in
+  // their Google reCAPTCHA console). Supplied by the client on 8 Oct 2026; the
+  // secret half lives only on the server (whizzit-core inc/secrets.php or
+  // Settings → WhizzIT), never in this repo.
+  recaptchaSiteKey: "6LdMa-UtAAAAAMfV3sodal6zDzZMXePeoSEOhlWh",
+  // Where every form posts: the handler in whizzit-core (inc/forms.php).
+  formAction: "/wp-json/whizzit/v1/submit",
   // [CLIENT TO SUPPLY] no remote-support portal exists on staging yet.
   remoteSupport: "contact.html",
   // maps: directions link; coords: where Google Maps pins the address (for the contact page map).
@@ -23,7 +27,7 @@ export const SITE = {
   ],
   google: {
     rating: "5.0",
-    count: 15,
+    count: 16,
     label: "Rated 5.0 on Google",
     reviewsUrl: "https://www.google.com/maps?cid=17055157413191665489",
   },
@@ -32,14 +36,23 @@ export const SITE = {
   },
 };
 
+// The Google rating and review count as they appear in page text. whizzit-core
+// (inc/google-reviews.php) swaps the numbers inside these spans for the latest
+// ones from Google's Places API once a day; the numbers here are the fallback.
+export const G_RATING = `<span data-g="rating">${SITE.google.rating}</span>`;
+export const G_COUNT = `<span data-g="count">${SITE.google.count}</span>`;
+
 // Headline figures published on staging (about / home "Proof, not promises").
 // `count`/`suffix` let the figure count up when it scrolls into view; `value` is
 // what renders without JavaScript, so the number is never dependent on it.
 export const STATS = [
   { value: "100%", count: 100, suffix: "%", label: "Customer satisfaction", note: "Backed by five-star reviews across the board." },
-  { value: "35+", count: 35, suffix: "+", label: "Years of experience", note: "Combined across our engineering team." },
+  // Not "Years of experience" alone: 35+ read as the company's age (client,
+  // 9 Oct 2026); and it must say "years" (11 Oct 2026).
+  { value: "35+", count: 35, suffix: "+", label: "Years of combined experience", note: "Across our engineering team." },
   { value: "9 min", count: 9, suffix: " min", label: "Average first response", note: "Measured across every ticket in 2025. Average resolution: 6 hours." },
-  { value: "5★", label: "Rated on Google", note: "Read our reviews", href: SITE.google.reviewsUrl },
+  // A figure visitors can check, linked to the Google Business Profile.
+  { value: G_RATING, label: `from ${G_COUNT} Google reviews`, note: "Read our reviews", href: SITE.google.reviewsUrl },
 ];
 
 // Renders a figure that counts up once scrolled into view. Progressive: the final
@@ -154,15 +167,17 @@ export const SPECIALIST = [
 ];
 
 // Sectors, with the staging slugs kept exactly as they are.
+// Industry pages live under /industries/ (client, 11 Oct 2026); the old root
+// URLs redirect there (whizzit-core inc/sectors.php).
 export const INDUSTRIES = [
-  { key: "business-services", title: "Business Services", icon: "briefcase", href: "managed-it-services-for-business-services-organisations.html", desc: "Stable, secure and well-managed IT for professional service providers, consultancies and agencies whose reputation depends on client service." },
-  { key: "construction", title: "Construction", icon: "hardHat", href: "it-support-construction.html", desc: "Phone-first IT support for construction companies, tackling job-site connectivity, cyber security risks and outdated systems." },
-  { key: "healthcare", title: "Healthcare", icon: "heartPulse", href: "it-support-healthcare.html", desc: "Confidentiality-focused IT for healthcare and clinical organisations, from GDPR-aware security to tested backup and recovery." },
-  { key: "financial", title: "Financial Services", icon: "landmark", href: "managed-it-services-for-financial-services-business.html", desc: "Secure, resilient IT for advisers, accountants, wealth managers and lending firms working in a regulated industry." },
-  { key: "legal", title: "Legal", icon: "scale", href: "managed-it-services-for-legal-firms.html", desc: "Confidentiality-first managed IT for law firms, protecting case files and client information while keeping fee earners productive." },
-  { key: "education", title: "Education", icon: "graduation", href: "managed-it-services-for-education-organisations.html", desc: "Dependable classroom technology and safeguarding-aware IT for schools, academies, colleges and education providers." },
-  { key: "manufacturing", title: "Manufacturing", icon: "layers", href: "managed-it-services-for-manufacturing-businesses.html", desc: "Resilient IT for production environments, from ERP platforms and connected machinery to secure multi-site connectivity." },
-  { key: "insurance", title: "Insurance", icon: "fileCheck", href: "managed-it-services-for-insurance-services-businesses.html", desc: "Reliable systems for brokers, insurers and claims teams that depend on fast access to policy platforms and customer records." },
+  { key: "business-services", title: "Business Services", icon: "briefcase", href: "industries/managed-it-services-for-business-services-organisations.html", desc: "Stable, secure and well-managed IT for professional service providers, consultancies and agencies whose reputation depends on client service." },
+  { key: "construction", title: "Construction", icon: "hardHat", href: "industries/it-support-construction.html", desc: "Phone-first IT support for construction companies, tackling job-site connectivity, cyber security risks and outdated systems." },
+  { key: "healthcare", title: "Healthcare", icon: "heartPulse", href: "industries/it-support-healthcare.html", desc: "Confidentiality-focused IT for healthcare and clinical organisations, from GDPR-aware security to tested backup and recovery." },
+  { key: "financial", title: "Financial Services", icon: "landmark", href: "industries/managed-it-services-for-financial-services-business.html", desc: "Secure, resilient IT for advisers, accountants, wealth managers and lending firms working in a regulated industry." },
+  { key: "legal", title: "Legal", icon: "scale", href: "industries/managed-it-services-for-legal-firms.html", desc: "Confidentiality-first managed IT for law firms, protecting case files and client information while keeping fee earners productive." },
+  { key: "education", title: "Education", icon: "graduation", href: "industries/managed-it-services-for-education-organisations.html", desc: "Dependable classroom technology and safeguarding-aware IT for schools, academies, colleges and education providers." },
+  { key: "manufacturing", title: "Manufacturing", icon: "layers", href: "industries/managed-it-services-for-manufacturing-businesses.html", desc: "Resilient IT for production environments, from ERP platforms and connected machinery to secure multi-site connectivity." },
+  { key: "insurance", title: "Insurance", icon: "fileCheck", href: "industries/managed-it-services-for-insurance-services-businesses.html", desc: "Reliable systems for brokers, insurers and claims teams that depend on fast access to policy platforms and customer records." },
 ];
 
 // Location pages (14 on staging, plus the /locations/ index).
@@ -182,6 +197,86 @@ export const LOCATIONS = [
   { title: "South Wales", href: "locations/it-support-south-wales.html" },
   { title: "Wales", href: "locations/it-support-wales.html" },
 ];
+
+// Each location page's cover photograph (assets/images/photos/area-<slug>-<w>.webp
+// at 640/1024/1600/2400). No credit is shown on the page, so every photo must be
+// under a licence that needs none: the Unsplash License, or CC0 / public domain
+// (Leicester's, from Wikimedia Commons). Not CC BY or CC BY-SA, which require one.
+// `by` and `url` are kept as the record of where each came from.
+// Stevenage uses our own photo: the WhizzIT van at Caxton Point.
+// `pos` is the object-position that keeps the subject in frame.
+export const AREA_PHOTO = {
+  London: { slug: "london", alt: "The City of London skyline at dusk, seen across the River Thames", by: "Riccardo Ginevri", url: "https://unsplash.com/photos/-kwyjfudUbI", pos: "50% 60%" },
+  Hertfordshire: { slug: "hertfordshire", alt: "Rolling fields and hedgerows in the Hertfordshire countryside", by: "Jan Kraus", url: "https://unsplash.com/photos/SDJT-Nogarg", pos: "50% 50%" },
+  Birmingham: { slug: "birmingham", alt: "The Selfridges building at the Bullring, Birmingham, at sunset", by: "Sarah Doffman", url: "https://unsplash.com/photos/u44HcmdG0Oo", pos: "30% 50%" },
+  Bradford: { slug: "bradford", alt: "City Park and Bradford City Hall on a sunny day", by: "Joseph Mama", url: "https://unsplash.com/photos/VWqBKnTNHmI", pos: "30% 50%" },
+  Cardiff: { slug: "cardiff", alt: "The Pierhead Building in Cardiff Bay at sunset", by: "Nick Fewings", url: "https://unsplash.com/photos/IDU1v-rDmQ4", pos: "70% 50%" },
+  Coventry: { slug: "coventry", alt: "The Coventry skyline and its spires at dusk", by: "Oscar Mucyo", url: "https://unsplash.com/photos/DblkK0iRG44", pos: "50% 55%" },
+  Edinburgh: { slug: "edinburgh", alt: "Edinburgh's skyline, the castle and the Balmoral clock tower at sunset", by: "Joss Broward", url: "https://unsplash.com/photos/BsD8doLA3WE", pos: "60% 50%" },
+  Leeds: { slug: "leeds", alt: "The Parkinson Building and the Leeds skyline at sunset", by: "Paul Rigel", url: "https://unsplash.com/photos/RNkPUD4G4rI", pos: "50% 45%" },
+  Leicester: { slug: "leicester", alt: "The Highcross shopping centre in Leicester city centre", by: "Aethonatic (CC0, Wikimedia Commons)", url: "https://commons.wikimedia.org/wiki/File:Highcross_Leicester_-_3_March_2026.jpg", pos: "50% 45%" },
+  Manchester: { slug: "manchester", alt: "The Manchester skyline at golden hour", by: "Mylo Kaye", url: "https://unsplash.com/photos/NXtGjC7osPs", pos: "50% 50%" },
+  Newcastle: { slug: "newcastle", alt: "The Gateshead Millennium Bridge and the Tyne at night", by: "SALEH", url: "https://unsplash.com/photos/V_8cqnEv5FQ", pos: "55% 50%" },
+  "South Wales": { slug: "south-wales", alt: "Boats moored in Swansea Marina", by: "Mathew Browne", url: "https://unsplash.com/photos/piFQuXPHa_o", pos: "50% 60%" },
+  Wales: { slug: "wales", alt: "Lakes in the valley below Snowdon, Eryri", by: "Josh Kirk", url: "https://unsplash.com/photos/T_3JkNB08tk", pos: "50% 55%" },
+};
+
+// Each sub-service page's own photograph (assets/images/photos/svc-<slug>-<w>.webp
+// at 640/1024/1600), free under the Unsplash License. Filled from the photo
+// manifest; a page without one uses a photograph from its family.
+export const SVC_PHOTO = {
+  "managed-it-support-services": { alt: "IT support colleague pointing at a computer screen while helping a co-worker at her desk", url: "https://unsplash.com/photos/wkFRvw2lTAg" },
+  "apple-mac-it-support-services": { alt: "Staff working at iMac and desktop computers in a bright open-plan office", url: "https://unsplash.com/photos/Kz8nHVg_tGI" },
+  "project-delivery-professional-services": { alt: "Two colleagues planning a project with sticky notes on a meeting-room whiteboard", url: "https://unsplash.com/photos/cD6KxGylYo4" },
+  "managed-cloud-infrastructure-services": { alt: "Long data centre corridor lined with glass-fronted server cabinets", url: "https://unsplash.com/photos/s0XabTAKvak" },
+  "microsoft-365-backup-services": { alt: "Man working on a laptop at his desk in a bright, colourful office", url: "https://unsplash.com/photos/xTkgoZnCRSU" },
+  "microsoft-azure-services": { alt: "Spacious data centre hall with server cabinets and overhead blue network cabling", url: "https://unsplash.com/photos/aWslrFhs1w4" },
+  "google-workspace-backup-services": { alt: "Hands typing on a laptop showing a spreadsheet in a busy office", url: "https://unsplash.com/photos/9fZuqBYlV1w" },
+  "cloud-management-services": { alt: "Laptop screen showing performance monitoring charts and graphs", url: "https://unsplash.com/photos/JKUTrJ4vK00" },
+  "cloud-migration-services": { alt: "Engineer checking server racks with a handheld diagnostic tool", url: "https://unsplash.com/photos/A-b2nPSSK6E" },
+  "business-continuity-disaster-recovery-services": { alt: "Rack-mounted storage server with rows of drive bays and green status lights", url: "https://unsplash.com/photos/VHmBX7FnXw0" },
+  "configuration-review-services": { alt: "Glasses resting in front of monitors displaying code and settings", url: "https://unsplash.com/photos/w7ZyuGYNpRQ" },
+  "cyber-essentials-services": { alt: "Security dashboard with ticks for safe networks, no viruses and up-to-date apps", url: "https://unsplash.com/photos/-nBClEqKKVM" },
+  "security-awareness-training-services": { alt: "Staff seated in a conference room during a training presentation", url: "https://unsplash.com/photos/l0E0Y1TdzxE" },
+  "dark-web-monitoring-services": { alt: "Streams of green code and characters on a dark screen", url: "https://unsplash.com/photos/iar-afB0QQw" },
+  "email-security-services": { alt: "Glowing envelope-shaped lights against a dark background", url: "https://unsplash.com/photos/vSlCNmZdjHQ" },
+  "managed-detection-response-services": { alt: "Analyst concentrating on multiple monitors at her desk in an office", url: "https://unsplash.com/photos/64YrPKiguAE" },
+  "managed-siem-soc-as-a-service": { alt: "Operator seated in front of a large wall of monitoring screens", url: "https://unsplash.com/photos/TtMKq3lJm-U" },
+  "network-security-services": { alt: "Data centre network switch with fibre connections plugged into its ports", url: "https://unsplash.com/photos/T-IN5o3kxyA" },
+  "password-management-services": { alt: "Hand holding a smartphone showing a Touch ID or passcode screen", url: "https://unsplash.com/photos/mgYAR7BzBk4" },
+  "penetration-testing-services": { alt: "Security tester wearing headphones working at monitors of code in a dark room", url: "https://unsplash.com/photos/9SoCnyQmkzI" },
+  "managed-firewall-services": { alt: "Ethernet cables plugged into the ports of a network appliance", url: "https://unsplash.com/photos/y4GHs9GEFdM" },
+  "business-wifi-services": { alt: "Wireless access point mounted on a ceiling cable tray", url: "https://unsplash.com/photos/e8_JJxiiydc" },
+  "network-monitoring-services": { alt: "Monitor displaying live line graphs on a dark grid", url: "https://unsplash.com/photos/dBI_My696Rk" },
+  "structured-cabling-services": { alt: "Numbered patch panel with blue and grey network cables connected", url: "https://unsplash.com/photos/40XgDxBfYXM" },
+  "sd-wan-connectivity-services": { alt: "Bundle of glowing blue fibre optic strands on a dark background", url: "https://unsplash.com/photos/JyRTi3LoQnc" },
+  "ai-governance-services": { alt: "The letters AI and a question mark handwritten on a whiteboard", url: "https://unsplash.com/photos/OAsF0QMRWlA" },
+  "it-health-check-services": { alt: "Technician inspecting the internal components of an open laptop", url: "https://unsplash.com/photos/KhnRiIAgvsI" },
+  "it-policies-procedures-services": { alt: "Colleague handing documents to a co-worker at her desk with a laptop", url: "https://unsplash.com/photos/zQXdDfmkevA" },
+  "it-strategy-services": { alt: "Team around a boardroom table listening to a colleague presenting at a whiteboard", url: "https://unsplash.com/photos/Q80LYxv_Tbs" },
+  "technology-audit-services": { alt: "Rows of stacked laptops ready for inventory", url: "https://unsplash.com/photos/x2Z4GNeOkF4" },
+};
+
+// Where each area is, for the maps (Locations index, each location page).
+// Cities sit on their centre; the three areas that are regions rather than
+// towns (Hertfordshire, South Wales, Wales) are drawn with a wider halo.
+// `office` marks the two areas that are our own offices (SITE.offices index).
+export const LOCATION_PLACES = {
+  London: { at: SITE.offices[0].coords, office: 0 },
+  Stevenage: { at: SITE.offices[1].coords, office: 1 },
+  Hertfordshire: { at: [51.81, -0.24], region: true },
+  Birmingham: { at: [52.4862, -1.8904] },
+  Bradford: { at: [53.796, -1.7594] },
+  Cardiff: { at: [51.4816, -3.1791] },
+  Coventry: { at: [52.4068, -1.5197] },
+  Edinburgh: { at: [55.9533, -3.1883] },
+  Leeds: { at: [53.8008, -1.5491] },
+  Leicester: { at: [52.6369, -1.1398] },
+  Manchester: { at: [53.4808, -2.2426] },
+  Newcastle: { at: [54.9783, -1.6178] },
+  "South Wales": { at: [51.62, -3.6], region: true },
+  Wales: { at: [52.35, -3.75], region: true },
+};
 
 // Vendor accreditations and partner status, with the logo files pulled from staging.
 export const PARTNERS = [
@@ -228,6 +323,7 @@ export const TEAM = [
   { name: "Billy Carey", role: "CEO", initials: "BC", linkedin: "https://www.linkedin.com/in/billycarey/", bio: "Billy founded WhizzIT after spending over ten years in the MSP industry. He has a background in IT support and cyber security, and as demand for both kept growing he decided to bring them together under one roof. Billy has always cared about getting customer service right and building strong relationships with clients, and that is what WhizzIT is built around." },
   { name: "Harry Gleed", role: "Senior Support Engineer", initials: "HG", linkedin: "https://www.linkedin.com/in/harry-gleed-23a0ba1ba/", bio: "Harry is a senior support engineer with deep knowledge of both Microsoft and Google systems. He has a real talent for customer service and tends to build long lasting relationships with the clients he works with, who know they can count on him to sort things out properly." },
   { name: "Connor McGovern", role: "1st Line Support Engineer", initials: "CM", linkedin: "https://www.linkedin.com/in/connor-mcgovern-2911483b3/", bio: "Connor is a 1st Line Support Engineer and often the first point of contact when clients need a hand. He focuses on desktop support and cloud system administration, and is a talented engineer who is picking up new skills quickly. Connor has become an integral part of the WhizzIT team." },
+  { name: "Sebastian Griffin", role: "1st Line Support Engineer", initials: "SG", bio: "Sebastian (Seb) is a personable 1st Line Support Engineer who brings vast experience across a wide range of systems. Personable and easy to talk to, Seb makes sure every client feels looked after and is a valued member of the WhizzIT team." },
 ];
 
 // The two credentials WhizzIT publishes on every page.
@@ -347,7 +443,7 @@ export const NAV = [
     label: "Industries",
     id: "industries",
     href: "industries.html",
-    match: ["industries.html", "it-support-construction.html", "it-support-healthcare.html", "managed-it-services-for-"],
+    match: ["industries.html", "industries/"],
     // WordPress: a sector added later has its own URL, but always this body class.
     bodyClass: ["single-sector"],
     type: "industries",
