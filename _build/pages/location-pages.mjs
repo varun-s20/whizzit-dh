@@ -18,7 +18,7 @@
 // Every word comes from the area's staging page (_source/wp-pages.json, read
 // by location-parse.mjs) or from copy the site already uses elsewhere.
 import {
-  page, btn, icon, photo, breadcrumbs, callbackForm, credBadges, reviewAvatar, stars, statStrip,
+  page, btn, icon, photo, breadcrumbs, callbackForm, credBadges, reviewAvatar, stars, statStrip, textLink,
   SITE, SERVICES, LOCATIONS, LOCATION_PLACES, AREA_PHOTO, TESTIMONIALS, PHOTOS,
 } from "../lib.mjs";
 import { pageByPath, plainText } from "../content.mjs";
@@ -206,6 +206,7 @@ LOCATIONS.forEach((loc, i) => {
     <div class="lx-place__copy">
       <h2 class="grad-head" id="${key}-place-title">${placeBlock.title}</h2>
       ${placeBlock.text.map((p, n) => `<p class="${n === 0 ? "lx-place__lede" : ""}">${p}</p>`).join("")}
+      ${placeBlock.link ? textLink(placeBlock.link.label, placeBlock.link.href, `loc-${key}-proof`) : ""}
       ${placeBlock.items?.length ? `
       <ul class="lx-place__list" role="list">
         ${placeBlock.items.map((item) => `<li>${icon("checkCircle")}<span>${item}</span></li>`).join("")}
@@ -386,10 +387,10 @@ ${stagingPartners ? R.partners(stagingPartners, `${key}-partners-title`, { slug:
           ${nearby.map((l) => `<li><a href="@/${l.href}">${l.title}</a></li>`).join("")}
           <li><a class="lx-talk__all" href="@/locations.html">All locations${icon("arrow")}</a></li>
         </ul>
-        ${areaNotes.map((n) => `<p class="lx-talk__area-note">${n.text}</p>`).join("")}
+        ${areaNotes.map((n) => `<p class="lx-talk__area-note">${(n.html || n.text).replace(/^<p>|<\/p>$/g, "")}</p>`).join("")}
       </nav>
     </div>
-    ${signOff ? `<p class="sv-family__note">${signOff.text}</p>` : ""}
+    ${signOff ? `<p class="sv-family__note">${(signOff.html || signOff.text).replace(/^<p>|<\/p>$/g, "")}</p>` : ""}
   </div>
 </section>`;
 

@@ -4,8 +4,9 @@
 // cards as on the home page (lib.mjs caseTile), each with its own photograph.
 import {
   page, reviewAvatar, stars, icon, breadcrumbs, callbackForm, heroNote, caseTile,
-  SITE, CLIENTS, CASE_STUDIES, TESTIMONIALS, G_RATING, G_COUNT,
+  SITE, CLIENTS, CASE_STUDIES, TESTIMONIALS, G_RATING, G_COUNT, CRED_NOTE,
 } from "../lib.mjs";
+import { R } from "../sections.mjs";
 import { pageByPath } from "../content.mjs";
 import { parsePage } from "../parse.mjs";
 
@@ -72,6 +73,8 @@ const main = `
     <div class="case-grid">${CASE_STUDIES.map((c) => caseTile(c)).join("")}</div>
   </div>
 </section>
+
+${R.credentials({ eyebrow: "Certified & accredited", title: "Credentials you can check", note: CRED_NOTE }, "customers-creds-title", { slug: "our-customers", tone: "support" })}
 `;
 
 page({

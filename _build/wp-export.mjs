@@ -107,7 +107,7 @@ const { articleExtras } = await import("./pages/articles.mjs");
 // article itself shows; card*: how staging's blog page lists it; related: the
 // three articles staging shows under it.
 const posts = BLOG.map((p) => ({
-  slug: p.slug, title: p.title, excerpt: p.excerpt, author: p.author, date: p.date, read: p.read,
+  slug: p.slug, title: p.title, excerpt: p.excerpt, lead: flat(wpUrls(p.lead || "")), author: p.author, date: p.date, read: p.read,
   category: p.card?.category || p.category, chip: p.categoryLabel,
   cardTitle: p.card?.title || "", cardExcerpt: p.card?.excerpt || "", related: p.related || [],
   body: flat(wpUrls(p.body)),

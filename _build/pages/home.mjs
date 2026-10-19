@@ -2,9 +2,10 @@
 // (see /_source); the layout is the bold redesign — photo-led hero, a proof strip
 // that overlaps it, an ink services band, and photo tiles for stories and sectors.
 import {
-  page, statValue, statStrip, btn, textLink, icon, photo, stockPhoto, postCover, stars, reviewAvatar, callbackForm, heroNote, caseTile,
+  page, statValue, statStrip, btn, textLink, icon, photo, stockPhoto, postCover, stars, reviewAvatar, callbackForm, heroNote, caseTile, CRED_NOTE, partnerLogo,
   WP_EXPORT, SITE, SERVICES, INDUSTRIES, CLIENTS, PARTNERS, TESTIMONIALS, CASE_STUDIES, STATS, PHOTOS, BLOG_LISTING, STOCK, SECTOR_PHOTO, G_RATING,
 } from "../lib.mjs";
+import { R } from "../sections.mjs";
 
 /* ---------- About tabs (from /about/) ---------- */
 const about = [
@@ -215,6 +216,8 @@ const main = `
   </div>
 </section>
 
+${R.credentials({ eyebrow: "Certified & accredited", title: "Credentials you can check", note: CRED_NOTE }, "home-creds-title", { slug: "home", tone: "support" })}
+
 <section class="section home-sectors" aria-labelledby="sectors-title">
   <div class="container">
     <div class="bar-head">
@@ -267,7 +270,7 @@ const main = `
       <p>We hold partner status with the vendors behind the tools we deploy, so your licensing, support and escalation come direct from the source rather than through a reseller chain.</p>
     </div>
     <ul class="partner-row" role="list">
-      ${PARTNERS.map((p) => `<li><img src="@/assets/images/partners/${p.file}" alt="${p.title}" decoding="async"></li>`).join("")}
+      ${PARTNERS.map((p) => `<li>${partnerLogo(p)}</li>`).join("")}
     </ul>
   </div>
 </section>

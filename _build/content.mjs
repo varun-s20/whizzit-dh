@@ -238,6 +238,9 @@ function parsePost(post) {
     slug: post.slug,
     title: strip(first(/<h1[^>]*>([\s\S]*?)<\/h1>/, raw, post.title.rendered)),
     excerpt: strip(post.excerpt.rendered),
+    // The opening paragraph under the title, links included (the excerpt is the
+    // shorter blog-card text and differs from it).
+    lead: sanitizeBody(rewriteLinks(decode(first(/<h1[^>]*>[\s\S]*?<\/h1>\s*<p[^>]*>([\s\S]*?)<\/p>/, raw)))).trim(),
     author: strip(first(/<a class="pill mono" href="[^"]*">([^<]+)<\/a>/, raw, "Billy Carey")),
     date: isoDate(dateText) || post.date.slice(0, 10),
     dateText,

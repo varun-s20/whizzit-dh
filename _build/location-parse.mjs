@@ -5,6 +5,7 @@
 // not h3s), the stats and the FAQ (faq__item, not disclose__item), which left
 // the old location pages with headings over a single line of text.
 import { text, clean } from "./parse.mjs";
+import { rewriteLinks } from "./content.mjs";
 
 const all = (re, s) => [...s.matchAll(re)];
 const one = (re, s, group = 1) => s.match(re)?.[group] ?? "";
@@ -92,7 +93,11 @@ export function parseLocation(html) {
       out.intro = { ...head, text: paras(column(chunk)), cards: cards(chunk) };
       if (/class="stats/.test(chunk)) out.introStats = stats(chunk);
     } else if (/feature-split/.test(chunk)) out.story = { ...head, text: paras(chunk.split(/<form/)[0]) };
-    else out.region = { ...head, text: paras(chunk) };
+    else {
+      // The proof card can end with a link (Manchester: its customer's case study).
+      const k = chunk.match(/<a class="textlink[^"]*" href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/);
+      out.region = { ...head, text: paras(chunk), link: k ? { href: rewriteLinks(`href="${k[1]}"`).slice(6, -1).replace(/^@\//, ""), label: text(k[2]) } : null };
+    }
   }
   return out;
 }

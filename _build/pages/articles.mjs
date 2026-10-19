@@ -85,7 +85,7 @@ BLOG.forEach((post, index) => {
       ${breadcrumbs(crumbs)}
       <div class="meta-row"><a class="tag tag--blue" href="@/blog.html?category=${post.card?.category || post.category}">${post.categoryLabel}</a><time datetime="${post.date}">${fmt(post.date)}</time><span>${post.read} min read</span></div>
       <h1 class="hero__title mt-5">${post.title}</h1>
-      <p class="lead hero__lead">${post.excerpt}</p>
+      <p class="lead hero__lead">${post.lead || post.excerpt}</p>
       <div class="person mt-6"><span class="avatar" aria-hidden="true">${post.author.split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase() || "WZ"}</span><span><span class="person__name">${post.author}</span><span class="person__role">WhizzIT</span></span></div>
       ${callbackForm({ track: `article-${post.slug}`, captchaTheme: "light" })}
       <div class="blog-card__art article-cover tone-${listed(post).tone}" aria-hidden="true">${blogArt(listed(post).icon)}</div>

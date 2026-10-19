@@ -115,6 +115,7 @@ const main = `
             ${icon("arrow")}
           </a></li>`).join("")}
         </ul>
+        <p class="cov-list__also"><a href="@/cloud-services-london.html">Cloud Services London</a> Managed Microsoft 365, Azure and Google Workspace for London businesses, secured and backed up.</p>
       </nav>
     </div>
 
@@ -168,7 +169,7 @@ const main = `
       <p class="eyebrow">${certBlock.eyebrow || "Certified & accredited"}</p>
       <h2 class="grad-head" id="locations-cred-title">${certBlock.title || "Credentials you can check"}</h2>
     </div>
-    ${credBadges({ partners: true })}
+    ${credBadges({ partners: true, note: true })}
   </div>
 </section>
 `;

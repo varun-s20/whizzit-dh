@@ -419,7 +419,16 @@ function ctaCard({ title, text, cta = "Book a consultation", href = "contact.htm
 // The two credentials as large badges: each logo on its own plate at a size that
 // can actually be read, with the line that says what it proves. `partners` adds
 // the vendor partner logos underneath as a row of tiles.
-export function credBadges({ partners = false, level = 3 } = {}) {
+/** The line under the credential badges on the old site. */
+export const CRED_NOTE = `Cyber Essentials is a UK government scheme run by the <a href="https://www.ncsc.gov.uk/cyberessentials/overview" target="_blank" rel="noopener">National Cyber Security Centre</a>, delivered by <a href="https://iasme.co.uk/cyber-essentials/" target="_blank" rel="noopener">IASME</a>. You can verify what the certification covers at source.`;
+
+/** A partner logo; a link to the vendor's site where the old site had one. */
+export const partnerLogo = (p, extra = "") => {
+  const img = `<img src="@/assets/images/partners/${p.file}" alt="${p.title}"${extra} decoding="async">`;
+  return p.href ? `<a href="${p.href}" target="_blank" rel="noopener" aria-label="${p.title} (opens in a new tab)">${img}</a>` : img;
+};
+
+export function credBadges({ partners = false, level = 3, note = false } = {}) {
   const rest = PARTNERS.filter((p) => !CREDENTIALS.some((c) => c.file === p.file));
   return `<ul class="cred-badges" role="list">
       ${CREDENTIALS.map((c) => `
@@ -433,8 +442,9 @@ export function credBadges({ partners = false, level = 3 } = {}) {
       </li>`).join("")}
     </ul>${partners ? `
     <ul class="partner-row partner-row--badges" role="list">
-      ${rest.map((p) => `<li><img src="@/assets/images/partners/${p.file}" alt="${p.title}" loading="lazy" decoding="async"></li>`).join("")}
-    </ul>` : ""}`;
+      ${rest.map((p) => `<li>${partnerLogo(p, ' loading="lazy"')}</li>`).join("")}
+    </ul>` : ""}${note ? `
+    <p class="cred-note">${CRED_NOTE}</p>` : ""}`;
 }
 
 export function blogCard(p, { featured = false, level = 3 } = {}) {

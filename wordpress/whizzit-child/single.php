@@ -49,7 +49,10 @@ while ( have_posts() ) :
 			<?php echo whizzit_breadcrumbs( [ [ 'Home', '/' ], [ 'Blog', '/blog/' ], [ $p['title'] ] ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside. ?>
 			<div class="meta-row"><a class="tag tag--blue" href="<?php echo esc_url( home_url( '/blog/?category=' . $p['cat']['slug'] ) ); ?>"><?php echo esc_html( $p['chip'] ); ?></a><time datetime="<?php echo esc_attr( $p['date'] ); ?>"><?php echo esc_html( $p['date_text'] ); ?></time><span><?php echo (int) $p['read']; ?> min read</span></div>
 			<h1 class="hero__title mt-5"><?php the_title(); ?></h1>
-			<?php if ( $p['excerpt'] ) : ?>
+			<?php $lead = $extra( '_whizzit_lead' ); ?>
+			<?php if ( $lead ) : ?>
+				<p class="lead hero__lead"><?php echo wp_kses_post( $lead ); ?></p>
+			<?php elseif ( $p['excerpt'] ) : ?>
 				<p class="lead hero__lead"><?php echo esc_html( $p['excerpt'] ); ?></p>
 			<?php endif; ?>
 			<div class="person mt-6"><span class="avatar" aria-hidden="true"><?php echo esc_html( $initials ?: 'WZ' ); ?></span><span><span class="person__name"><?php echo esc_html( $p['author'] ); ?></span><span class="person__role">WhizzIT</span></span></div>

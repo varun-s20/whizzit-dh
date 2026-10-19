@@ -257,6 +257,8 @@ function import_posts() {
 			wp_set_post_categories( $id, [ $cats[ $rec['category'] ] ] );
 		}
 		update_post_meta( $id, '_whizzit_read', (int) $rec['read'] );
+		// The opening paragraph under the title, links included (the excerpt is the shorter card text).
+		update_post_meta( $id, '_whizzit_lead', wp_slash( $rec['lead'] ?? '' ) );
 		update_post_meta( $id, '_whizzit_author', $rec['author'] );
 		// Staging's blog card wording, the article's own chip, staging's related picks.
 		update_post_meta( $id, '_whizzit_card_title', wp_slash( $rec['cardTitle'] ?? '' ) );
@@ -296,7 +298,7 @@ function revert_posts() {
 			'post_excerpt' => get_post_meta( $post->ID, '_whizzit_old_excerpt', true ),
 		] ) );
 		wp_set_post_categories( $post->ID, [ (int) get_option( 'default_category' ) ] );
-		foreach ( [ '_whizzit_old_content', '_whizzit_old_excerpt', '_whizzit_old_title', '_whizzit_read', '_whizzit_author', '_whizzit_card_title', '_whizzit_card_excerpt', '_whizzit_chip', '_whizzit_related' ] as $key ) {
+		foreach ( [ '_whizzit_old_content', '_whizzit_old_excerpt', '_whizzit_old_title', '_whizzit_read', '_whizzit_author', '_whizzit_card_title', '_whizzit_card_excerpt', '_whizzit_chip', '_whizzit_related', '_whizzit_lead' ] as $key ) {
 			delete_post_meta( $post->ID, $key );
 		}
 		$report[] = [ 'path' => '/blog/' . $rec['slug'] . '/', 'status' => 'reverted', 'id' => $post->ID ];

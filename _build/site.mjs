@@ -282,11 +282,11 @@ export const LOCATION_PLACES = {
 export const PARTNERS = [
   { title: "Microsoft Cloud Solution Provider", file: "microsoft-csp.webp" },
   { title: "Cyber Essentials certified", file: "cyber-essentials.webp" },
-  { title: "Fortinet Authorized Partner", file: "fortinet.webp" },
-  { title: "Dell Technologies Authorized Partner", file: "dell-technologies.webp" },
-  { title: "NinjaOne partner", file: "ninjaone-logo.svg" },
-  { title: "Pax8 partner", file: "pax8.webp" },
-  { title: "Acronis partner", file: "acronis.webp" },
+  { title: "Fortinet Authorized Partner", file: "fortinet.webp", href: "https://www.fortinet.com/" },
+  { title: "Dell Technologies Authorized Partner", file: "dell-technologies.webp", href: "https://www.dell.com/en-uk" },
+  { title: "NinjaOne partner", file: "ninjaone-logo.svg", href: "https://www.ninjaone.com/" },
+  { title: "Pax8 partner", file: "pax8.webp", href: "https://www.pax8.com/en-uk/" },
+  { title: "Acronis partner", file: "acronis.webp", href: "https://www.acronis.com/en/partners/" },
 ];
 
 // Client logos shown on staging (permission already granted for these).

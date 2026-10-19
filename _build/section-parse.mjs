@@ -36,7 +36,11 @@ function parseCard(card) {
   const a = find(card, (c) => c.tag === "a" && (has(c, "feature__link") || has(c, "textlink")) && !within(c, byTag("p"), card));
   const body = { ...card, children: card.children.filter((c) => !(isEl(c) && (c.tag === "h3" || has(c, "h-display-3") || has(c, "feature__topno") || has(c, "feature__no") || has(c, "feature__icon") || has(c, "feature__link")))) };
   const textHtml = html(body);
-  return { num, title, html: textHtml, link: a ? { label: text(a), href: link(a.attrs.href) } : null };
+  // A card is often the link itself (<a class="card feature" href="…">), with
+  // "Learn more" as a plain span inside it.
+  const whole = card.tag === "a" && card.attrs?.href && !/^(#|)$/.test(card.attrs.href) ? card : null;
+  const target = a || whole;
+  return { num, title, html: textHtml, link: target ? { label: text(a || find(card, (c) => has(c, "feature__link")) || card), href: link(target.attrs.href) } : null };
 }
 
 /** The generic content of one section, in document order. */

@@ -23938,3 +23938,34 @@ ul.story-rail > li {
 :root[lang] .ix-hero__foot {
   margin-top: 0;
 }
+
+
+/* The old Locations page also listed Cloud Services London beside the areas. */
+:root[lang] .cov-list__also {
+  margin: var(--space-5) 0 0;
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: var(--fs-sm, 0.9375rem);
+  line-height: 1.5;
+}
+
+:root[lang] .cov-list__also a {
+  display: block;
+  margin-bottom: 2px;
+  color: #fff;
+  font-weight: 650;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+  text-underline-offset: 3px;
+}
+
+:root[lang] .cov-list__also a:hover { text-decoration-color: var(--brand-orange); }
+
+/* A partner logo that links out (to the vendor's site) fills its box exactly
+   as a plain logo does. */
+:root[lang] .partner-row li > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

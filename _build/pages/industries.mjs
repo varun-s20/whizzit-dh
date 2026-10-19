@@ -178,9 +178,9 @@ ${/* This band pins while the page scrolls and the stories glide sideways
   <div class="container">
     <div class="cred-why__head">
       <p class="eyebrow">Certified &amp; accredited</p>
-      <h2 class="grad-head" id="industries-cred-title">Credentials your auditors can check</h2>
+      <h2 class="grad-head" id="industries-cred-title">Credentials you can check</h2>
     </div>
-    ${credBadges({ partners: true })}
+    ${credBadges({ partners: true, note: true })}
   </div>
 </section>
 `;
